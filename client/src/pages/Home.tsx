@@ -72,7 +72,7 @@ export const Home: React.FC = () => {
               transition={{ delay: 0.1 }}
               className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] text-[#1E1B4B]"
             >
-              <span className="text-gradient-hackverse">HackVerse</span>
+              <span className="text-gradient-hackverse">Kernel Overriders</span>
               <br />
               Build. Break.
               <br />

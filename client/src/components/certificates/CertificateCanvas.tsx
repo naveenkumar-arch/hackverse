@@ -19,7 +19,7 @@ export const CertificateCanvas: React.FC<CertificateCanvasProps> = ({
   eventName,
   certificateType,
   issueDate,
-  communityName = 'HackVerse',
+  communityName = 'Kernel Overriders',
   qrCodeUrl,
   verificationUrl,
 }) => {

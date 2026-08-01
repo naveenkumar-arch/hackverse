@@ -27,8 +27,8 @@ export const Navbar: React.FC = () => {
             <Sparkles className="w-5 h-5 text-[#1E1B4B]" />
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-black tracking-tight text-gradient-hackverse leading-none">
-              HackVerse
+            <span className="text-xl sm:text-2xl font-black tracking-tight text-gradient-hackverse leading-none">
+              Kernel Overriders
             </span>
           </div>
         </Link>

@@ -13,17 +13,17 @@ export const About: React.FC = () => {
   ];
 
   const milestoneTimeline = [
-    { year: '2024', title: 'HackVerse Founded', desc: 'Started as an independent student developer community.' },
+    { year: '2024', title: 'Kernel Overriders Founded', desc: 'Started as an independent student developer community.' },
     { year: '2025', title: 'Global Expansion', desc: 'Hosted 25+ hackathons, CTFs, and live workshops.' },
-    { year: '2026', title: 'HackVerse Platform Launch', desc: 'Automated live hackathon countdown timers & Google Form integrations.' },
+    { year: '2026', title: 'Kernel Overriders Platform Launch', desc: 'Automated live hackathon countdown timers & Google Form integrations.' },
   ];
 
   return (
     <div className="space-y-12 py-6 text-[#1E1B4B]">
       <SectionHeader
-        eyebrow="ABOUT HACKVERSE"
+        eyebrow="ABOUT KERNEL OVERRIDERS"
         title="Empowering Student Developers Worldwide"
-        subtitle="HackVerse is a student-run tech community running online hackathons, coding competitions, workshops and cybersecurity events."
+        subtitle="Kernel Overriders is a student-run tech community running online hackathons, coding competitions, workshops and cybersecurity events."
       />
 
       {/* Hero Story Banner */}
@@ -34,10 +34,10 @@ export const About: React.FC = () => {
             Building the Next Generation of Software Engineers & Innovators
           </h3>
           <p className="text-slate-600 text-sm leading-relaxed font-bold">
-            HackVerse began when a group of student developers realized how difficult it was to find high-quality hackathons with transparent judging, real mentorship, and verified credentials.
+            Kernel Overriders began when a group of student developers realized how difficult it was to find high-quality hackathons with transparent judging, real mentorship, and verified credentials.
           </p>
           <p className="text-slate-600 text-sm leading-relaxed font-bold">
-            Today, HackVerse connects student developers, designers, prompt engineers, and ethical hackers to global competitions.
+            Today, Kernel Overriders connects student developers, designers, prompt engineers, and ethical hackers to global competitions.
           </p>
         </div>
 

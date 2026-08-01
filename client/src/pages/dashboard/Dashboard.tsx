@@ -97,7 +97,7 @@ export const Dashboard: React.FC = () => {
           <div className="space-y-1">
             <h4 className="font-black text-base">Account Status: Pending Admin Approval</h4>
             <p className="text-xs font-semibold leading-relaxed text-amber-800">
-              Your student registration is currently being reviewed by HackVerse administrators. Once approved, event registrations and team management features will automatically unlock.
+              Your student registration is currently being reviewed by Kernel Overriders administrators. Once approved, event registrations and team management features will automatically unlock.
             </p>
           </div>
         </div>
@@ -207,7 +207,7 @@ export const Dashboard: React.FC = () => {
                     <Lock className="w-12 h-12 text-amber-500 mx-auto" />
                     <h3 className="text-2xl font-black text-slate-900">Team Features Locked</h3>
                     <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">
-                      Your student account is pending approval by a HackVerse administrator. Creating or joining teams will unlock automatically once approved.
+                      Your student account is pending approval by a Kernel Overriders administrator. Creating or joining teams will unlock automatically once approved.
                     </p>
                   </div>
                 ) : (
@@ -271,7 +271,7 @@ export const Dashboard: React.FC = () => {
                   <div className="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div>
                       <span className="text-[10px] font-mono font-bold text-purple-600">KO-2026-WINN-8921</span>
-                      <h4 className="text-base font-extrabold text-slate-900">HackVerse AI Zenith 2026</h4>
+                      <h4 className="text-base font-extrabold text-slate-900">Kernel Overriders AI Zenith 2026</h4>
                       <p className="text-xs text-slate-500 font-medium">Type: Winner Certificate (1st Place)</p>
                     </div>
                     <div className="flex gap-2">

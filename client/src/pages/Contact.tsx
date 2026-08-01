@@ -50,7 +50,7 @@ export const Contact: React.FC = () => {
             </div>
             <h4 className="text-lg font-extrabold text-slate-900">Headquarters</h4>
             <p className="text-xs text-slate-600 font-medium leading-relaxed">
-              HackVerse <br />
+              Kernel Overriders <br />
               500 Howard Street, Suite 400 <br />
               San Francisco, CA 94105
             </p>

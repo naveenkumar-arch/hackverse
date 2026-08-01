@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
               <div className="w-10 h-10 rounded-2xl bg-[#F7D046] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
                 <Sparkles className="w-5 h-5 text-[#1E1B4B]" />
               </div>
-              <span className="text-3xl font-black text-gradient-hackverse">HackVerse</span>
+              <span className="text-2xl sm:text-3xl font-black text-gradient-hackverse">Kernel Overriders</span>
             </Link>
             <p className="text-slate-600 text-xs sm:text-sm max-w-sm leading-relaxed font-bold">
               A student-run tech community running online hackathons, coding competitions, workshops and cybersecurity events.
@@ -68,7 +68,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom copyright */}
         <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 font-bold gap-4">
-          <p>© {new Date().getFullYear()} HackVerse. Built by students, for students.</p>
+          <p>© {new Date().getFullYear()} Kernel Overriders. Built by students, for students.</p>
           <p className="flex items-center gap-1">
             Built with <Heart className="w-3.5 h-3.5 text-[#FF334B] fill-[#FF334B]" /> for developers worldwide
           </p>

@@ -7,14 +7,14 @@ export const PrivacyPolicy: React.FC = () => {
       <SectionHeader
         eyebrow="LEGAL DRAFT"
         title="Privacy Policy"
-        subtitle="Last Updated: August 1, 2026. How HackVerse collects, uses, and protects student data."
+        subtitle="Last Updated: August 1, 2026. How Kernel Overriders collects, uses, and protects student data."
       />
 
       <div className="bg-white rounded-3xl p-8 sm:p-12 border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-6 text-slate-700 font-bold text-sm leading-relaxed">
         <section className="space-y-2">
           <h3 className="text-xl font-black text-[#1E1B4B]">1. Information We Collect</h3>
           <p>
-            When you register for an event on HackVerse, we collect basic profile details including your name, student email address, university affiliation, GitHub profile, and project submission links.
+            When you register for an event on Kernel Overriders, we collect basic profile details including your name, student email address, university affiliation, GitHub profile, and project submission links.
           </p>
         </section>
 
