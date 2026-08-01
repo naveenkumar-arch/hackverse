@@ -117,78 +117,90 @@ export const Home: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="lg:col-span-5"
           >
-            <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6 relative">
-              <div className="space-y-1">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">
-                    {featuredEvent?.status === 'COMPLETED' ? 'PAST EVENT' : featuredEvent?.status === 'LIVE' ? 'LIVE NOW' : 'NEXT UP'}
-                  </span>
-                  {featuredEvent && (
+            {featuredEvent ? (
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6 relative">
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-black uppercase tracking-wider text-slate-500">
+                      {featuredEvent.status === 'COMPLETED' ? 'PAST EVENT' : featuredEvent.status === 'LIVE' ? 'LIVE NOW' : 'NEXT UP'}
+                    </span>
                     <Badge variant={featuredEvent.status === 'LIVE' ? 'pink' : featuredEvent.status === 'COMPLETED' ? 'green' : 'yellow'}>
                       {featuredEvent.status === 'COMPLETED' ? 'CONCLUDED' : featuredEvent.status === 'LIVE' ? 'LIVE' : 'UPCOMING'}
                     </Badge>
-                  )}
-                </div>
-                <h3 className="text-3xl font-black text-[#1E1B4B]">
-                  {featuredEvent ? featuredEvent.title : 'CodeStorm 2026'}
-                </h3>
-                <p className="text-sm font-semibold text-slate-600 line-clamp-2">
-                  {featuredEvent ? featuredEvent.description : '48 hours. One idea. Ship something people actually want to use.'}
-                </p>
-              </div>
-
-              {/* Countdown Timer Row */}
-              <div className="grid grid-cols-4 gap-2 text-center">
-                {[
-                  { label: 'DAYS', val: timeLeft.days },
-                  { label: 'HRS', val: timeLeft.hrs },
-                  { label: 'MIN', val: timeLeft.min },
-                  { label: 'SEC', val: timeLeft.sec },
-                ].map((item, idx) => (
-                  <div key={idx} className="p-2.5 rounded-2xl border-2 border-[#1E1B4B] bg-slate-50 shadow-[2px_2px_0px_0px_#1E1B4B]">
-                    <div className="text-xl sm:text-2xl font-black text-[#1E1B4B]">{item.val}</div>
-                    <div className="text-[10px] font-black text-slate-500">{item.label}</div>
                   </div>
-                ))}
-              </div>
+                  <h3 className="text-3xl font-black text-[#1E1B4B]">{featuredEvent.title}</h3>
+                  <p className="text-sm font-semibold text-slate-600 line-clamp-2">{featuredEvent.description}</p>
+                </div>
 
-              {/* Tags Row */}
-              <div className="flex flex-wrap gap-2 pt-1">
-                <span className="px-3 py-1.5 rounded-full bg-[#F7D046] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
-                  ₹1,50,000 pool
-                </span>
-                <span className="px-3 py-1.5 rounded-full bg-[#5CE1E6] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
-                  2 – 4 members
-                </span>
-              </div>
+                {/* Countdown Timer Row */}
+                <div className="grid grid-cols-4 gap-2 text-center">
+                  {[
+                    { label: 'DAYS', val: timeLeft.days },
+                    { label: 'HRS', val: timeLeft.hrs },
+                    { label: 'MIN', val: timeLeft.min },
+                    { label: 'SEC', val: timeLeft.sec },
+                  ].map((item, idx) => (
+                    <div key={idx} className="p-2.5 rounded-2xl border-2 border-[#1E1B4B] bg-slate-50 shadow-[2px_2px_0px_0px_#1E1B4B]">
+                      <div className="text-xl sm:text-2xl font-black text-[#1E1B4B]">{item.val}</div>
+                      <div className="text-[10px] font-black text-slate-500">{item.label}</div>
+                    </div>
+                  ))}
+                </div>
 
-              {/* Spotlight CTA Button based on status */}
-              {featuredEvent?.status === 'COMPLETED' ? (
-                <Link to="/results" className="block w-full">
-                  <Button variant="yellow" className="w-full py-4 text-sm font-black">
-                    🏆 Event Completed — View Winners & Leaderboard
+                {/* Tags Row */}
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <span className="px-3 py-1.5 rounded-full bg-[#F7D046] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
+                    ₹1,50,000 pool
+                  </span>
+                  <span className="px-3 py-1.5 rounded-full bg-[#5CE1E6] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
+                    2 – 4 members
+                  </span>
+                </div>
+
+                {/* Spotlight CTA Button based on status */}
+                {featuredEvent.status === 'COMPLETED' ? (
+                  <Link to="/results" className="block w-full">
+                    <Button variant="yellow" className="w-full py-4 text-sm font-black">
+                      🏆 Event Completed — View Winners & Leaderboard
+                    </Button>
+                  </Link>
+                ) : featuredEvent.status === 'LIVE' && featuredEvent.isSubmissionEnabled && featuredEvent.submissionLink ? (
+                  <a href={featuredEvent.submissionLink} target="_blank" rel="noreferrer" className="block w-full">
+                    <Button variant="green" className="w-full py-4 text-sm font-black animate-pulse">
+                      🚀 Submit Project (Google Form)
+                    </Button>
+                  </a>
+                ) : featuredEvent.isRegistrationEnabled !== false && featuredEvent.registrationLink ? (
+                  <a href={featuredEvent.registrationLink} target="_blank" rel="noreferrer" className="block w-full">
+                    <Button variant="primary" className="w-full py-4 text-sm font-black">
+                      Register Now (Google Form)
+                    </Button>
+                  </a>
+                ) : (
+                  <Link to="/events" className="block w-full">
+                    <Button variant="primary" className="w-full py-4 text-sm font-black">
+                      View details
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            ) : (
+              /* Empty State Spotlight Card when no events exist */
+              <div className="bg-white p-8 sm:p-10 rounded-3xl border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] text-center space-y-5">
+                <Badge variant="purple">SPOTLIGHT PORTAL</Badge>
+                <div className="space-y-2">
+                  <h3 className="text-2xl sm:text-3xl font-black text-[#1E1B4B]">No Active Events Created Yet</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 font-bold leading-relaxed">
+                    Access the Admin Portal to create, launch, and manage real hackathons with Google Forms registration.
+                  </p>
+                </div>
+                <Link to="/admin-portal" className="block w-full">
+                  <Button variant="primary" className="w-full py-4 text-xs font-black cursor-pointer">
+                    Go to Admin Portal
                   </Button>
                 </Link>
-              ) : featuredEvent?.status === 'LIVE' && featuredEvent.isSubmissionEnabled && featuredEvent.submissionLink ? (
-                <a href={featuredEvent.submissionLink} target="_blank" rel="noreferrer" className="block w-full">
-                  <Button variant="green" className="w-full py-4 text-sm font-black animate-pulse">
-                    🚀 Submit Project (Google Form)
-                  </Button>
-                </a>
-              ) : featuredEvent?.isRegistrationEnabled !== false && featuredEvent?.registrationLink ? (
-                <a href={featuredEvent.registrationLink} target="_blank" rel="noreferrer" className="block w-full">
-                  <Button variant="primary" className="w-full py-4 text-sm font-black">
-                    Register Now (Google Form)
-                  </Button>
-                </a>
-              ) : (
-                <Link to="/events" className="block w-full">
-                  <Button variant="primary" className="w-full py-4 text-sm font-black">
-                    View details
-                  </Button>
-                </Link>
-              )}
-            </div>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>
