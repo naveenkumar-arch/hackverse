@@ -35,6 +35,7 @@ export const AdminPortal: React.FC = () => {
   const [events, setEvents] = useState<ManagedEvent[]>([]);
   const [selectedWinnerEvent, setSelectedWinnerEvent] = useState<ManagedEvent | null>(null);
   const [notice, setNotice] = useState('');
+  const [submissionInputs, setSubmissionInputs] = useState<{ [key: string]: string }>({});
 
   const [eventForm, setEventForm] = useState({
     title: '',
@@ -105,7 +106,7 @@ export const AdminPortal: React.FC = () => {
       endTime: eventForm.endTime,
       durationHours: Number(eventForm.durationHours) || 24,
       registrationLink: eventForm.registrationLink,
-      submissionLink: eventForm.submissionLink || eventForm.registrationLink,
+      submissionLink: '',
     });
 
     setEventForm({
@@ -390,33 +391,19 @@ export const AdminPortal: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-1 font-extrabold text-[#1E1B4B]">5. Registration Google Form URL *</label>
-                <input
-                  type="url"
-                  required
-                  placeholder="https://forms.google.com/your-registration-form"
-                  value={eventForm.registrationLink}
-                  onChange={(e) => setEventForm({ ...eventForm, registrationLink: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-mono text-xs font-bold"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-1 font-extrabold text-[#1E1B4B]">6. Project Submission Google Form URL *</label>
-                <input
-                  type="url"
-                  required
-                  placeholder="https://forms.google.com/your-submission-form"
-                  value={eventForm.submissionLink}
-                  onChange={(e) => setEventForm({ ...eventForm, submissionLink: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-mono text-xs font-bold"
-                />
-                <p className="text-[11px] text-slate-500 font-bold mt-1">
-                  💡 Tip: You can ENABLE or DISABLE this submission link anytime in Section 2 during the event.
-                </p>
-              </div>
+            <div>
+              <label className="block mb-1 font-extrabold text-[#1E1B4B]">5. Registration Google Form URL *</label>
+              <input
+                type="url"
+                required
+                placeholder="https://forms.google.com/your-registration-form"
+                value={eventForm.registrationLink}
+                onChange={(e) => setEventForm({ ...eventForm, registrationLink: e.target.value })}
+                className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-mono text-xs font-bold"
+              />
+              <p className="text-[11px] text-slate-500 font-bold mt-1">
+                💡 Project Submission link will be provided in Section 2 after the event starts.
+              </p>
             </div>
 
             <button
@@ -525,27 +512,49 @@ export const AdminPortal: React.FC = () => {
                       </button>
                     </div>
 
-                    {/* Row 2: Submission Form (Field 6) */}
-                    <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 border-t-2 border-[#1E1B4B]/10">
-                      <div className="flex flex-wrap items-center gap-2 font-bold text-[#1E1B4B]">
-                        <span className="text-xs font-black uppercase text-[#78E29A]">6. Submission Google Form:</span>
-                        <a href={evt.submissionLink} target="_blank" rel="noreferrer" className="underline font-mono text-[#1E1B4B] truncate max-w-xs sm:max-w-md">
-                          {evt.submissionLink} <ExternalLink className="w-3 h-3 inline" />
-                        </a>
+                    {/* Row 2: Submission Form (Field 6 - Provided after event starts) */}
+                    <div className="pt-2 border-t-2 border-[#1E1B4B]/10 space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs font-black uppercase text-[#78E29A]">6. Project Submission Google Form URL (Section 2 Control)</span>
+                        {evt.submissionLink && (
+                          <a href={evt.submissionLink} target="_blank" rel="noreferrer" className="underline font-mono text-[11px] text-[#1E1B4B] flex items-center gap-1 font-bold">
+                            Open Link <ExternalLink className="w-3 h-3" />
+                          </a>
+                        )}
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => handleToggleSubmission(evt.id, evt.isSubmissionEnabled)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B] ${
-                          evt.isSubmissionEnabled
-                            ? 'bg-[#78E29A] text-[#1E1B4B]'
-                            : 'bg-slate-200 text-slate-700'
-                        }`}
-                      >
-                        {evt.isSubmissionEnabled ? <ToggleRight className="w-4 h-4 text-[#1E1B4B]" /> : <ToggleLeft className="w-4 h-4 text-slate-500" />}
-                        Project Submission Toggle: {evt.isSubmissionEnabled ? 'ENABLED' : 'DISABLED'}
-                      </button>
+                      <div className="flex flex-col sm:flex-row items-center gap-2">
+                        <input
+                          type="url"
+                          placeholder="Paste Project Submission Google Form URL after event starts..."
+                          value={submissionInputs[evt.id] !== undefined ? submissionInputs[evt.id] : evt.submissionLink || ''}
+                          onChange={(e) => setSubmissionInputs({ ...submissionInputs, [evt.id]: e.target.value })}
+                          className="w-full sm:flex-1 px-3 py-2 bg-[#FAF7EE] text-[#1E1B4B] rounded-xl border-2 border-[#1E1B4B] font-mono text-xs font-bold"
+                        />
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const url = submissionInputs[evt.id] !== undefined ? submissionInputs[evt.id] : evt.submissionLink || '';
+                            const newStatus = !evt.isSubmissionEnabled;
+                            if (newStatus && !url) {
+                              alert('Please paste a valid Project Submission Google Form URL before enabling.');
+                              return;
+                            }
+                            const updated = eventManagementStorage.updateEvent(evt.id, { submissionLink: url, isSubmissionEnabled: newStatus });
+                            setEvents(updated);
+                            showNotice(`Project Submission Form ${newStatus ? 'ENABLED' : 'DISABLED'}!`);
+                          }}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B] whitespace-nowrap ${
+                            evt.isSubmissionEnabled
+                              ? 'bg-[#78E29A] text-[#1E1B4B]'
+                              : 'bg-slate-200 text-slate-700'
+                          }`}
+                        >
+                          {evt.isSubmissionEnabled ? <ToggleRight className="w-4 h-4 text-[#1E1B4B]" /> : <ToggleLeft className="w-4 h-4 text-slate-500" />}
+                          Project Submission Toggle: {evt.isSubmissionEnabled ? 'ENABLED' : 'DISABLED'}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
