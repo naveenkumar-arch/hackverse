@@ -163,8 +163,8 @@ export const AdminPortal: React.FC = () => {
 
   const handleDeleteEvent = (id: string, title: string) => {
     if (window.confirm(`Are you sure you want to delete event "${title}"?`)) {
-      eventManagementStorage.deleteEvent(id);
-      refreshEvents();
+      const remaining = eventManagementStorage.deleteEvent(id);
+      setEvents(remaining);
       showNotice(`Deleted event "${title}"`);
     }
   };
