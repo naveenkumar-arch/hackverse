@@ -34,88 +34,146 @@ h1, h2, h3, .font-display {
   font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Neo-Pop & Soft Brutalist Cards & Shadows (Exact match to Lovable HackVerse) */
-.neo-card {
+/* 3D Neo-Brutalist Tactile Cards & Containers */
+.neo-card, .neo-3d-card {
   background-color: #FFFFFF;
-  border: 2px solid #1E1B4B;
-  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border: 2.5px solid #1E1B4B;
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
   border-radius: 1.5rem;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.neo-card-lg {
+.neo-card:hover, .neo-3d-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px 0px #1E1B4B;
+}
+
+.neo-card-lg, .neo-3d-card-lg {
   background-color: #FFFFFF;
-  border: 2px solid #1E1B4B;
+  border: 3px solid #1E1B4B;
   box-shadow: 8px 8px 0px 0px #1E1B4B;
   border-radius: 1.75rem;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-card-lg:hover, .neo-3d-card-lg:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 12px 12px 0px 0px #1E1B4B;
 }
 
 .neo-card-yellow {
   background-color: #F7D046;
-  border: 2px solid #1E1B4B;
+  border: 2.5px solid #1E1B4B;
   box-shadow: 6px 6px 0px 0px #1E1B4B;
   border-radius: 1.75rem;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-card-yellow:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px 0px #1E1B4B;
 }
 
 .neo-card-cyan {
   background-color: #5CE1E6;
-  border: 2px solid #1E1B4B;
+  border: 2.5px solid #1E1B4B;
   box-shadow: 6px 6px 0px 0px #1E1B4B;
   border-radius: 1.75rem;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.neo-card-cyan:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px 0px #1E1B4B;
+}
+
+/* 3D Tactile Interactive Buttons with Press Effect */
 .neo-button-primary {
   background-color: #FF334B;
   color: #FFFFFF;
-  border: 2px solid #1E1B4B;
-  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border: 2.5px solid #1E1B4B;
+  box-shadow: 5px 5px 0px 0px #1E1B4B;
   border-radius: 9999px;
   font-weight: 900;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .neo-button-primary:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  box-shadow: 7px 7px 0px 0px #1E1B4B;
   background-color: #FF243D;
+}
+
+.neo-button-primary:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px 0px #1E1B4B;
 }
 
 .neo-button-secondary {
   background-color: #5CE1E6;
   color: #1E1B4B;
-  border: 2px solid #1E1B4B;
-  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border: 2.5px solid #1E1B4B;
+  box-shadow: 5px 5px 0px 0px #1E1B4B;
   border-radius: 9999px;
   font-weight: 900;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .neo-button-secondary:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  box-shadow: 7px 7px 0px 0px #1E1B4B;
   background-color: #4BD5DA;
+}
+
+.neo-button-secondary:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px 0px #1E1B4B;
 }
 
 .neo-button-yellow {
   background-color: #F7D046;
   color: #1E1B4B;
-  border: 2px solid #1E1B4B;
-  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border: 2.5px solid #1E1B4B;
+  box-shadow: 5px 5px 0px 0px #1E1B4B;
   border-radius: 9999px;
   font-weight: 900;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .neo-button-yellow:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  box-shadow: 7px 7px 0px 0px #1E1B4B;
   background-color: #F5C82A;
 }
 
-/* Gradient Text for Brand Title (HackVerse / Kernel Overriders) */
+.neo-button-yellow:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px 0px #1E1B4B;
+}
+
+/* 3D Inputs */
+.neo-3d-input {
+  background-color: #FAF7EE;
+  color: #1E1B4B;
+  border: 2.5px solid #1E1B4B;
+  box-shadow: 3px 3px 0px 0px #1E1B4B;
+  border-radius: 1rem;
+  font-weight: 700;
+  transition: all 0.15s ease;
+}
+
+.neo-3d-input:focus {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px 0px #1E1B4B;
+  outline: none;
+}
+
+/* Gradient Text for Brand Title */
 .text-gradient-hackverse {
   background: linear-gradient(90deg, #FF4E88 0%, #00A3FF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(2px 2px 0px #1E1B4B);
 }
 
 /* Marquee infinite scroll animation */

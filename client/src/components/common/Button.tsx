@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClasses =
-    'inline-flex items-center justify-center font-black tracking-tight rounded-full transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] hover:shadow-[6px_6px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0 active:translate-y-0 active:shadow-[2px_2px_0px_0px_#1E1B4B]';
+    'inline-flex items-center justify-center font-black tracking-tight rounded-full transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-2 border-[#1E1B4B] shadow-[5px_5px_0px_0px_#1E1B4B] hover:shadow-[7px_7px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_0px_#1E1B4B] cursor-pointer';
 
   const variants = {
     // Coral Red / Pink Primary Button
