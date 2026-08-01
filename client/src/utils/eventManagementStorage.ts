@@ -20,9 +20,25 @@ export interface ManagedEvent {
   createdAt: string;
 }
 
-const STORAGE_KEY = 'ko_managed_events';
-
-const INITIAL_MANAGED_EVENTS: ManagedEvent[] = [];
+const INITIAL_MANAGED_EVENTS: ManagedEvent[] = [
+  {
+    id: 'evt-codestorm-2026',
+    title: 'CodeStorm 2026',
+    imageLink: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop',
+    description: '48 hours. One idea. Ship something people actually want to use. Compete for ₹1,50,000 prize pool with 2-4 members per team.',
+    eventDate: '2026-09-15',
+    startTime: '09:00',
+    endTime: '18:00',
+    durationHours: 24,
+    registrationLink: 'https://forms.google.com/your-registration-form',
+    submissionLink: 'https://forms.google.com/your-submission-form',
+    status: 'UPCOMING',
+    liveStartTime: null,
+    isSubmissionEnabled: true,
+    winners: null,
+    createdAt: new Date().toISOString(),
+  },
+];
 
 export const eventManagementStorage = {
   getEvents: (): ManagedEvent[] => {
