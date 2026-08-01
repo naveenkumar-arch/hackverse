@@ -53,13 +53,13 @@ export const eventManagementStorage = {
         return INITIAL_MANAGED_EVENTS;
       }
       const parsed = JSON.parse(data);
-      if (!Array.isArray(parsed)) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-        return [];
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MANAGED_EVENTS));
+        return INITIAL_MANAGED_EVENTS;
       }
       return parsed;
     } catch {
-      return [];
+      return INITIAL_MANAGED_EVENTS;
     }
   },
 
