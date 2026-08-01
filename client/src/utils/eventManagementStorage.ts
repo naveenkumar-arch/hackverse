@@ -20,6 +20,8 @@ export interface ManagedEvent {
   createdAt: string;
 }
 
+const STORAGE_KEY = 'ko_managed_events';
+
 const INITIAL_MANAGED_EVENTS: ManagedEvent[] = [
   {
     id: 'evt-codestorm-2026',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Badge } from '../../components/common/Badge';
 import { eventManagementStorage, ManagedEvent } from '../../utils/eventManagementStorage';
 import {
@@ -12,14 +12,10 @@ import {
   ToggleRight,
   ExternalLink,
   Trash2,
-  Calendar,
-  Clock,
-  ShieldCheck,
-  CheckCircle2,
   Lock,
-  Unlock,
   KeyRound,
   ShieldAlert,
+  ShieldCheck,
   Eye,
   EyeOff,
   LogOut,
@@ -40,6 +36,41 @@ export const AdminPortal: React.FC = () => {
   const [selectedWinnerEvent, setSelectedWinnerEvent] = useState<ManagedEvent | null>(null);
   const [notice, setNotice] = useState('');
 
+  const [eventForm, setEventForm] = useState({
+    title: '',
+    imageLink: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop',
+    description: '',
+    eventDate: '2026-09-15',
+    startTime: '09:00',
+    endTime: '18:00',
+    durationHours: 24,
+    registrationLink: '',
+    submissionLink: '',
+  });
+
+  const [winnersForm, setWinnersForm] = useState({
+    firstPlace: '',
+    secondPlace: '',
+    thirdPlace: '',
+  });
+
+  const refreshEvents = () => {
+    const list = eventManagementStorage.getEvents();
+    setEvents([...list]);
+  };
+
+  useEffect(() => {
+    refreshEvents();
+    const handleStorageUpdate = () => refreshEvents();
+    window.addEventListener('ko_managed_events_updated', handleStorageUpdate);
+    return () => window.removeEventListener('ko_managed_events_updated', handleStorageUpdate);
+  }, []);
+
+  const showNotice = (msg: string) => {
+    setNotice(msg);
+    setTimeout(() => setNotice(''), 3500);
+  };
+
   const handlePasscodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (passcode.trim() === ADMIN_PASSCODE) {
@@ -58,43 +89,6 @@ export const AdminPortal: React.FC = () => {
     setIsAdminAuthenticated(false);
   };
 
-  // Section 1: Event Creation Form State
-  const [eventForm, setEventForm] = useState({
-    title: '',
-    imageLink: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop',
-    description: '',
-    eventDate: '2026-09-15',
-    startTime: '09:00',
-    endTime: '18:00',
-    durationHours: 24,
-    registrationLink: '',
-    submissionLink: '',
-  });
-
-  // Winner Declaration Form State
-  const [winnersForm, setWinnersForm] = useState({
-    firstPlace: '',
-    secondPlace: '',
-    thirdPlace: '',
-  });
-
-  const loadEvents = () => {
-    setEvents(eventManagementStorage.getEvents());
-  };
-
-  useEffect(() => {
-    loadEvents();
-    const handleUpdate = () => loadEvents();
-    window.addEventListener('ko_managed_events_updated', handleUpdate);
-    return () => window.removeEventListener('ko_managed_events_updated', handleUpdate);
-  }, []);
-
-  const showNotice = (msg: string) => {
-    setNotice(msg);
-    setTimeout(() => setNotice(''), 3500);
-  };
-
-  // Section 1: Add Event Form Handler
   const handleCreateEvent = (e: React.FormEvent) => {
     e.preventDefault();
     if (!eventForm.title || !eventForm.registrationLink) {
@@ -126,21 +120,21 @@ export const AdminPortal: React.FC = () => {
       submissionLink: '',
     });
 
-    showNotice(`🎉 Event "${eventForm.title}" created successfully and published to Customer Portal!`);
+    refreshEvents();
+    showNotice(`🎉 Event "${eventForm.title}" created successfully and published!`);
     setActiveSection('SECTION_2_MANAGEMENT');
   };
 
-  // Section 2: Live Controls
   const handleStartEvent = (eventId: string, title: string) => {
-    const updated = eventManagementStorage.startEvent(eventId);
-    setEvents(updated);
-    showNotice(`🚀 "${title}" is now LIVE! Countdown timer & LIVE badge published on Customer Portal.`);
+    eventManagementStorage.startEvent(eventId);
+    refreshEvents();
+    showNotice(`🚀 "${title}" is now LIVE! Countdown timer & LIVE badge active.`);
   };
 
   const handleToggleSubmission = (eventId: string, currentStatus: boolean) => {
-    const updated = eventManagementStorage.toggleSubmissionLink(eventId, !currentStatus);
-    setEvents(updated);
-    showNotice(`Project Submission button is now ${!currentStatus ? 'ENABLED' : 'DISABLED'} on Customer Portal.`);
+    eventManagementStorage.toggleSubmissionLink(eventId, !currentStatus);
+    refreshEvents();
+    showNotice(`Project Submission button is now ${!currentStatus ? 'ENABLED' : 'DISABLED'}.`);
   };
 
   const handleSaveWinners = (e: React.FormEvent) => {
@@ -152,17 +146,17 @@ export const AdminPortal: React.FC = () => {
       return;
     }
 
-    const updated = eventManagementStorage.completeEventAndDeclareWinners(selectedWinnerEvent.id, winnersForm);
-    setEvents(updated);
+    eventManagementStorage.completeEventAndDeclareWinners(selectedWinnerEvent.id, winnersForm);
+    refreshEvents();
     setSelectedWinnerEvent(null);
     setWinnersForm({ firstPlace: '', secondPlace: '', thirdPlace: '' });
-    showNotice(`🏆 Winners declared! Event moved to Completed Events Showcase on Customer Portal.`);
+    showNotice(`🏆 Winners declared! Event moved to Completed Showcase.`);
   };
 
   const handleDeleteEvent = (id: string, title: string) => {
     if (window.confirm(`Are you sure you want to delete event "${title}"?`)) {
-      const updated = eventManagementStorage.deleteEvent(id);
-      setEvents(updated);
+      eventManagementStorage.deleteEvent(id);
+      refreshEvents();
       showNotice(`Deleted event "${title}"`);
     }
   };
@@ -173,27 +167,25 @@ export const AdminPortal: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="glass-card bg-white rounded-3xl p-8 sm:p-10 max-w-md w-full border border-purple-200 shadow-2xl space-y-6 text-center"
+          className="bg-white rounded-3xl p-8 sm:p-10 max-w-md w-full border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6 text-center"
         >
-          <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-[#FACC15] via-[#FF2E4D] to-[#7C3AED] p-0.5 mx-auto shadow-xl">
-            <div className="w-full h-full bg-white rounded-[22px] flex items-center justify-center">
-              <Lock className="w-8 h-8 text-[#FF2E4D]" />
-            </div>
+          <div className="w-16 h-16 rounded-3xl bg-[#F7D046] border-2 border-[#1E1B4B] p-0.5 mx-auto shadow-[4px_4px_0px_0px_#1E1B4B] flex items-center justify-center">
+            <Lock className="w-8 h-8 text-[#1E1B4B]" />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-center gap-2">
-              <h2 className="text-2xl font-black text-slate-900">Admin Portal Gate</h2>
+              <h2 className="text-2xl font-black text-[#1E1B4B]">Admin Portal Gate</h2>
               <Badge variant="pink" className="font-extrabold uppercase">RESTRICTED ACCESS</Badge>
             </div>
-            <p className="text-xs font-semibold text-slate-500">
+            <p className="text-xs font-bold text-slate-600">
               Please enter your Admin Passcode to access the Event Management Dashboard.
             </p>
           </div>
 
           <form onSubmit={handlePasscodeSubmit} className="space-y-4 text-left">
             <div>
-              <label className="block mb-1 text-xs font-extrabold text-slate-900">Admin Passcode *</label>
+              <label className="block mb-1 text-xs font-extrabold text-[#1E1B4B]">Admin Passcode *</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -204,12 +196,12 @@ export const AdminPortal: React.FC = () => {
                     setPasscode(e.target.value);
                     setPasscodeError('');
                   }}
-                  className="w-full px-4 py-3.5 pr-11 bg-slate-50 text-slate-900 rounded-2xl border border-slate-200 font-mono text-sm font-bold focus:outline-none focus:border-purple-600 focus:bg-white transition-all"
+                  className="w-full px-4 py-3.5 pr-11 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-mono text-sm font-bold focus:outline-none focus:bg-white transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900 p-1"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -223,14 +215,14 @@ export const AdminPortal: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-[#FF2E4D] text-white font-black text-sm shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-2xl bg-[#FF334B] text-white font-black text-sm border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] hover:shadow-[6px_6px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <KeyRound className="w-4 h-4" /> Unlock Admin Portal
             </button>
           </form>
 
-          <div className="pt-4 border-t border-slate-100 text-[11px] font-bold text-slate-400 flex items-center justify-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-purple-600" /> Default Passcode: <code className="bg-purple-50 text-purple-700 px-2 py-0.5 rounded-lg border border-purple-200 font-mono">admin123</code>
+          <div className="pt-4 border-t-2 border-[#1E1B4B]/10 text-[11px] font-bold text-slate-500 flex items-center justify-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#1E1B4B]" /> Default Passcode: <code className="bg-[#F7D046] text-[#1E1B4B] px-2 py-0.5 rounded-lg border border-[#1E1B4B] font-mono">admin123</code>
           </div>
         </motion.div>
       </div>
@@ -240,37 +232,41 @@ export const AdminPortal: React.FC = () => {
   return (
     <div className="py-4 space-y-6 w-full">
       {/* Admin Portal Header */}
-      <div className="glass-card bg-white rounded-3xl p-6 sm:p-8 border border-purple-200 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#FACC15] via-[#FF2E4D] to-[#7C3AED] p-0.5 shadow-lg">
-            <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-              <Crown className="w-6 h-6 text-[#FF2E4D]" />
-            </div>
+          <div className="w-12 h-12 rounded-2xl bg-[#F7D046] border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] flex items-center justify-center">
+            <Crown className="w-6 h-6 text-[#1E1B4B]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-black text-slate-900">Dedicated Admin Portal</h1>
+              <h1 className="text-2xl font-black text-[#1E1B4B]">Dedicated Admin Portal</h1>
               <Badge variant="pink" className="font-extrabold uppercase">AUTHENTICATED ADMIN</Badge>
             </div>
-            <p className="text-xs text-slate-500 font-bold">Isolated Administrative Dashboard — 2 Dedicated Management Sections</p>
+            <p className="text-xs text-slate-600 font-bold">Isolated Administrative Dashboard — 2 Dedicated Management Sections</p>
           </div>
         </div>
 
         {/* Section Navigation Tabs & Lock Button */}
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 text-xs font-black">
+          <div className="flex gap-2 bg-[#FAF7EE] p-1.5 rounded-2xl border-2 border-[#1E1B4B] text-xs font-black">
             <button
+              type="button"
               onClick={() => setActiveSection('SECTION_1_CREATION')}
-              className={`px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 ${
-                activeSection === 'SECTION_1_CREATION' ? 'bg-purple-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900'
+              className={`px-4 py-2.5 rounded-xl transition-all cursor-pointer flex items-center gap-2 ${
+                activeSection === 'SECTION_1_CREATION'
+                  ? 'bg-[#FF334B] text-white border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B]'
+                  : 'text-[#1E1B4B] hover:bg-slate-200/60'
               }`}
             >
               <Plus className="w-4 h-4" /> Section 1: Event Creation
             </button>
             <button
+              type="button"
               onClick={() => setActiveSection('SECTION_2_MANAGEMENT')}
-              className={`px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 ${
-                activeSection === 'SECTION_2_MANAGEMENT' ? 'bg-purple-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900'
+              className={`px-4 py-2.5 rounded-xl transition-all cursor-pointer flex items-center gap-2 ${
+                activeSection === 'SECTION_2_MANAGEMENT'
+                  ? 'bg-[#FF334B] text-white border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B]'
+                  : 'text-[#1E1B4B] hover:bg-slate-200/60'
               }`}
             >
               <Sparkles className="w-4 h-4" /> Section 2: Event Management (Live)
@@ -278,8 +274,9 @@ export const AdminPortal: React.FC = () => {
           </div>
 
           <button
+            type="button"
             onClick={handleLockAdminPortal}
-            className="px-3.5 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 text-xs font-black transition-all flex items-center gap-1.5 shadow-sm"
+            className="px-3.5 py-2.5 rounded-2xl bg-rose-100 hover:bg-rose-200 text-rose-700 border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B] text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer"
             title="Lock Admin Portal"
           >
             <LogOut className="w-4 h-4" /> Lock Portal
@@ -288,103 +285,102 @@ export const AdminPortal: React.FC = () => {
       </div>
 
       {notice && (
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold text-xs text-center shadow-lg animate-pulse">
+        <div className="p-4 rounded-2xl bg-[#5CE1E6] text-[#1E1B4B] border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] font-black text-xs text-center animate-pulse">
           {notice}
         </div>
       )}
 
       {/* SECTION 1: EVENT CREATION PAGE */}
       {activeSection === 'SECTION_1_CREATION' && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-xl space-y-6">
-          <div className="border-b border-slate-100 pb-4">
-            <h2 className="text-2xl font-black text-slate-900">Section 1 — Event Creation</h2>
-            <p className="text-xs text-slate-500 font-medium mt-1">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6">
+          <div className="border-b-2 border-[#1E1B4B]/10 pb-4">
+            <h2 className="text-2xl font-black text-[#1E1B4B]">Section 1 — Event Creation</h2>
+            <p className="text-xs text-slate-600 font-bold mt-1">
               Create a new hackathon event. Published events automatically appear on the Customer Portal with a working Google Form registration button.
             </p>
           </div>
 
-          <form onSubmit={handleCreateEvent} className="space-y-5 text-xs font-semibold text-slate-700">
+          <form onSubmit={handleCreateEvent} className="space-y-5 text-xs font-bold text-[#1E1B4B]">
             <div>
-              <label className="block mb-1 font-extrabold text-slate-900">1. Event Title *</label>
+              <label className="block mb-1 font-extrabold text-[#1E1B4B]">1. Event Title *</label>
               <input
                 type="text"
                 required
                 placeholder="e.g. Buildathon 2026"
                 value={eventForm.title}
                 onChange={(e) => setEventForm({ ...eventForm, title: e.target.value })}
-                className="w-full px-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 font-bold focus:outline-none focus:border-purple-500"
+                className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold focus:outline-none focus:bg-white"
               />
             </div>
 
             <div>
-              <label className="block mb-1 font-extrabold text-slate-900">2. Event Poster / Image URL *</label>
+              <label className="block mb-1 font-extrabold text-[#1E1B4B]">2. Event Poster / Image URL *</label>
               <input
                 type="url"
                 required
                 placeholder="https://images.unsplash.com/..."
                 value={eventForm.imageLink}
                 onChange={(e) => setEventForm({ ...eventForm, imageLink: e.target.value })}
-                className="w-full px-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 font-medium focus:outline-none focus:border-purple-500"
+                className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold focus:outline-none focus:bg-white"
               />
             </div>
 
             <div>
-              <label className="block mb-1 font-extrabold text-slate-900">3. Event Description (Overview, Rules & Guidelines) *</label>
+              <label className="block mb-1 font-extrabold text-[#1E1B4B]">3. Event Description (Overview, Rules & Guidelines) *</label>
               <textarea
                 required
                 rows={4}
                 placeholder="Detail the event overview, hackathon rules, submission requirements, and judging criteria..."
                 value={eventForm.description}
                 onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })}
-                className="w-full p-4 bg-white text-slate-900 rounded-2xl border border-slate-200 font-medium focus:outline-none focus:border-purple-500"
+                className="w-full p-4 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold focus:outline-none focus:bg-white"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">4a. Event Date *</label>
+                <label className="block mb-1 font-extrabold text-[#1E1B4B]">4a. Event Date *</label>
                 <input
                   type="date"
                   required
                   value={eventForm.eventDate}
                   onChange={(e) => setEventForm({ ...eventForm, eventDate: e.target.value })}
-                  className="w-full px-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 font-bold"
+                  className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold"
                 />
               </div>
 
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">4b. Start Time *</label>
-                <input
-                  type="time"
-                  required
-                  value={eventForm.startTime}
-                  onChange={(e) => setEventForm({ ...eventForm, startTime: e.target.value })}
-                  className="w-full px-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 font-bold"
-                />
+                <label className="block mb-1 font-extrabold text-[#1E1B4B]">4b. Start Time & End Time *</label>
+                <div className="flex gap-2">
+                  <input
+                    type="time"
+                    required
+                    value={eventForm.startTime}
+                    onChange={(e) => setEventForm({ ...eventForm, startTime: e.target.value })}
+                    className="w-1/2 px-3 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold"
+                  />
+                  <input
+                    type="time"
+                    required
+                    value={eventForm.endTime}
+                    onChange={(e) => setEventForm({ ...eventForm, endTime: e.target.value })}
+                    className="w-1/2 px-3 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">4c. End Time *</label>
+                <label className="block mb-1 font-extrabold text-[#1E1B4B]">4c. Duration (Hours) *</label>
                 <input
-                  type="time"
+                  type="number"
                   required
-                  value={eventForm.endTime}
-                  onChange={(e) => setEventForm({ ...eventForm, endTime: e.target.value })}
-                  className="w-full px-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 font-bold"
+                  min={1}
+                  max={168}
+                  value={eventForm.durationHours}
+                  onChange={(e) => setEventForm({ ...eventForm, durationHours: Number(e.target.value) })}
+                  className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold"
                 />
               </div>
-            </div>
-
-            <div>
-              <label className="block mb-1 font-extrabold text-slate-900">4d. Hackathon Duration (Hours e.g. 24 or 48) *</label>
-              <input
-                type="number"
-                required
-                min={1}
-                value={eventForm.durationHours}
-                onChange={(e) => setEventForm({ ...eventForm, durationHours: Number(e.target.value) })}
-                className="w-full px-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 font-bold"
-              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -418,7 +414,7 @@ export const AdminPortal: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-4 rounded-2xl bg-[#FF334B] text-white font-black text-sm border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] hover:shadow-[6px_6px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+              className="w-full py-4 rounded-2xl bg-[#FF334B] text-white font-black text-sm border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] hover:shadow-[6px_6px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all cursor-pointer"
             >
               Add Event & Publish to Customer Portal
             </button>
@@ -428,7 +424,7 @@ export const AdminPortal: React.FC = () => {
 
       {/* SECTION 2: EVENT MANAGEMENT PAGE (LIVE HACKATHON CONTROL) */}
       {activeSection === 'SECTION_2_MANAGEMENT' && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-6">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6">
           <div className="border-b-2 border-[#1E1B4B]/10 pb-4">
             <h2 className="text-2xl font-black text-[#1E1B4B]">Section 2 — Event Management (Live Hackathon Control)</h2>
             <p className="text-xs text-slate-600 font-bold mt-1">
@@ -489,7 +485,7 @@ export const AdminPortal: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleDeleteEvent(evt.id, evt.title)}
-                        className="p-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-colors cursor-pointer"
+                        className="p-2.5 rounded-2xl bg-rose-100 hover:bg-rose-200 text-rose-700 border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B] transition-colors cursor-pointer"
                         title="Delete Event"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -498,11 +494,11 @@ export const AdminPortal: React.FC = () => {
                   </div>
 
                   {/* Toggle Controls & Form Links Bar */}
-                  <div className="p-4 rounded-2xl bg-[#FAF7EE] border-2 border-[#1E1B4B] flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
-                    <div className="flex flex-wrap gap-4 font-bold text-slate-700">
+                  <div className="p-4 rounded-2xl bg-white border-2 border-[#1E1B4B] flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+                    <div className="flex flex-wrap gap-4 font-bold text-[#1E1B4B]">
                       <span>
-                        <strong className="text-purple-600">Reg Google Form:</strong>{' '}
-                        <a href={evt.registrationLink} target="_blank" rel="noreferrer" className="underline font-mono text-purple-800">
+                        <strong className="text-[#FF334B]">Reg Google Form:</strong>{' '}
+                        <a href={evt.registrationLink} target="_blank" rel="noreferrer" className="underline font-mono text-[#1E1B4B]">
                           {evt.registrationLink} <ExternalLink className="w-3 h-3 inline" />
                         </a>
                       </span>
@@ -512,21 +508,21 @@ export const AdminPortal: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleToggleSubmission(evt.id, evt.isSubmissionEnabled)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B] ${
                         evt.isSubmissionEnabled
-                          ? 'bg-emerald-100 text-emerald-800 border-2 border-emerald-400'
-                          : 'bg-slate-200 text-slate-700 border-2 border-slate-300'
+                          ? 'bg-[#78E29A] text-[#1E1B4B]'
+                          : 'bg-slate-200 text-slate-700'
                       }`}
                     >
-                      {evt.isSubmissionEnabled ? <ToggleRight className="w-4 h-4 text-emerald-600" /> : <ToggleLeft className="w-4 h-4 text-slate-400" />}
+                      {evt.isSubmissionEnabled ? <ToggleRight className="w-4 h-4 text-[#1E1B4B]" /> : <ToggleLeft className="w-4 h-4 text-slate-500" />}
                       Project Submission Toggle: {evt.isSubmissionEnabled ? 'ENABLED' : 'DISABLED'}
                     </button>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="p-12 text-center text-slate-400 font-bold space-y-2">
-                <Sparkles className="w-10 h-10 mx-auto text-purple-300" />
+              <div className="p-12 text-center text-slate-500 font-bold space-y-2">
+                <Sparkles className="w-10 h-10 mx-auto text-[#1E1B4B]" />
                 <p>No events found. Click "Section 1: Event Creation" to add your first event.</p>
               </div>
             )}
@@ -536,49 +532,49 @@ export const AdminPortal: React.FC = () => {
 
       {/* WINNER DECLARATION MODAL */}
       {selectedWinnerEvent && (
-        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-md flex items-center justify-center p-4">
-          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-card bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-purple-100 shadow-2xl space-y-4">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-              <h3 className="text-xl font-black text-slate-900">Declare Winners — {selectedWinnerEvent.title}</h3>
-              <button onClick={() => setSelectedWinnerEvent(null)} className="text-slate-400 hover:text-slate-600 font-black">✕</button>
+        <div className="fixed inset-0 z-50 bg-[#1E1B4B]/70 backdrop-blur-md flex items-center justify-center p-4">
+          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-4">
+            <div className="flex justify-between items-center border-b-2 border-[#1E1B4B]/10 pb-3">
+              <h3 className="text-xl font-black text-[#1E1B4B]">Declare Winners — {selectedWinnerEvent.title}</h3>
+              <button type="button" onClick={() => setSelectedWinnerEvent(null)} className="text-[#1E1B4B] font-black text-lg p-1">✕</button>
             </div>
 
-            <form onSubmit={handleSaveWinners} className="space-y-4 text-xs font-bold text-slate-700">
+            <form onSubmit={handleSaveWinners} className="space-y-4 text-xs font-bold text-[#1E1B4B]">
               <div>
-                <label className="block mb-1 text-amber-600 font-black">🥇 First Prize Team Details *</label>
+                <label className="block mb-1 text-[#1E1B4B] font-black">🥇 First Prize Team Details *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Team NeuralCrafters (IIT Madras)"
                   value={winnersForm.firstPlace}
                   onChange={(e) => setWinnersForm({ ...winnersForm, firstPlace: e.target.value })}
-                  className="w-full px-4 py-3 rounded-2xl border border-amber-300 bg-amber-50/30 text-xs font-bold"
+                  className="w-full px-4 py-3 rounded-2xl border-2 border-[#1E1B4B] bg-[#F7D046] text-[#1E1B4B] text-xs font-bold"
                 />
               </div>
 
               <div>
-                <label className="block mb-1 text-slate-500 font-black">🥈 Second Prize Team Details</label>
+                <label className="block mb-1 text-[#1E1B4B] font-black">🥈 Second Prize Team Details</label>
                 <input
                   type="text"
                   placeholder="e.g. Team CyberKnights (Stanford)"
                   value={winnersForm.secondPlace}
                   onChange={(e) => setWinnersForm({ ...winnersForm, secondPlace: e.target.value })}
-                  className="w-full px-4 py-3 rounded-2xl border border-slate-300 bg-slate-50/30 text-xs font-bold"
+                  className="w-full px-4 py-3 rounded-2xl border-2 border-[#1E1B4B] bg-[#5CE1E6] text-[#1E1B4B] text-xs font-bold"
                 />
               </div>
 
               <div>
-                <label className="block mb-1 text-amber-700 font-black">🥉 Third Prize Team Details</label>
+                <label className="block mb-1 text-[#1E1B4B] font-black">🥉 Third Prize Team Details</label>
                 <input
                   type="text"
                   placeholder="e.g. Team CodeMatrix (MIT)"
                   value={winnersForm.thirdPlace}
                   onChange={(e) => setWinnersForm({ ...winnersForm, thirdPlace: e.target.value })}
-                  className="w-full px-4 py-3 rounded-2xl border border-amber-200 bg-amber-50/20 text-xs font-bold"
+                  className="w-full px-4 py-3 rounded-2xl border-2 border-[#1E1B4B] bg-[#FF334B] text-white text-xs font-bold"
                 />
               </div>
 
-              <button type="submit" className="w-full py-4 rounded-2xl bg-amber-500 text-white font-black text-xs shadow-xl hover:bg-amber-600 transition-all">
+              <button type="submit" className="w-full py-4 rounded-2xl bg-[#F7D046] text-[#1E1B4B] font-black text-xs border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all cursor-pointer">
                 Save & Move Event to Completed Showcase
               </button>
             </form>
