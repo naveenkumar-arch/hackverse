@@ -52,18 +52,21 @@ export const eventManagementStorage = {
   getEvents: (): ManagedEvent[] => {
     try {
       const data = localStorage.getItem(STORAGE_KEY);
+      // Only seed the default event on very first visit (key never existed)
       if (data === null) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MANAGED_EVENTS));
         return INITIAL_MANAGED_EVENTS;
       }
       const parsed = JSON.parse(data);
-      if (!Array.isArray(parsed) || parsed.length === 0) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MANAGED_EVENTS));
-        return INITIAL_MANAGED_EVENTS;
+      if (!Array.isArray(parsed)) {
+        // Corrupted data — reset to empty, not default
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+        return [];
       }
+      // Intentionally empty (user deleted all events) — respect it
       return parsed;
     } catch {
-      return INITIAL_MANAGED_EVENTS;
+      return [];
     }
   },
 
