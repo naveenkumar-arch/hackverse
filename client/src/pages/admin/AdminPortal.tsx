@@ -461,8 +461,9 @@ export const AdminPortal: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
                       {evt.status === 'UPCOMING' && (
                         <button
+                          type="button"
                           onClick={() => handleStartEvent(evt.id, evt.title)}
-                          className="px-4 py-2.5 rounded-2xl bg-[#5CE1E6] text-[#1E1B4B] font-black text-xs border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center gap-2"
+                          className="px-4 py-2.5 rounded-2xl bg-[#5CE1E6] text-[#1E1B4B] font-black text-xs border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer"
                         >
                           <Play className="w-4 h-4 fill-current" /> Start Event (Go LIVE & Start Countdown)
                         </button>
@@ -470,6 +471,7 @@ export const AdminPortal: React.FC = () => {
 
                       {evt.status === 'LIVE' && (
                         <button
+                          type="button"
                           onClick={() => {
                             setSelectedWinnerEvent(evt);
                             setWinnersForm({
@@ -478,15 +480,16 @@ export const AdminPortal: React.FC = () => {
                               thirdPlace: evt.winners?.thirdPlace || '',
                             });
                           }}
-                          className="px-4 py-2.5 rounded-2xl bg-[#F7D046] text-[#1E1B4B] font-black text-xs border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center gap-2"
+                          className="px-4 py-2.5 rounded-2xl bg-[#F7D046] text-[#1E1B4B] font-black text-xs border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer"
                         >
                           <Trophy className="w-4 h-4" /> End Event & Declare 1st, 2nd, 3rd Place Winners
                         </button>
                       )}
 
                       <button
+                        type="button"
                         onClick={() => handleDeleteEvent(evt.id, evt.title)}
-                        className="p-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors"
+                        className="p-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-colors cursor-pointer"
                         title="Delete Event"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -495,7 +498,7 @@ export const AdminPortal: React.FC = () => {
                   </div>
 
                   {/* Toggle Controls & Form Links Bar */}
-                  <div className="p-4 rounded-2xl bg-purple-50/70 border border-purple-100 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+                  <div className="p-4 rounded-2xl bg-[#FAF7EE] border-2 border-[#1E1B4B] flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
                     <div className="flex flex-wrap gap-4 font-bold text-slate-700">
                       <span>
                         <strong className="text-purple-600">Reg Google Form:</strong>{' '}
@@ -507,11 +510,12 @@ export const AdminPortal: React.FC = () => {
 
                     {/* Submission Link Toggle Control */}
                     <button
+                      type="button"
                       onClick={() => handleToggleSubmission(evt.id, evt.isSubmissionEnabled)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
                         evt.isSubmissionEnabled
-                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                          : 'bg-slate-200 text-slate-600'
+                          ? 'bg-emerald-100 text-emerald-800 border-2 border-emerald-400'
+                          : 'bg-slate-200 text-slate-700 border-2 border-slate-300'
                       }`}
                     >
                       {evt.isSubmissionEnabled ? <ToggleRight className="w-4 h-4 text-emerald-600" /> : <ToggleLeft className="w-4 h-4 text-slate-400" />}
