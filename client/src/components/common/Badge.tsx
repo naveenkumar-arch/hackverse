@@ -12,12 +12,12 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
 }) => {
   const variants = {
-    green: 'bg-[#00E676] text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
-    purple: 'bg-[#A855F7] text-white border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
-    pink: 'bg-[#FF2D55] text-white border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
-    yellow: 'bg-[#FFE600] text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
-    blue: 'bg-[#00F0FF] text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
-    outline: 'bg-white text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
+    green: 'bg-gradient-to-r from-[#10B981] to-[#059669] text-white border-2 border-[#0F172A] shadow-[2px_2px_0px_0px_#0F172A]',
+    purple: 'bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white border-2 border-[#0F172A] shadow-[2px_2px_0px_0px_#0F172A]',
+    pink: 'bg-gradient-to-r from-[#FF2E55] to-[#EC4899] text-white border-2 border-[#0F172A] shadow-[2px_2px_0px_0px_#0F172A]',
+    yellow: 'bg-gradient-to-r from-[#FFD600] to-[#FF9900] text-[#0F172A] border-2 border-[#0F172A] shadow-[2px_2px_0px_0px_#0F172A]',
+    blue: 'bg-gradient-to-r from-[#00F0FF] to-[#0284C7] text-white border-2 border-[#0F172A] shadow-[2px_2px_0px_0px_#0F172A]',
+    outline: 'bg-white text-[#0F172A] border-2 border-[#0F172A] shadow-[2px_2px_0px_0px_#0F172A]',
   };
 
   return (

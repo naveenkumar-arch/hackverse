@@ -4,137 +4,130 @@
 
 @layer base {
   :root {
-    --background: 45 40% 97%;
-    --foreground: 240 47% 15%;
+    --background: 240 20% 98%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 240 47% 15%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 47% 15%;
-    --primary: 348 100% 58%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 239 84% 67%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 182 100% 50%;
-    --secondary-foreground: 240 47% 15%;
-    --muted: 45 20% 94%;
-    --muted-foreground: 240 10% 45%;
-    --accent: 54 100% 50%;
-    --accent-foreground: 240 47% 15%;
-    --border: 240 47% 15%;
+    --secondary: 330 81% 60%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 20% 94%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 188 94% 43%;
+    --accent-foreground: 0 0% 100%;
+    --border: 222 47% 11%;
     --radius: 1.5rem;
   }
 }
 
 body {
-  background-color: #FAF7EE;
-  color: #120E38;
-  font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
+  background-color: #F4F5FB;
+  color: #0F172A;
+  font-family: 'Space Grotesk', 'Sora', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
-/* 3D Neo-Brutalist Tactile Cards & Shadows */
+h1, h2, h3, .font-display {
+  font-family: 'Syne', 'Space Grotesk', sans-serif;
+}
+
+/* Glass & Pop 3D Cards */
 .neo-card {
   background-color: #FFFFFF;
-  border: 2.5px solid #120E38;
-  box-shadow: 6px 6px 0px 0px #120E38;
+  border: 2.5px solid #0F172A;
+  box-shadow: 6px 6px 0px 0px #0F172A;
   border-radius: 1.5rem;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .neo-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 8px 8px 0px 0px #120E38;
+  transform: translateY(-4px);
+  box-shadow: 10px 10px 0px 0px #6366F1;
+  border-color: #6366F1;
 }
 
 .neo-card-lg {
   background-color: #FFFFFF;
-  border: 3px solid #120E38;
-  box-shadow: 8px 8px 0px 0px #120E38;
+  border: 3px solid #0F172A;
+  box-shadow: 8px 8px 0px 0px #0F172A;
   border-radius: 1.75rem;
 }
 
-.neo-card-yellow {
-  background-color: #FFE600;
-  border: 3px solid #120E38;
-  box-shadow: 6px 6px 0px 0px #120E38;
-  border-radius: 1.75rem;
-}
-
-.neo-card-cyan {
-  background-color: #00F0FF;
-  border: 3px solid #120E38;
-  box-shadow: 6px 6px 0px 0px #120E38;
-  border-radius: 1.75rem;
-}
-
-/* 3D Tactile Interactive Buttons */
+/* Ultra Vibrant Buttons */
 .neo-button-primary {
-  background-color: #FF2D55;
+  background: linear-gradient(135deg, #FF2E55 0%, #FF6B00 100%);
   color: #FFFFFF;
-  border: 2.5px solid #120E38;
-  box-shadow: 4px 4px 0px 0px #120E38;
+  border: 2.5px solid #0F172A;
+  box-shadow: 4px 4px 0px 0px #0F172A;
   border-radius: 9999px;
   font-weight: 900;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .neo-button-primary:hover {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px 0px #120E38;
-  background-color: #FF0033;
+  box-shadow: 2px 2px 0px 0px #0F172A;
+  filter: brightness(1.08);
 }
 
 .neo-button-primary:active {
   transform: translate(4px, 4px);
-  box-shadow: 0px 0px 0px 0px #120E38;
+  box-shadow: 0px 0px 0px 0px #0F172A;
 }
 
 .neo-button-secondary {
-  background-color: #00F0FF;
-  color: #120E38;
-  border: 2.5px solid #120E38;
-  box-shadow: 4px 4px 0px 0px #120E38;
+  background: linear-gradient(135deg, #00F0FF 0%, #0077FF 100%);
+  color: #FFFFFF;
+  border: 2.5px solid #0F172A;
+  box-shadow: 4px 4px 0px 0px #0F172A;
   border-radius: 9999px;
   font-weight: 900;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .neo-button-secondary:hover {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px 0px #120E38;
-  background-color: #00E5FF;
-}
-
-.neo-button-secondary:active {
-  transform: translate(4px, 4px);
-  box-shadow: 0px 0px 0px 0px #120E38;
+  box-shadow: 2px 2px 0px 0px #0F172A;
+  filter: brightness(1.08);
 }
 
 .neo-button-yellow {
-  background-color: #FFE600;
-  color: #120E38;
-  border: 2.5px solid #120E38;
-  box-shadow: 4px 4px 0px 0px #120E38;
+  background: linear-gradient(135deg, #FFD600 0%, #FF9900 100%);
+  color: #0F172A;
+  border: 2.5px solid #0F172A;
+  box-shadow: 4px 4px 0px 0px #0F172A;
   border-radius: 9999px;
   font-weight: 900;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .neo-button-yellow:hover {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px 0px #120E38;
-  background-color: #FFD600;
+  box-shadow: 2px 2px 0px 0px #0F172A;
+  filter: brightness(1.08);
 }
 
-.neo-button-yellow:active {
-  transform: translate(4px, 4px);
-  box-shadow: 0px 0px 0px 0px #120E38;
-}
-
-/* Vibrant 3D Text Gradient */
+/* Stunning Futuristic Text Gradients */
 .text-gradient-hackverse {
-  background: linear-gradient(135deg, #FF0055 0%, #7C3AED 50%, #00F0FF 100%);
+  background: linear-gradient(135deg, #6366F1 0%, #EC4899 50%, #00F0FF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(2px 2px 0px #120E38);
+  filter: drop-shadow(2px 2px 0px rgba(15, 23, 42, 0.1));
+}
+
+.text-gradient-fire {
+  background: linear-gradient(135deg, #FF2E55 0%, #FF8A00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-cyber {
+  background: linear-gradient(135deg, #00F0FF 0%, #6366F1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Marquee infinite scroll animation */
@@ -145,32 +138,32 @@ body {
 
 .animate-marquee {
   display: inline-flex;
-  animation: marquee 25s linear infinite;
+  animation: marquee 22s linear infinite;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
 }
 
-/* Ambient glow background blobs */
+/* Ambient Electric Aurora Glowing Blobs */
 .glow-blob-cream-top {
   position: absolute;
-  top: -100px;
+  top: -120px;
   left: -100px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(255, 230, 0, 0.3) 0%, rgba(255, 45, 85, 0.25) 50%, rgba(250, 247, 238, 0) 70%);
-  filter: blur(60px);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(236, 72, 153, 0.2) 40%, rgba(244, 245, 25B, 0) 70%);
+  filter: blur(70px);
   pointer-events: none;
 }
 
 .glow-blob-cyan-right {
   position: absolute;
-  top: 100px;
-  right: -100px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.3) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(250, 247, 238, 0) 70%);
-  filter: blur(60px);
+  top: 80px;
+  right: -120px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.25) 0%, rgba(16, 185, 129, 0.2) 40%, rgba(244, 245, 25B, 0) 70%);
+  filter: blur(70px);
   pointer-events: none;
 }
