@@ -385,32 +385,36 @@ export const AdminPortal: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">5. Registration Google Form URL *</label>
+                <label className="block mb-1 font-extrabold text-[#1E1B4B]">5. Registration Google Form URL *</label>
                 <input
                   type="url"
                   required
                   placeholder="https://forms.google.com/your-registration-form"
                   value={eventForm.registrationLink}
                   onChange={(e) => setEventForm({ ...eventForm, registrationLink: e.target.value })}
-                  className="w-full px-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 font-mono text-xs font-semibold"
+                  className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-mono text-xs font-bold"
                 />
               </div>
 
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">6. Project Submission Google Form URL</label>
+                <label className="block mb-1 font-extrabold text-[#1E1B4B]">6. Project Submission Google Form URL *</label>
                 <input
                   type="url"
+                  required
                   placeholder="https://forms.google.com/your-submission-form"
                   value={eventForm.submissionLink}
                   onChange={(e) => setEventForm({ ...eventForm, submissionLink: e.target.value })}
-                  className="w-full px-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 font-mono text-xs font-semibold"
+                  className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-mono text-xs font-bold"
                 />
+                <p className="text-[11px] text-slate-500 font-bold mt-1">
+                  💡 Tip: You can ENABLE or DISABLE this submission link anytime in Section 2 during the event.
+                </p>
               </div>
             </div>
 
             <button
               type="submit"
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#FF2E4D] to-[#FF4767] text-white font-black text-sm shadow-xl hover:shadow-2xl transition-all"
+              className="w-full py-4 rounded-2xl bg-[#FF334B] text-white font-black text-sm border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] hover:shadow-[6px_6px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
             >
               Add Event & Publish to Customer Portal
             </button>
@@ -420,30 +424,30 @@ export const AdminPortal: React.FC = () => {
 
       {/* SECTION 2: EVENT MANAGEMENT PAGE (LIVE HACKATHON CONTROL) */}
       {activeSection === 'SECTION_2_MANAGEMENT' && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-xl space-y-6">
-          <div className="border-b border-slate-100 pb-4">
-            <h2 className="text-2xl font-black text-slate-900">Section 2 — Event Management (Live Hackathon Control)</h2>
-            <p className="text-xs text-slate-500 font-medium mt-1">
-              Start events to trigger live countdown timers, toggle project submission buttons, and declare 1st/2nd/3rd place winners.
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-6">
+          <div className="border-b-2 border-[#1E1B4B]/10 pb-4">
+            <h2 className="text-2xl font-black text-[#1E1B4B]">Section 2 — Event Management (Live Hackathon Control)</h2>
+            <p className="text-xs text-slate-600 font-bold mt-1">
+              Start events to trigger live countdown timers (e.g. 24 Hours), toggle Project Submission Google Form links, and declare 1st, 2nd, 3rd place winners when the timer ends.
             </p>
           </div>
 
           <div className="space-y-4">
             {events.length > 0 ? (
               events.map((evt) => (
-                <div key={evt.id} className="p-6 rounded-3xl bg-white border border-purple-100 shadow-md space-y-4">
+                <div key={evt.id} className="p-6 rounded-3xl bg-[#FAF7EE] border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] space-y-4">
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="flex items-center gap-4">
-                      <img src={evt.imageLink} alt={evt.title} className="w-20 h-20 rounded-2xl object-cover border border-purple-200 shadow-sm" />
+                      <img src={evt.imageLink} alt={evt.title} className="w-20 h-20 rounded-2xl object-cover border-2 border-[#1E1B4B]" />
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-xl font-black text-slate-900">{evt.title}</h3>
-                          <Badge variant={evt.status === 'LIVE' ? 'pink' : evt.status === 'COMPLETED' ? 'green' : 'purple'}>
+                          <h3 className="text-xl font-black text-[#1E1B4B]">{evt.title}</h3>
+                          <Badge variant={evt.status === 'LIVE' ? 'pink' : evt.status === 'COMPLETED' ? 'green' : 'yellow'}>
                             {evt.status}
                           </Badge>
                         </div>
-                        <p className="text-xs text-slate-500 font-medium line-clamp-1">{evt.description}</p>
-                        <p className="text-xs font-bold text-slate-400">
+                        <p className="text-xs text-slate-600 font-bold line-clamp-1">{evt.description}</p>
+                        <p className="text-xs font-extrabold text-[#1E1B4B]">
                           Date: {evt.eventDate} ({evt.startTime} - {evt.endTime}) &bull; Duration: {evt.durationHours} Hours
                         </p>
                       </div>
@@ -454,9 +458,9 @@ export const AdminPortal: React.FC = () => {
                       {evt.status === 'UPCOMING' && (
                         <button
                           onClick={() => handleStartEvent(evt.id, evt.title)}
-                          className="px-4 py-2.5 rounded-2xl bg-purple-600 text-white font-black text-xs hover:bg-purple-700 shadow-lg flex items-center gap-2"
+                          className="px-4 py-2.5 rounded-2xl bg-[#5CE1E6] text-[#1E1B4B] font-black text-xs border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center gap-2"
                         >
-                          <Play className="w-4 h-4 fill-current" /> Start Event (Go LIVE)
+                          <Play className="w-4 h-4 fill-current" /> Start Event (Go LIVE & Start Countdown)
                         </button>
                       )}
 
@@ -470,9 +474,9 @@ export const AdminPortal: React.FC = () => {
                               thirdPlace: evt.winners?.thirdPlace || '',
                             });
                           }}
-                          className="px-4 py-2.5 rounded-2xl bg-amber-500 text-white font-black text-xs hover:bg-amber-600 shadow-lg flex items-center gap-2"
+                          className="px-4 py-2.5 rounded-2xl bg-[#F7D046] text-[#1E1B4B] font-black text-xs border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center gap-2"
                         >
-                          <Trophy className="w-4 h-4" /> End Event & Declare Winners
+                          <Trophy className="w-4 h-4" /> End Event & Declare 1st, 2nd, 3rd Place Winners
                         </button>
                       )}
 
