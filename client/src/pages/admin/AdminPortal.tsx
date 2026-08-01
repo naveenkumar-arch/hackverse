@@ -132,12 +132,14 @@ export const AdminPortal: React.FC = () => {
 
   // Section 2: Live Controls
   const handleStartEvent = (eventId: string, title: string) => {
-    eventManagementStorage.startEvent(eventId);
+    const updated = eventManagementStorage.startEvent(eventId);
+    setEvents(updated);
     showNotice(`🚀 "${title}" is now LIVE! Countdown timer & LIVE badge published on Customer Portal.`);
   };
 
   const handleToggleSubmission = (eventId: string, currentStatus: boolean) => {
-    eventManagementStorage.toggleSubmissionLink(eventId, !currentStatus);
+    const updated = eventManagementStorage.toggleSubmissionLink(eventId, !currentStatus);
+    setEvents(updated);
     showNotice(`Project Submission button is now ${!currentStatus ? 'ENABLED' : 'DISABLED'} on Customer Portal.`);
   };
 
@@ -150,7 +152,8 @@ export const AdminPortal: React.FC = () => {
       return;
     }
 
-    eventManagementStorage.completeEventAndDeclareWinners(selectedWinnerEvent.id, winnersForm);
+    const updated = eventManagementStorage.completeEventAndDeclareWinners(selectedWinnerEvent.id, winnersForm);
+    setEvents(updated);
     setSelectedWinnerEvent(null);
     setWinnersForm({ firstPlace: '', secondPlace: '', thirdPlace: '' });
     showNotice(`🏆 Winners declared! Event moved to Completed Events Showcase on Customer Portal.`);
@@ -158,7 +161,8 @@ export const AdminPortal: React.FC = () => {
 
   const handleDeleteEvent = (id: string, title: string) => {
     if (window.confirm(`Are you sure you want to delete event "${title}"?`)) {
-      eventManagementStorage.deleteEvent(id);
+      const updated = eventManagementStorage.deleteEvent(id);
+      setEvents(updated);
       showNotice(`Deleted event "${title}"`);
     }
   };
