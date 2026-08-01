@@ -22,17 +22,39 @@ import {
 
 export const Home: React.FC = () => {
   const [events, setEvents] = useState<ManagedEvent[]>([]);
-  const [timeLeft, setTimeLeft] = useState({ days: 41, hrs: 13, min: 31, sec: 25 });
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hrs: 0, min: 0, sec: 0 });
+
+  const featuredEvent = events.find((e) => e.status === 'LIVE' || e.status === 'UPCOMING') || events[0];
+
+  // Compute real countdown from featuredEvent's date+time
+  const computeTimeLeft = (evt: ManagedEvent | undefined) => {
+    if (!evt) return { days: 0, hrs: 0, min: 0, sec: 0 };
+    const targetDate = evt.status === 'LIVE' && evt.liveStartTime
+      ? new Date(evt.liveStartTime + evt.durationHours * 3600 * 1000) // time until event ends
+      : new Date(`${evt.eventDate}T${evt.startTime || '00:00'}:00`);   // time until event starts
+    const diff = targetDate.getTime() - Date.now();
+    if (diff <= 0) return { days: 0, hrs: 0, min: 0, sec: 0 };
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hrs = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const sec = Math.floor((diff % (1000 * 60)) / 1000);
+    return { days, hrs, min, sec };
+  };
 
   useEffect(() => {
-    setEvents(eventManagementStorage.getEvents());
-    const handleUpdate = () => setEvents(eventManagementStorage.getEvents());
+    const loadAndUpdate = () => {
+      const loaded = eventManagementStorage.getEvents();
+      setEvents(loaded);
+    };
+    loadAndUpdate();
+    const handleUpdate = () => loadAndUpdate();
     window.addEventListener('ko_managed_events_updated', handleUpdate);
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.sec > 0) return { ...prev, sec: prev.sec - 1 };
-        return { ...prev, sec: 59, min: prev.min > 0 ? prev.min - 1 : 59 };
+      setEvents((prev) => {
+        const featured = prev.find((e) => e.status === 'LIVE' || e.status === 'UPCOMING') || prev[0];
+        setTimeLeft(computeTimeLeft(featured));
+        return prev;
       });
     }, 1000);
 
@@ -41,8 +63,6 @@ export const Home: React.FC = () => {
       clearInterval(timer);
     };
   }, []);
-
-  const featuredEvent = events.find((e) => e.status === 'LIVE' || e.status === 'UPCOMING') || events[0];
 
   return (
     <div className="space-y-12 pb-16 relative overflow-hidden text-[#1E1B4B]">

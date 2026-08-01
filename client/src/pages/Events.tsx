@@ -89,6 +89,20 @@ export const Events: React.FC = () => {
 
                   <div className="p-6 space-y-4">
                     <p className="text-xs text-slate-700 font-bold leading-relaxed">{evt.description}</p>
+                    {(evt.prizePool || evt.teamSize) && (
+                      <div className="flex flex-wrap gap-2">
+                        {evt.prizePool && (
+                          <span className="px-3 py-1.5 rounded-full bg-[#F7D046] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
+                            {evt.prizePool}
+                          </span>
+                        )}
+                        {evt.teamSize && (
+                          <span className="px-3 py-1.5 rounded-full bg-[#5CE1E6] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
+                            {evt.teamSize}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
 
