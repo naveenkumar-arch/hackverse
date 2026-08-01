@@ -42,7 +42,7 @@ export const Home: React.FC = () => {
     };
   }, []);
 
-  const featuredEvent = events[0];
+  const featuredEvent = events.find((e) => e.status === 'LIVE' || e.status === 'UPCOMING') || events[0];
 
   return (
     <div className="space-y-12 pb-16 relative overflow-hidden text-[#1E1B4B]">
@@ -53,15 +53,15 @@ export const Home: React.FC = () => {
       {/* HERO SECTION */}
       <section className="pt-4 sm:pt-8 pb-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Left Hero Column */}
+          {/* Left Text Box */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Top Badge */}
+            {/* Top Red Badge */}
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#78E29A] border-2 border-[#1E1B4B] text-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FF334B] text-white border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] text-xs font-black tracking-wider uppercase"
             >
-              <Sparkles className="w-4 h-4 fill-current" />
+              <Sparkles className="w-4 h-4 fill-white" />
               REGISTRATIONS OPEN
             </motion.div>
 
@@ -83,26 +83,27 @@ export const Home: React.FC = () => {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-base sm:text-xl text-[#1E1B4B]/80 font-bold max-w-xl leading-relaxed"
+              transition={{ delay: 0.15 }}
+              className="text-base sm:text-lg text-slate-700 font-bold max-w-xl leading-relaxed"
             >
               A student-run tech community running online hackathons, coding competitions, workshops and cybersecurity events.
             </motion.p>
 
-            {/* Action Buttons */}
+            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-wrap gap-4 pt-2"
+              transition={{ delay: 0.2 }}
+              className="flex flex-wrap items-center gap-4 pt-2"
             >
               <Link to="/events">
-                <Button variant="primary" size="lg" className="gap-2">
-                  Explore events <ArrowRight className="w-5 h-5" />
+                <Button variant="primary" size="lg" className="text-sm font-black py-4 px-8">
+                  Explore events
                 </Button>
               </Link>
+
               <Link to="/about">
-                <Button variant="secondary" size="lg">
+                <Button variant="secondary" size="lg" className="text-sm font-black py-4 px-8">
                   Our story
                 </Button>
               </Link>
@@ -118,7 +119,16 @@ export const Home: React.FC = () => {
           >
             <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6 relative">
               <div className="space-y-1">
-                <span className="text-xs font-black uppercase tracking-wider text-slate-500">NEXT UP</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">
+                    {featuredEvent?.status === 'COMPLETED' ? 'PAST EVENT' : featuredEvent?.status === 'LIVE' ? 'LIVE NOW' : 'NEXT UP'}
+                  </span>
+                  {featuredEvent && (
+                    <Badge variant={featuredEvent.status === 'LIVE' ? 'pink' : featuredEvent.status === 'COMPLETED' ? 'green' : 'yellow'}>
+                      {featuredEvent.status === 'COMPLETED' ? 'CONCLUDED' : featuredEvent.status === 'LIVE' ? 'LIVE' : 'UPCOMING'}
+                    </Badge>
+                  )}
+                </div>
                 <h3 className="text-3xl font-black text-[#1E1B4B]">
                   {featuredEvent ? featuredEvent.title : 'CodeStorm 2026'}
                 </h3>
@@ -152,7 +162,20 @@ export const Home: React.FC = () => {
                 </span>
               </div>
 
-              {featuredEvent?.registrationLink ? (
+              {/* Spotlight CTA Button based on status */}
+              {featuredEvent?.status === 'COMPLETED' ? (
+                <Link to="/results" className="block w-full">
+                  <Button variant="yellow" className="w-full py-4 text-sm font-black">
+                    🏆 Event Completed — View Winners & Leaderboard
+                  </Button>
+                </Link>
+              ) : featuredEvent?.status === 'LIVE' && featuredEvent.isSubmissionEnabled && featuredEvent.submissionLink ? (
+                <a href={featuredEvent.submissionLink} target="_blank" rel="noreferrer" className="block w-full">
+                  <Button variant="green" className="w-full py-4 text-sm font-black animate-pulse">
+                    🚀 Submit Project (Google Form)
+                  </Button>
+                </a>
+              ) : featuredEvent?.isRegistrationEnabled !== false && featuredEvent?.registrationLink ? (
                 <a href={featuredEvent.registrationLink} target="_blank" rel="noreferrer" className="block w-full">
                   <Button variant="primary" className="w-full py-4 text-sm font-black">
                     Register Now (Google Form)
