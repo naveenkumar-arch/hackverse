@@ -1,0 +1,9 @@
+{
+  "name": "kernel-overriders-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd client && npm run dev",
+    "build": "cd client && npm install && npm run build"
+  }
+}

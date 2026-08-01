@@ -1,0 +1,655 @@
+// ============================================================================
+// Kernel Overriders Platform - Database Schema (Prisma ORM)
+// PostgreSQL Database Schema for Production Hackathon & Competition Platform
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum UserRole {
+  STUDENT
+  ORGANIZER
+  JUDGE
+  ADMIN
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum EventType {
+  HACKATHON
+  CODING_COMPETITION
+  CYBERSECURITY
+  WORKSHOP
+  CONTEST
+}
+
+enum EventStatus {
+  DRAFT
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum EventMode {
+  ONLINE
+  OFFLINE
+  HYBRID
+}
+
+enum RegistrationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum TeamMemberRole {
+  LEADER
+  MEMBER
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  MANUAL_VERIFICATION
+}
+
+enum SubmissionStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  EVALUATED
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ALERT
+}
+
+enum SponsorTier {
+  TITLE
+  PLATINUM
+  GOLD
+  SILVER
+  BRONZE
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+// ============================================================================
+// USER MANAGEMENT & AUTHENTICATION
+// ============================================================================
+
+model User {
+  id               String         @id @default(uuid())
+  email            String         @unique
+  passwordHash     String
+  fullName         String
+  phone            String?
+  college          String?
+  department       String?
+  year             String?
+  city             String?
+  state            String?
+  avatarUrl        String?
+  role             UserRole       @default(STUDENT)
+  approvalStatus   ApprovalStatus @default(PENDING)
+  approvedAt       DateTime?
+  approvedBy       String?
+  bio              String?        @db.Text
+  githubUrl        String?
+  linkedinUrl      String?
+  websiteUrl       String?
+  isEmailVerified  Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  // Relationships
+  adminProfile         Admin?
+  organizedEvents      Event[]                @relation("EventOrganizer")
+  registrations        Registration[]
+  ledTeams             Team[]                 @relation("TeamLeader")
+  teamMemberships      TeamMember[]
+  payments             Payment[]
+  certificates         Certificate[]
+  submissions          Submission[]
+  notifications        Notification[]
+  judgeProfiles        Judge[]
+  testimonials         Testimonial[]
+  supportTickets       SupportTicket[]
+  ticketReplies        TicketReply[]
+  auditLogs            AuditLog[]
+  verificationTokens   VerificationToken[]
+  passwordResetTokens  PasswordResetToken[]
+  refreshTokens        RefreshToken[]
+  emailLogs            EmailLog[]
+
+  @@index([email])
+  @@index([role])
+  @@index([approvalStatus])
+}
+
+model Admin {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  permissions String[] @default(["ALL"])
+  department  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  isRevoked Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+// ============================================================================
+// EVENTS & COMPETITIONS
+// ============================================================================
+
+model Event {
+  id                   String      @id @default(uuid())
+  title                String
+  slug                 String      @unique
+  description          String      @db.Text
+  shortDescription     String      @db.VarChar(500)
+  theme                String?
+  rules                String?     @db.Text
+  judgingCriteria      String?     @db.Text
+  bannerUrl            String?
+  logoUrl              String?
+  eventType            EventType   @default(HACKATHON)
+  status               EventStatus @default(DRAFT)
+  mode                 EventMode   @default(ONLINE)
+  venue                String?
+  maxTeamSize          Int         @default(4)
+  minTeamSize          Int         @default(1)
+  prizePool            String?
+  startDate            DateTime
+  endDate              DateTime
+  registrationDeadline DateTime
+  submissionDeadline   DateTime    @default(now())
+  isRegistrationOpen   Boolean     @default(true)
+  isSubmissionOpen     Boolean     @default(true)
+  organizerId          String
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+
+  // Relationships
+  organizer           User                  @relation("EventOrganizer", fields: [organizerId], references: [id])
+  registrations       Registration[]
+  teams               Team[]
+  submissions         Submission[]
+  certificates        Certificate[]
+  certificateTemplate CertificateTemplate?
+  results             Result[]
+  judges              Judge[]
+  sponsors            Sponsor[]
+  gallery             Gallery[]
+  faqs                FAQ[]
+
+  @@index([slug])
+  @@index([eventType])
+  @@index([status])
+  @@index([organizerId])
+  @@index([startDate, endDate])
+}
+
+model Registration {
+  id           String             @id @default(uuid())
+  eventId      String
+  userId       String
+  teamId       String?
+  status       RegistrationStatus @default(PENDING)
+  registeredAt DateTime           @default(now())
+
+  // Relationships
+  event    Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team     Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  payments Payment[]
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@index([teamId])
+  @@index([status])
+}
+
+model Team {
+  id                 String   @id @default(uuid())
+  name               String
+  code               String   @unique
+  teamIdCode         String   @unique @default(uuid())
+  teamPassword       String   @default("123456")
+  maxMembers         Int      @default(4)
+  isLocked           Boolean  @default(false)
+  registrationStatus String   @default("UNREGISTERED")
+  eventId            String
+  leaderId           String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relationships
+  event         Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  leader        User           @relation("TeamLeader", fields: [leaderId], references: [id])
+  members       TeamMember[]
+  registrations Registration[]
+  submissions   Submission[]
+
+  @@unique([eventId, name])
+  @@index([eventId])
+  @@index([leaderId])
+  @@index([code])
+  @@index([teamIdCode])
+}
+
+model TeamMember {
+  id       String         @id @default(uuid())
+  teamId   String
+  userId   String
+  role     TeamMemberRole @default(MEMBER)
+  status   String         @default("ACCEPTED")
+  joinedAt DateTime       @default(now())
+
+  // Relationships
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+  @@index([status])
+}
+
+// ============================================================================
+// PAYMENTS & CERTIFICATES
+// ============================================================================
+
+model Payment {
+  id              String        @id @default(uuid())
+  registrationId  String
+  userId          String
+  amount          Decimal       @db.Decimal(10, 2)
+  registrationFee Decimal       @default(499.00) @db.Decimal(10, 2)
+  currency        String        @default("INR")
+  status          PaymentStatus @default(PENDING)
+  paymentMethod   String        @default("UPI")
+  transactionId   String        @unique
+  upiUtr          String?       @unique
+  invoiceNumber   String        @unique @default(uuid())
+  invoiceUrl      String?
+  provider        String        @default("UPI_PAYMENT")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relationships
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([registrationId])
+  @@index([userId])
+  @@index([transactionId])
+  @@index([upiUtr])
+  @@index([status])
+}
+
+model CertificateTemplate {
+  id           String   @id @default(uuid())
+  eventId      String   @unique
+  name         String
+  templateType String   @default("Participation")
+  templateUrl  String
+  fieldsJson   Json     @default("{}")
+  createdAt    DateTime @default(now())
+
+  // Relationships
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+}
+
+model Certificate {
+  id                String    @id @default(uuid())
+  certificateNumber String    @unique
+  templateId        String?
+  userId            String
+  eventId           String
+  certificateType   String    @default("Participation")
+  communityName     String    @default("Kernel Overriders")
+  recipientName     String
+  eventName         String
+  verificationUrl   String    @default("https://kernel-overriders.vercel.app/verify")
+  issueDate         DateTime  @default(now())
+  certificateUrl    String
+  qrCodeUrl         String?
+  pdfUrl            String?
+  isRevoked         Boolean   @default(false)
+  revokedAt         DateTime?
+  revokedReason     String?
+
+  // Relationships
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([certificateNumber])
+  @@index([userId])
+  @@index([eventId])
+  @@index([certificateType])
+  @@index([isRevoked])
+}
+
+// ============================================================================
+// EMAIL AUTOMATION & LOGS
+// ============================================================================
+
+model EmailLog {
+  id            String    @id @default(uuid())
+  userId        String?
+  to            String
+  subject       String
+  template      String
+  status        String    @default("PENDING") // PENDING, SENT, FAILED
+  attempts      Int       @default(0)
+  errorMessage  String?
+  hasAttachment Boolean   @default(false)
+  sentAt        DateTime?
+  createdAt     DateTime  @default(now())
+
+  // Relationships
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([to])
+  @@index([template])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// SUBMISSIONS & RESULTS
+// ============================================================================
+
+model Submission {
+  id                 String           @id @default(uuid())
+  eventId            String
+  teamId             String?
+  userId             String
+  title              String
+  description        String           @db.Text
+  repoUrl            String
+  demoUrl            String?
+  videoUrl           String?
+  presentationPdfUrl String?
+  techStack          String[]         @default([])
+  customFields       Json             @default("{}")
+  status             SubmissionStatus @default(SUBMITTED)
+  submittedAt        DateTime         @default(now())
+
+  // Relationships
+  event   Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  team    Team?    @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  results Result[]
+
+  @@index([eventId])
+  @@index([teamId])
+  @@index([userId])
+  @@index([status])
+}
+
+model Result {
+  id           String   @id @default(uuid())
+  eventId      String
+  submissionId String
+  position     Int
+  prizeTitle   String
+  score        Float?
+  announcedAt  DateTime @default(now())
+
+  // Relationships
+  event      Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([submissionId])
+}
+
+// ============================================================================
+// JUDGES & SPONSORS
+// ============================================================================
+
+model Judge {
+  id           String   @id @default(uuid())
+  eventId      String
+  userId       String
+  bio          String?  @db.Text
+  designation  String?
+  organization String?
+  createdAt    DateTime @default(now())
+
+  // Relationships
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+model Sponsor {
+  id         String      @id @default(uuid())
+  eventId    String
+  name       String
+  logoUrl    String
+  websiteUrl String?
+  tier       SponsorTier @default(SILVER)
+  createdAt  DateTime    @default(now())
+
+  // Relationships
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([tier])
+}
+
+// ============================================================================
+// COMMUNITY & CONTENT (GALLERY, TESTIMONIALS, FAQS, NOTIFICATIONS)
+// ============================================================================
+
+model Gallery {
+  id        String    @id @default(uuid())
+  eventId   String
+  imageUrl  String
+  caption   String?
+  mediaType MediaType @default(IMAGE)
+  createdAt DateTime  @default(now())
+
+  // Relationships
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+}
+
+model Testimonial {
+  id         String   @id @default(uuid())
+  userId     String
+  quote      String   @db.Text
+  rating     Int      @default(5)
+  authorName String
+  authorRole String
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isFeatured])
+}
+
+model FAQ {
+  id        String   @id @default(uuid())
+  eventId   String?
+  question  String
+  answer    String   @db.Text
+  category  String   @default("GENERAL")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  // Relationships
+  event Event? @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+  @@index([eventId])
+  @@index([category])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  title     String
+  message   String           @db.Text
+  type      NotificationType @default(INFO)
+  read      Boolean          @default(false)
+  linkUrl   String?
+  createdAt DateTime         @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([read])
+}
+
+// ============================================================================
+// SUPPORT SYSTEM & AUDIT LOGS
+// ============================================================================
+
+model SupportTicket {
+  id        String         @id @default(uuid())
+  userId    String
+  subject   String
+  message   String         @db.Text
+  priority  TicketPriority @default(MEDIUM)
+  status    TicketStatus   @default(OPEN)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  // Relationships
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies TicketReply[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([priority])
+}
+
+model TicketReply {
+  id           String   @id @default(uuid())
+  ticketId     String
+  userId       String
+  message      String   @db.Text
+  isStaffReply Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  // Relationships
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  // Relationships
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+}

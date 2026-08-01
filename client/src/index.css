@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 40% 97%;
+    --foreground: 240 47% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 47% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 47% 15%;
+    --primary: 351 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 182 72% 63%;
+    --secondary-foreground: 240 47% 15%;
+    --muted: 45 20% 94%;
+    --muted-foreground: 240 10% 45%;
+    --accent: 46 92% 62%;
+    --accent-foreground: 240 47% 15%;
+    --border: 240 47% 15%;
+    --radius: 1.5rem;
+  }
+}
+
+body {
+  background-color: #FAF7EE;
+  color: #1E1B4B;
+  font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Neo-Pop & Soft Brutalist Cards & Shadows (Exact match to Lovable HackVerse) */
+.neo-card {
+  background-color: #FFFFFF;
+  border: 2px solid #1E1B4B;
+  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border-radius: 1.5rem;
+}
+
+.neo-card-lg {
+  background-color: #FFFFFF;
+  border: 2px solid #1E1B4B;
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  border-radius: 1.75rem;
+}
+
+.neo-card-yellow {
+  background-color: #F7D046;
+  border: 2px solid #1E1B4B;
+  box-shadow: 5px 5px 0px 0px #1E1B4B;
+  border-radius: 1.75rem;
+}
+
+.neo-card-cyan {
+  background-color: #5CE1E6;
+  border: 2px solid #1E1B4B;
+  box-shadow: 5px 5px 0px 0px #1E1B4B;
+  border-radius: 1.75rem;
+}
+
+.neo-button-primary {
+  background-color: #FF334B;
+  color: #FFFFFF;
+  border: 2px solid #1E1B4B;
+  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-button-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  background-color: #FF243D;
+}
+
+.neo-button-secondary {
+  background-color: #5CE1E6;
+  color: #1E1B4B;
+  border: 2px solid #1E1B4B;
+  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-button-secondary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  background-color: #4BD5DA;
+}
+
+.neo-button-yellow {
+  background-color: #F7D046;
+  color: #1E1B4B;
+  border: 2px solid #1E1B4B;
+  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-button-yellow:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  background-color: #F5C82A;
+}
+
+/* Gradient Text for Brand Title (HackVerse) */
+.text-gradient-hackverse {
+  background: linear-gradient(90deg, #FF4E88 0%, #00A3FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Ambient glow background blobs */
+.glow-blob-cream-top {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(253, 224, 71, 0.25) 0%, rgba(254, 205, 211, 0.2) 50%, rgba(250, 247, 238, 0) 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.glow-blob-cyan-right {
+  position: absolute;
+  top: 150px;
+  right: -100px;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(92, 225, 230, 0.25) 0%, rgba(147, 197, 253, 0.2) 50%, rgba(250, 247, 238, 0) 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
