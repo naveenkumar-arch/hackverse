@@ -21,7 +21,7 @@ import {
   LogOut,
 } from 'lucide-react';
 
-const ADMIN_PASSCODE = import.meta.env.VITE_ADMIN_PASSCODE || 'admin123';
+const ADMIN_PASSCODE = import.meta.env.VITE_ADMIN_PASSCODE || 'nv01110612@gmail.com';
 
 export const AdminPortal: React.FC = () => {
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(
@@ -230,7 +230,7 @@ export const AdminPortal: React.FC = () => {
           </form>
 
           <div className="pt-4 border-t-2 border-[#1E1B4B]/10 text-[11px] font-bold text-slate-500 flex items-center justify-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#1E1B4B]" /> Default Passcode: <code className="bg-[#F7D046] text-[#1E1B4B] px-2 py-0.5 rounded-lg border border-[#1E1B4B] font-mono">admin123</code>
+            <ShieldCheck className="w-3.5 h-3.5 text-[#1E1B4B]" /> Protected Administrative Access Portal
           </div>
         </motion.div>
       </div>
