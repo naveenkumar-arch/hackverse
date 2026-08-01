@@ -11,6 +11,7 @@ export interface ManagedEvent {
   submissionLink: string;
   status: 'UPCOMING' | 'LIVE' | 'COMPLETED';
   liveStartTime: number | null; // epoch timestamp when Admin clicks "Start Event"
+  isRegistrationEnabled: boolean;
   isSubmissionEnabled: boolean;
   winners: {
     firstPlace: string;
@@ -36,6 +37,7 @@ const INITIAL_MANAGED_EVENTS: ManagedEvent[] = [
     submissionLink: 'https://forms.google.com/your-submission-form',
     status: 'UPCOMING',
     liveStartTime: null,
+    isRegistrationEnabled: true,
     isSubmissionEnabled: true,
     winners: null,
     createdAt: new Date().toISOString(),
@@ -66,13 +68,14 @@ export const eventManagementStorage = {
     window.dispatchEvent(new Event('ko_managed_events_updated'));
   },
 
-  addEvent: (eventData: Omit<ManagedEvent, 'id' | 'status' | 'liveStartTime' | 'isSubmissionEnabled' | 'winners' | 'createdAt'>): ManagedEvent => {
+  addEvent: (eventData: Omit<ManagedEvent, 'id' | 'status' | 'liveStartTime' | 'isRegistrationEnabled' | 'isSubmissionEnabled' | 'winners' | 'createdAt'>): ManagedEvent => {
     const events = eventManagementStorage.getEvents();
     const newEvent: ManagedEvent = {
       id: `evt-${Date.now()}`,
       ...eventData,
       status: 'UPCOMING',
       liveStartTime: null,
+      isRegistrationEnabled: true,
       isSubmissionEnabled: false,
       winners: null,
       createdAt: new Date().toISOString(),
@@ -101,6 +104,13 @@ export const eventManagementStorage = {
           }
         : e
     );
+    eventManagementStorage.saveEvents(updated);
+    return updated;
+  },
+
+  toggleRegistrationLink: (id: string, enabled: boolean): ManagedEvent[] => {
+    const events = eventManagementStorage.getEvents();
+    const updated = events.map((e) => (e.id === id ? { ...e, isRegistrationEnabled: enabled } : e));
     eventManagementStorage.saveEvents(updated);
     return updated;
   },

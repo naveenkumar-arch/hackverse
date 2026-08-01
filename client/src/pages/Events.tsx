@@ -112,18 +112,20 @@ export const Events: React.FC = () => {
                 </div>
 
                 {/* Call-to-action Action Buttons */}
-                <div className="p-6 border-t border-slate-100 space-y-3">
-                  {/* Registration Google Form Button */}
-                  <a href={evt.registrationLink} target="_blank" rel="noreferrer" className="block w-full">
-                    <button className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black text-xs shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
-                      <ExternalLink className="w-4 h-4" /> Click here to register (Google Form)
-                    </button>
-                  </a>
+                <div className="p-6 border-t-2 border-[#1E1B4B]/10 space-y-3">
+                  {/* Registration Google Form Button (Field 5 Toggle) */}
+                  {evt.isRegistrationEnabled !== false && evt.registrationLink && (
+                    <a href={evt.registrationLink} target="_blank" rel="noreferrer" className="block w-full">
+                      <button className="w-full py-3.5 rounded-2xl bg-[#FF334B] text-white font-black text-xs border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] hover:shadow-[6px_6px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <ExternalLink className="w-4 h-4" /> Click here to register (Google Form)
+                      </button>
+                    </a>
+                  )}
 
-                  {/* Project Submission Link Toggle Button */}
+                  {/* Project Submission Link Toggle Button (Field 6 Toggle) */}
                   {evt.isSubmissionEnabled && evt.submissionLink && (
                     <a href={evt.submissionLink} target="_blank" rel="noreferrer" className="block w-full">
-                      <button className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 animate-bounce">
+                      <button className="w-full py-3.5 rounded-2xl bg-[#78E29A] text-[#1E1B4B] font-black text-xs border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] hover:shadow-[6px_6px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer animate-pulse">
                         <CheckCircle2 className="w-4 h-4" /> Click this link to submit your project (Google Form)
                       </button>
                     </a>

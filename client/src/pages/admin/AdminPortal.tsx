@@ -131,6 +131,13 @@ export const AdminPortal: React.FC = () => {
     showNotice(`🚀 "${title}" is now LIVE! Countdown timer & LIVE badge active.`);
   };
 
+  const handleToggleRegistration = (eventId: string, currentStatus: boolean) => {
+    const isEnabled = currentStatus !== false;
+    eventManagementStorage.toggleRegistrationLink(eventId, !isEnabled);
+    refreshEvents();
+    showNotice(`Registration Form button is now ${!isEnabled ? 'ENABLED' : 'DISABLED'}.`);
+  };
+
   const handleToggleSubmission = (eventId: string, currentStatus: boolean) => {
     eventManagementStorage.toggleSubmissionLink(eventId, !currentStatus);
     refreshEvents();
@@ -494,29 +501,52 @@ export const AdminPortal: React.FC = () => {
                   </div>
 
                   {/* Toggle Controls & Form Links Bar */}
-                  <div className="p-4 rounded-2xl bg-white border-2 border-[#1E1B4B] flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
-                    <div className="flex flex-wrap gap-4 font-bold text-[#1E1B4B]">
-                      <span>
-                        <strong className="text-[#FF334B]">Reg Google Form:</strong>{' '}
-                        <a href={evt.registrationLink} target="_blank" rel="noreferrer" className="underline font-mono text-[#1E1B4B]">
+                  <div className="p-4 rounded-2xl bg-white border-2 border-[#1E1B4B] space-y-3 text-xs">
+                    {/* Row 1: Registration Form (Field 5) */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+                      <div className="flex flex-wrap items-center gap-2 font-bold text-[#1E1B4B]">
+                        <span className="text-xs font-black uppercase text-[#FF334B]">5. Reg Google Form:</span>
+                        <a href={evt.registrationLink} target="_blank" rel="noreferrer" className="underline font-mono text-[#1E1B4B] truncate max-w-xs sm:max-w-md">
                           {evt.registrationLink} <ExternalLink className="w-3 h-3 inline" />
                         </a>
-                      </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleToggleRegistration(evt.id, evt.isRegistrationEnabled !== false)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B] ${
+                          evt.isRegistrationEnabled !== false
+                            ? 'bg-[#5CE1E6] text-[#1E1B4B]'
+                            : 'bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {evt.isRegistrationEnabled !== false ? <ToggleRight className="w-4 h-4 text-[#1E1B4B]" /> : <ToggleLeft className="w-4 h-4 text-slate-500" />}
+                        Registration Toggle: {evt.isRegistrationEnabled !== false ? 'ENABLED' : 'DISABLED'}
+                      </button>
                     </div>
 
-                    {/* Submission Link Toggle Control */}
-                    <button
-                      type="button"
-                      onClick={() => handleToggleSubmission(evt.id, evt.isSubmissionEnabled)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B] ${
-                        evt.isSubmissionEnabled
-                          ? 'bg-[#78E29A] text-[#1E1B4B]'
-                          : 'bg-slate-200 text-slate-700'
-                      }`}
-                    >
-                      {evt.isSubmissionEnabled ? <ToggleRight className="w-4 h-4 text-[#1E1B4B]" /> : <ToggleLeft className="w-4 h-4 text-slate-500" />}
-                      Project Submission Toggle: {evt.isSubmissionEnabled ? 'ENABLED' : 'DISABLED'}
-                    </button>
+                    {/* Row 2: Submission Form (Field 6) */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 border-t-2 border-[#1E1B4B]/10">
+                      <div className="flex flex-wrap items-center gap-2 font-bold text-[#1E1B4B]">
+                        <span className="text-xs font-black uppercase text-[#78E29A]">6. Submission Google Form:</span>
+                        <a href={evt.submissionLink} target="_blank" rel="noreferrer" className="underline font-mono text-[#1E1B4B] truncate max-w-xs sm:max-w-md">
+                          {evt.submissionLink} <ExternalLink className="w-3 h-3 inline" />
+                        </a>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleToggleSubmission(evt.id, evt.isSubmissionEnabled)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B] ${
+                          evt.isSubmissionEnabled
+                            ? 'bg-[#78E29A] text-[#1E1B4B]'
+                            : 'bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {evt.isSubmissionEnabled ? <ToggleRight className="w-4 h-4 text-[#1E1B4B]" /> : <ToggleLeft className="w-4 h-4 text-slate-500" />}
+                        Project Submission Toggle: {evt.isSubmissionEnabled ? 'ENABLED' : 'DISABLED'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))
