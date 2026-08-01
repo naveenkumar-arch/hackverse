@@ -16,7 +16,7 @@ export const Results: React.FC = () => {
       <SectionHeader
         eyebrow="OFFICIAL LEADERBOARDS"
         title="Competition Results & Winners"
-        subtitle="Celebrate outstanding student projects, champion teams, and prize winners across all Kernel Overriders events."
+        subtitle="Celebrate outstanding student projects, champion teams, and prize winners across all HackVerse events."
       />
 
       {completedEvents.length > 0 ? (

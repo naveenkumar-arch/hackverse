@@ -32,7 +32,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose, inv
               <div className="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center font-black">
                 <Sparkles className="w-4 h-4" />
               </div>
-              <span className="text-lg font-black text-slate-900">Kernel Overriders</span>
+              <span className="text-lg font-black text-slate-900">HackVerse</span>
             </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">OFFICIAL PAYMENT INVOICE</p>
           </div>

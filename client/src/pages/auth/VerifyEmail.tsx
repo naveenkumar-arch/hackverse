@@ -14,7 +14,7 @@ export const VerifyEmail: React.FC = () => {
         </div>
         <h2 className="text-3xl font-black text-slate-900">Email Verified!</h2>
         <p className="text-xs text-slate-600 font-medium leading-relaxed">
-          Your student email address has been verified. You now have full access to Kernel Overriders hackathons, team finder tools, and verified digital certificates.
+          Your student email address has been verified. You now have full access to HackVerse hackathons, team finder tools, and verified digital certificates.
         </p>
         <Button variant="primary" onClick={() => navigate('/dashboard')} className="w-full py-3.5">
           Go to Student Dashboard

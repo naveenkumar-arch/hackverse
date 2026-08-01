@@ -29,7 +29,7 @@ export const CertificateVerification: React.FC = () => {
       <SectionHeader
         eyebrow="CREDENTIAL VERIFIER"
         title="Verify Certificate Authenticity"
-        subtitle="Validate digital certificates issued by Kernel Overriders using unique certificate credential IDs."
+        subtitle="Validate digital certificates issued by HackVerse using unique certificate credential IDs."
       />
 
       <div className="glass-card bg-white rounded-3xl p-6 border border-purple-100 shadow-xl max-w-xl mx-auto space-y-4">

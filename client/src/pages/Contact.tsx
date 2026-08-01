@@ -28,8 +28,8 @@ export const Contact: React.FC = () => {
             </div>
             <h4 className="text-lg font-extrabold text-slate-900">Email Us Directly</h4>
             <p className="text-xs text-slate-500 font-medium">For general inquiries & partnerships</p>
-            <a href="mailto:support@kerneloverriders.io" className="text-sm font-bold text-purple-600 hover:underline">
-              support@kerneloverriders.io
+            <a href="mailto:team@hackverse.dev" className="text-sm font-bold text-purple-600 hover:underline">
+              team@hackverse.dev
             </a>
           </div>
 
@@ -50,7 +50,7 @@ export const Contact: React.FC = () => {
             </div>
             <h4 className="text-lg font-extrabold text-slate-900">Headquarters</h4>
             <p className="text-xs text-slate-600 font-medium leading-relaxed">
-              Kernel Overriders <br />
+              HackVerse <br />
               500 Howard Street, Suite 400 <br />
               San Francisco, CA 94105
             </p>

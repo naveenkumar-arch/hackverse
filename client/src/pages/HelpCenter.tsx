@@ -46,7 +46,7 @@ export const HelpCenter: React.FC = () => {
     <div className="space-y-12 py-8">
       <SectionHeader
         eyebrow="KNOWLEDGE BASE"
-        title="Kernel Overriders Help Center"
+        title="HackVerse Help Center"
         subtitle="Search guides, tutorials, and answers to common questions about hackathons and team formation."
       />
 

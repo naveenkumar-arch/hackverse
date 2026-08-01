@@ -63,7 +63,7 @@ export const TeamsAdmin: React.FC = () => {
       <SectionHeader
         eyebrow="ADMINISTRATIVE OVERVIEW"
         title="All Event Teams Directory"
-        subtitle="Global admin control panel listing every registered and active team across Kernel Overriders competitions."
+        subtitle="Global admin control panel listing every registered and active team across HackVerse competitions."
       />
 
       {/* Filter & Search Bar */}

@@ -24,9 +24,9 @@ export const UpiPaymentModal: React.FC<UpiPaymentModalProps> = ({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  const upiId = 'kerneloverriders@upi';
+  const upiId = 'hackverse@upi';
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-    `upi://pay?pa=${upiId}&pn=Kernel%20Overriders&am=${registrationFee}&cu=INR`
+    `upi://pay?pa=${upiId}&pn=HackVerse&am=${registrationFee}&cu=INR`
   )}`;
 
   if (!isOpen) return null;
