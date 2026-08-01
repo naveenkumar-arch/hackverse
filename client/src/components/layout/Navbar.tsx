@@ -20,31 +20,31 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-4 z-50 px-3 sm:px-5 max-w-[1440px] mx-auto mb-6">
-      <div className="bg-[#0D0F1A]/90 backdrop-blur-xl rounded-full px-6 py-3 border border-[#00F0FF]/30 shadow-[0_0_25px_rgba(0,240,255,0.2)] flex items-center justify-between">
+      <div className="bg-white rounded-full px-6 py-3 border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] flex items-center justify-between">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00F0FF] to-[#7209B7] border border-[#00F0FF]/60 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.5)] group-hover:scale-110 transition-transform">
-            <Sparkles className="w-5 h-5 text-white fill-white" />
+          <div className="w-10 h-10 rounded-2xl bg-[#F7D046] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B] group-hover:rotate-6 transition-transform">
+            <Sparkles className="w-5 h-5 text-[#1E1B4B] fill-[#1E1B4B]" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl sm:text-2xl font-display font-black tracking-wider text-gradient-monarch leading-none">
+            <span className="text-xl sm:text-2xl font-black tracking-tight text-gradient-hackverse leading-none">
               Kernel Overriders
             </span>
           </div>
         </Link>
 
         {/* Center Pill Menu Navigation */}
-        <nav className="hidden lg:flex items-center gap-1 bg-[#131525]/90 p-1.5 rounded-full border border-[#00F0FF]/20">
+        <nav className="hidden lg:flex items-center gap-1 bg-slate-100/80 p-1.5 rounded-full border-2 border-[#1E1B4B]">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all uppercase tracking-wider ${
+                className={`px-4 py-1.5 rounded-full text-xs font-black transition-all ${
                   isActive
-                    ? 'bg-[#00F0FF] text-[#090A0F] shadow-[0_0_15px_rgba(0,240,255,0.6)] scale-105'
-                    : 'text-slate-300 hover:text-white hover:bg-white/10'
+                    ? 'bg-[#F7D046] text-[#1E1B4B] border border-[#1E1B4B] shadow-sm scale-105'
+                    : 'text-[#1E1B4B] hover:bg-white/80'
                 }`}
               >
                 {link.label}

@@ -4,126 +4,118 @@
 
 @layer base {
   :root {
-    --background: 240 30% 5%;
-    --foreground: 210 40% 98%;
-    --card: 240 25% 8%;
-    --card-foreground: 210 40% 98%;
-    --popover: 240 25% 8%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 187 100% 50%;
-    --primary-foreground: 240 30% 5%;
-    --secondary: 275 80% 56%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 240 20% 12%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 43 100% 51%;
-    --accent-foreground: 240 30% 5%;
-    --border: 187 100% 50%;
-    --radius: 1rem;
+    --background: 45 40% 97%;
+    --foreground: 240 47% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 47% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 47% 15%;
+    --primary: 351 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 182 72% 63%;
+    --secondary-foreground: 240 47% 15%;
+    --muted: 45 20% 94%;
+    --muted-foreground: 240 10% 45%;
+    --accent: 46 92% 62%;
+    --accent-foreground: 240 47% 15%;
+    --border: 240 47% 15%;
+    --radius: 1.5rem;
   }
 }
 
 body {
-  background-color: #090A0F;
-  color: #F1F5F9;
-  font-family: 'Rajdhani', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  background-color: #FAF7EE;
+  color: #1E1B4B;
+  font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
 h1, h2, h3, .font-display {
-  font-family: 'Orbitron', 'Cinzel', sans-serif;
-  letter-spacing: 0.05em;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Solo Leveling Monarch System HUD Cards */
-.system-hud-card {
-  background: rgba(13, 15, 26, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1.5px solid rgba(0, 240, 255, 0.35);
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.15), inset 0 0 15px rgba(0, 240, 255, 0.05);
-  border-radius: 1.25rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* Neo-Pop & Soft Brutalist Cards & Shadows (Exact match to Lovable HackVerse) */
+.neo-card {
+  background-color: #FFFFFF;
+  border: 2px solid #1E1B4B;
+  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border-radius: 1.5rem;
 }
 
-.system-hud-card:hover {
-  transform: translateY(-4px);
-  border-color: #00F0FF;
-  box-shadow: 0 0 40px rgba(0, 240, 255, 0.35), inset 0 0 25px rgba(0, 240, 255, 0.1);
+.neo-card-lg {
+  background-color: #FFFFFF;
+  border: 2px solid #1E1B4B;
+  box-shadow: 8px 8px 0px 0px #1E1B4B;
+  border-radius: 1.75rem;
 }
 
-.system-hud-card-purple {
-  background: rgba(20, 12, 36, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1.5px solid rgba(157, 78, 221, 0.4);
-  box-shadow: 0 0 25px rgba(157, 78, 221, 0.2), inset 0 0 15px rgba(157, 78, 221, 0.08);
-  border-radius: 1.25rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.neo-card-yellow {
+  background-color: #F7D046;
+  border: 2px solid #1E1B4B;
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  border-radius: 1.75rem;
 }
 
-.system-hud-card-purple:hover {
-  transform: translateY(-4px);
-  border-color: #9D4EDD;
-  box-shadow: 0 0 40px rgba(157, 78, 221, 0.45), inset 0 0 25px rgba(157, 78, 221, 0.15);
+.neo-card-cyan {
+  background-color: #5CE1E6;
+  border: 2px solid #1E1B4B;
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  border-radius: 1.75rem;
 }
 
-/* Solo Leveling Monarch Neon Buttons */
-.system-button-cyan {
-  background: linear-gradient(135deg, #00F0FF 0%, #7209B7 100%);
-  color: #090A0F;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  border: 1.5px solid #00F0FF;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-  border-radius: 9999px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.system-button-cyan:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 0 35px rgba(0, 240, 255, 0.7);
-  background: linear-gradient(135deg, #33F3FF 0%, #8A15E2 100%);
-}
-
-.system-button-crimson {
-  background: linear-gradient(135deg, #FF0055 0%, #7209B7 100%);
+.neo-button-primary {
+  background-color: #FF334B;
   color: #FFFFFF;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  border: 1.5px solid #FF0055;
-  box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+  border: 2px solid #1E1B4B;
+  box-shadow: 4px 4px 0px 0px #1E1B4B;
   border-radius: 9999px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-weight: 900;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.system-button-crimson:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 0 35px rgba(255, 0, 85, 0.7);
+.neo-button-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  background-color: #FF243D;
 }
 
-/* Solo Leveling Monarch Glowing Text Gradients */
-.text-gradient-monarch {
-  background: linear-gradient(135deg, #00F0FF 0%, #9D4EDD 50%, #FF0055 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.5));
+.neo-button-secondary {
+  background-color: #5CE1E6;
+  color: #1E1B4B;
+  border: 2px solid #1E1B4B;
+  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border-radius: 9999px;
+  font-weight: 900;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.text-gradient-cyan {
-  background: linear-gradient(135deg, #00F0FF 0%, #70A6FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.4));
+.neo-button-secondary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  background-color: #4BD5DA;
 }
 
-.text-gradient-gold {
-  background: linear-gradient(135deg, #FFD600 0%, #FF9900 100%);
+.neo-button-yellow {
+  background-color: #F7D046;
+  color: #1E1B4B;
+  border: 2px solid #1E1B4B;
+  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border-radius: 9999px;
+  font-weight: 900;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-button-yellow:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  background-color: #F5C82A;
+}
+
+/* Gradient Text for Brand Title (HackVerse / Kernel Overriders) */
+.text-gradient-hackverse {
+  background: linear-gradient(90deg, #FF4E88 0%, #00A3FF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 15px rgba(255, 214, 0, 0.4));
 }
 
 /* Marquee infinite scroll animation */
@@ -134,32 +126,32 @@ h1, h2, h3, .font-display {
 
 .animate-marquee {
   display: inline-flex;
-  animation: marquee 20s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
 }
 
-/* Ambient Monarch Portal Glow Blobs */
-.glow-blob-monarch-left {
+/* Ambient glow background blobs */
+.glow-blob-cream-top {
   position: absolute;
-  top: -150px;
-  left: -150px;
-  width: 750px;
-  height: 750px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.22) 0%, rgba(114, 9, 183, 0.18) 40%, rgba(9, 10, 15, 0) 70%);
-  filter: blur(80px);
+  top: -100px;
+  left: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(253, 224, 71, 0.25) 0%, rgba(254, 205, 211, 0.2) 50%, rgba(250, 247, 238, 0) 70%);
+  filter: blur(50px);
   pointer-events: none;
 }
 
-.glow-blob-monarch-right {
+.glow-blob-cyan-right {
   position: absolute;
   top: 100px;
-  right: -150px;
-  width: 750px;
-  height: 750px;
-  background: radial-gradient(circle, rgba(157, 78, 221, 0.25) 0%, rgba(255, 0, 85, 0.18) 40%, rgba(9, 10, 15, 0) 70%);
-  filter: blur(80px);
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(92, 225, 230, 0.25) 0%, rgba(192, 132, 252, 0.2) 50%, rgba(250, 247, 238, 0) 70%);
+  filter: blur(50px);
   pointer-events: none;
 }
