@@ -105,9 +105,11 @@ export const AdminPortal: React.FC = () => {
       startTime: eventForm.startTime,
       endTime: eventForm.endTime,
       durationHours: Number(eventForm.durationHours) || 24,
+      prizePool: (eventForm as any).prizePool || '',
+      teamSize: (eventForm as any).teamSize || '',
       registrationLink: eventForm.registrationLink,
       submissionLink: '',
-    });
+    } as any);
 
     setEventForm({
       title: '',
@@ -119,7 +121,7 @@ export const AdminPortal: React.FC = () => {
       durationHours: 24,
       registrationLink: '',
       submissionLink: '',
-    });
+    } as any);
 
     refreshEvents();
     showNotice(`🎉 Event "${eventForm.title}" created successfully and published!`);
@@ -391,8 +393,32 @@ export const AdminPortal: React.FC = () => {
               </div>
             </div>
 
+            {/* Prize Pool & Team Size */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-1 font-extrabold text-[#1E1B4B]">5. Prize Pool</label>
+                <input
+                  type="text"
+                  placeholder="e.g. ₹1,50,000 pool"
+                  value={(eventForm as any).prizePool || ''}
+                  onChange={(e) => setEventForm({ ...eventForm, prizePool: e.target.value } as any)}
+                  className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold text-sm"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 font-extrabold text-[#1E1B4B]">6. Team Size</label>
+                <input
+                  type="text"
+                  placeholder="e.g. 2 – 4 members"
+                  value={(eventForm as any).teamSize || ''}
+                  onChange={(e) => setEventForm({ ...eventForm, teamSize: e.target.value } as any)}
+                  className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold text-sm"
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block mb-1 font-extrabold text-[#1E1B4B]">5. Registration Google Form URL *</label>
+              <label className="block mb-1 font-extrabold text-[#1E1B4B]">7. Registration Google Form URL *</label>
               <input
                 type="url"
                 required

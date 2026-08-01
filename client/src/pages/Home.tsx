@@ -148,14 +148,20 @@ export const Home: React.FC = () => {
                 </div>
 
                 {/* Tags Row */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <span className="px-3 py-1.5 rounded-full bg-[#F7D046] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
-                    ₹1,50,000 pool
-                  </span>
-                  <span className="px-3 py-1.5 rounded-full bg-[#5CE1E6] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
-                    2 – 4 members
-                  </span>
-                </div>
+                {(featuredEvent.prizePool || featuredEvent.teamSize) && (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {featuredEvent.prizePool && (
+                      <span className="px-3 py-1.5 rounded-full bg-[#F7D046] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
+                        {featuredEvent.prizePool}
+                      </span>
+                    )}
+                    {featuredEvent.teamSize && (
+                      <span className="px-3 py-1.5 rounded-full bg-[#5CE1E6] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
+                        {featuredEvent.teamSize}
+                      </span>
+                    )}
+                  </div>
+                )}
 
                 {/* Spotlight CTA Button based on status */}
                 {featuredEvent.status === 'COMPLETED' ? (

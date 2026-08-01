@@ -7,6 +7,8 @@ export interface ManagedEvent {
   startTime: string;
   endTime: string;
   durationHours: number;
+  prizePool?: string;
+  teamSize?: string;
   registrationLink: string;
   submissionLink: string;
   status: 'UPCOMING' | 'LIVE' | 'COMPLETED';
@@ -33,6 +35,8 @@ const INITIAL_MANAGED_EVENTS: ManagedEvent[] = [
     startTime: '09:00',
     endTime: '18:00',
     durationHours: 24,
+    prizePool: '₹1,50,000 pool',
+    teamSize: '2 – 4 members',
     registrationLink: 'https://forms.google.com/your-registration-form',
     submissionLink: 'https://forms.google.com/your-submission-form',
     status: 'UPCOMING',
