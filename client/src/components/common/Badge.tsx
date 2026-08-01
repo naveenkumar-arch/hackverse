@@ -12,12 +12,12 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
 }) => {
   const variants = {
-    green: 'bg-[#78E29A] text-[#1E1B4B] border-2 border-[#1E1B4B]',
-    purple: 'bg-[#C084FC] text-[#1E1B4B] border-2 border-[#1E1B4B]',
-    pink: 'bg-[#FF70A6] text-[#1E1B4B] border-2 border-[#1E1B4B]',
-    yellow: 'bg-[#F7D046] text-[#1E1B4B] border-2 border-[#1E1B4B]',
-    blue: 'bg-[#5CE1E6] text-[#1E1B4B] border-2 border-[#1E1B4B]',
-    outline: 'bg-white text-[#1E1B4B] border-2 border-[#1E1B4B]',
+    green: 'bg-[#00E676] text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
+    purple: 'bg-[#A855F7] text-white border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
+    pink: 'bg-[#FF2D55] text-white border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
+    yellow: 'bg-[#FFE600] text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
+    blue: 'bg-[#00F0FF] text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
+    outline: 'bg-white text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38]',
   };
 
   return (

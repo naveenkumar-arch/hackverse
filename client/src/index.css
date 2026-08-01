@@ -10,13 +10,13 @@
     --card-foreground: 240 47% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 47% 15%;
-    --primary: 351 100% 60%;
+    --primary: 348 100% 58%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 182 72% 63%;
+    --secondary: 182 100% 50%;
     --secondary-foreground: 240 47% 15%;
     --muted: 45 20% 94%;
     --muted-foreground: 240 10% 45%;
-    --accent: 46 92% 62%;
+    --accent: 54 100% 50%;
     --accent-foreground: 240 47% 15%;
     --border: 240 47% 15%;
     --radius: 1.5rem;
@@ -25,87 +25,131 @@
 
 body {
   background-color: #FAF7EE;
-  color: #1E1B4B;
+  color: #120E38;
   font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
-/* Neo-Pop & Soft Brutalist Cards & Shadows (Exact match to Lovable HackVerse) */
+/* 3D Neo-Brutalist Tactile Cards & Shadows */
 .neo-card {
   background-color: #FFFFFF;
-  border: 2px solid #1E1B4B;
-  box-shadow: 4px 4px 0px 0px #1E1B4B;
+  border: 2.5px solid #120E38;
+  box-shadow: 6px 6px 0px 0px #120E38;
   border-radius: 1.5rem;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 8px 8px 0px 0px #120E38;
 }
 
 .neo-card-lg {
   background-color: #FFFFFF;
-  border: 2px solid #1E1B4B;
-  box-shadow: 6px 6px 0px 0px #1E1B4B;
+  border: 3px solid #120E38;
+  box-shadow: 8px 8px 0px 0px #120E38;
   border-radius: 1.75rem;
 }
 
 .neo-card-yellow {
-  background-color: #F7D046;
-  border: 2px solid #1E1B4B;
-  box-shadow: 5px 5px 0px 0px #1E1B4B;
+  background-color: #FFE600;
+  border: 3px solid #120E38;
+  box-shadow: 6px 6px 0px 0px #120E38;
   border-radius: 1.75rem;
 }
 
 .neo-card-cyan {
-  background-color: #5CE1E6;
-  border: 2px solid #1E1B4B;
-  box-shadow: 5px 5px 0px 0px #1E1B4B;
+  background-color: #00F0FF;
+  border: 3px solid #120E38;
+  box-shadow: 6px 6px 0px 0px #120E38;
   border-radius: 1.75rem;
 }
 
+/* 3D Tactile Interactive Buttons */
 .neo-button-primary {
-  background-color: #FF334B;
+  background-color: #FF2D55;
   color: #FFFFFF;
-  border: 2px solid #1E1B4B;
-  box-shadow: 4px 4px 0px 0px #1E1B4B;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 2.5px solid #120E38;
+  box-shadow: 4px 4px 0px 0px #120E38;
+  border-radius: 9999px;
+  font-weight: 900;
+  transition: all 0.15s ease-in-out;
 }
 
 .neo-button-primary:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #1E1B4B;
-  background-color: #FF243D;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #120E38;
+  background-color: #FF0033;
+}
+
+.neo-button-primary:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px 0px #120E38;
 }
 
 .neo-button-secondary {
-  background-color: #5CE1E6;
-  color: #1E1B4B;
-  border: 2px solid #1E1B4B;
-  box-shadow: 4px 4px 0px 0px #1E1B4B;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #00F0FF;
+  color: #120E38;
+  border: 2.5px solid #120E38;
+  box-shadow: 4px 4px 0px 0px #120E38;
+  border-radius: 9999px;
+  font-weight: 900;
+  transition: all 0.15s ease-in-out;
 }
 
 .neo-button-secondary:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #1E1B4B;
-  background-color: #4BD5DA;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #120E38;
+  background-color: #00E5FF;
+}
+
+.neo-button-secondary:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px 0px #120E38;
 }
 
 .neo-button-yellow {
-  background-color: #F7D046;
-  color: #1E1B4B;
-  border: 2px solid #1E1B4B;
-  box-shadow: 4px 4px 0px 0px #1E1B4B;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #FFE600;
+  color: #120E38;
+  border: 2.5px solid #120E38;
+  box-shadow: 4px 4px 0px 0px #120E38;
+  border-radius: 9999px;
+  font-weight: 900;
+  transition: all 0.15s ease-in-out;
 }
 
 .neo-button-yellow:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #1E1B4B;
-  background-color: #F5C82A;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #120E38;
+  background-color: #FFD600;
 }
 
-/* Gradient Text for Brand Title (HackVerse) */
+.neo-button-yellow:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px 0px #120E38;
+}
+
+/* Vibrant 3D Text Gradient */
 .text-gradient-hackverse {
-  background: linear-gradient(90deg, #FF4E88 0%, #00A3FF 100%);
+  background: linear-gradient(135deg, #FF0055 0%, #7C3AED 50%, #00F0FF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(2px 2px 0px #120E38);
+}
+
+/* Marquee infinite scroll animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 /* Ambient glow background blobs */
@@ -115,19 +159,18 @@ body {
   left: -100px;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(253, 224, 71, 0.25) 0%, rgba(254, 205, 211, 0.2) 50%, rgba(250, 247, 238, 0) 70%);
-  filter: blur(50px);
+  background: radial-gradient(circle, rgba(255, 230, 0, 0.3) 0%, rgba(255, 45, 85, 0.25) 50%, rgba(250, 247, 238, 0) 70%);
+  filter: blur(60px);
   pointer-events: none;
 }
 
 .glow-blob-cyan-right {
   position: absolute;
-  top: 150px;
+  top: 100px;
   right: -100px;
-  width: 550px;
-  height: 550px;
-  background: radial-gradient(circle, rgba(92, 225, 230, 0.25) 0%, rgba(147, 197, 253, 0.2) 50%, rgba(250, 247, 238, 0) 70%);
-  filter: blur(50px);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.3) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(250, 247, 238, 0) 70%);
+  filter: blur(60px);
   pointer-events: none;
 }
-

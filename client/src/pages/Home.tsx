@@ -194,8 +194,8 @@ export const Home: React.FC = () => {
       </section>
 
       {/* MARQUEE TICKER BAR */}
-      <section className="bg-[#F7D046] border-2 border-[#1E1B4B] rounded-2xl py-3.5 shadow-[4px_4px_0px_0px_#1E1B4B] overflow-hidden whitespace-nowrap">
-        <div className="inline-flex gap-8 text-sm font-black uppercase tracking-wider text-[#1E1B4B] animate-marquee">
+      <section className="bg-[#FFE600] border-3 border-[#120E38] rounded-2xl py-4 shadow-[6px_6px_0px_0px_#120E38] overflow-hidden whitespace-nowrap">
+        <div className="inline-flex gap-8 text-sm sm:text-base font-black uppercase tracking-wider text-[#120E38] animate-marquee">
           <span>★ Hackathons</span>
           <span>★ CTFs</span>
           <span>★ Workshops</span>
@@ -212,40 +212,40 @@ export const Home: React.FC = () => {
       </section>
 
       {/* STATS CARDS GRID */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         {[
           { label: 'Community members', val: '12k+' },
           { label: 'Events hosted', val: '48' },
           { label: 'Projects shipped', val: '310' },
           { label: 'Prizes awarded', val: '₹9L+' },
         ].map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-3xl border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] text-center space-y-1">
+          <div key={i} className="bg-white p-6 rounded-3xl border-3 border-[#120E38] shadow-[6px_6px_0px_0px_#120E38] hover:shadow-[8px_8px_0px_0px_#120E38] hover:-translate-y-1 transition-all text-center space-y-1">
             <div className="text-3xl sm:text-4xl font-black text-gradient-hackverse">{stat.val}</div>
-            <div className="text-xs font-bold text-slate-600">{stat.label}</div>
+            <div className="text-xs font-extrabold text-[#120E38]">{stat.label}</div>
           </div>
         ))}
       </section>
 
       {/* MISSION & VISION CARDS GRID */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Mission Card (Yellow) */}
-        <div className="bg-[#F7D046] p-8 rounded-3xl border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-white border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
-            <Code2 className="w-6 h-6 text-[#1E1B4B]" />
+        {/* Mission Card (Electric Yellow) */}
+        <div className="bg-[#FFE600] p-8 sm:p-10 rounded-3xl border-3 border-[#120E38] shadow-[8px_8px_0px_0px_#120E38] space-y-4">
+          <div className="w-14 h-14 rounded-2xl bg-white border-2 border-[#120E38] flex items-center justify-center shadow-[3px_3px_0px_0px_#120E38]">
+            <Code2 className="w-7 h-7 text-[#120E38]" />
           </div>
-          <h3 className="text-3xl font-black text-[#1E1B4B]">Our mission</h3>
-          <p className="text-sm font-bold text-[#1E1B4B]/90 leading-relaxed">
+          <h3 className="text-3xl font-black text-[#120E38]">Our mission</h3>
+          <p className="text-sm font-extrabold text-[#120E38] leading-relaxed">
             Give every student a place to build in public — free events, honest feedback, and peers who care about craft.
           </p>
         </div>
 
-        {/* Vision Card (Aqua) */}
-        <div className="bg-[#5CE1E6] p-8 rounded-3xl border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-white border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
-            <Rocket className="w-6 h-6 text-[#1E1B4B]" />
+        {/* Vision Card (Electric Cyan) */}
+        <div className="bg-[#00F0FF] p-8 sm:p-10 rounded-3xl border-3 border-[#120E38] shadow-[8px_8px_0px_0px_#120E38] space-y-4">
+          <div className="w-14 h-14 rounded-2xl bg-white border-2 border-[#120E38] flex items-center justify-center shadow-[3px_3px_0px_0px_#120E38]">
+            <Rocket className="w-7 h-7 text-[#120E38]" />
           </div>
-          <h3 className="text-3xl font-black text-[#1E1B4B]">Our vision</h3>
-          <p className="text-sm font-bold text-[#1E1B4B]/90 leading-relaxed">
+          <h3 className="text-3xl font-black text-[#120E38]">Our vision</h3>
+          <p className="text-sm font-extrabold text-[#120E38] leading-relaxed">
             The most trusted independent student tech community in the country, running events that campuses copy.
           </p>
         </div>

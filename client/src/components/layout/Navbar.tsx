@@ -23,8 +23,8 @@ export const Navbar: React.FC = () => {
       <div className="bg-white rounded-full px-6 py-3 border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] flex items-center justify-between">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-2xl bg-[#F7D046] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B] group-hover:rotate-6 transition-transform">
-            <Sparkles className="w-5 h-5 text-[#1E1B4B]" />
+          <div className="w-10 h-10 rounded-2xl bg-[#FFE600] border-2 border-[#120E38] flex items-center justify-center shadow-[3px_3px_0px_0px_#120E38] group-hover:rotate-12 transition-transform">
+            <Sparkles className="w-5 h-5 text-[#120E38] fill-[#120E38]" />
           </div>
           <div className="flex flex-col">
             <span className="text-xl sm:text-2xl font-black tracking-tight text-gradient-hackverse leading-none">
@@ -34,7 +34,7 @@ export const Navbar: React.FC = () => {
         </Link>
 
         {/* Center Pill Menu Navigation */}
-        <nav className="hidden lg:flex items-center gap-1 bg-slate-100/80 p-1.5 rounded-full border-2 border-[#1E1B4B]">
+        <nav className="hidden lg:flex items-center gap-1 bg-slate-100/90 p-1.5 rounded-full border-2 border-[#120E38]">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
@@ -43,8 +43,8 @@ export const Navbar: React.FC = () => {
                 to={link.path}
                 className={`px-4 py-1.5 rounded-full text-xs font-black transition-all ${
                   isActive
-                    ? 'bg-[#F7D046] text-[#1E1B4B] border border-[#1E1B4B] shadow-sm scale-105'
-                    : 'text-[#1E1B4B] hover:bg-white/80'
+                    ? 'bg-[#FFE600] text-[#120E38] border-2 border-[#120E38] shadow-[2px_2px_0px_0px_#120E38] scale-105'
+                    : 'text-[#120E38] hover:bg-white'
                 }`}
               >
                 {link.label}
