@@ -22,103 +22,103 @@ export const Contact: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Contact Info Cards */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="glass-card rounded-3xl p-6 border border-white/90 shadow-xl space-y-3">
-            <div className="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center">
-              <Mail className="w-5 h-5" />
+          <div className="bg-white rounded-3xl p-6 border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#F7D046] text-[#1E1B4B] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
+              <Mail className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-extrabold text-slate-900">Email Us Directly</h4>
-            <p className="text-xs text-slate-500 font-medium">For general inquiries & partnerships</p>
-            <a href="mailto:team@hackverse.dev" className="text-sm font-bold text-purple-600 hover:underline">
-              team@hackverse.dev
+            <h4 className="text-xl font-black text-[#1E1B4B]">Email Us Directly</h4>
+            <p className="text-xs text-slate-600 font-bold">For general inquiries & partnerships</p>
+            <a href="mailto:team@kernel-overriders.dev" className="text-sm font-black text-[#FF334B] hover:underline font-mono">
+              team@kernel-overriders.dev
             </a>
           </div>
 
-          <div className="glass-card rounded-3xl p-6 border border-white/90 shadow-xl space-y-3">
-            <div className="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center">
-              <Discord className="w-5 h-5" />
+          <div className="bg-white rounded-3xl p-6 border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#5CE1E6] text-[#1E1B4B] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
+              <Discord className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-extrabold text-slate-900">Join Community Discord</h4>
-            <p className="text-xs text-slate-500 font-medium">24/7 instant chat with 50,000+ student hackers</p>
-            <a href="https://discord.gg" target="_blank" rel="noreferrer" className="text-sm font-bold text-pink-600 hover:underline">
+            <h4 className="text-xl font-black text-[#1E1B4B]">Join Community Discord</h4>
+            <p className="text-xs text-slate-600 font-bold">24/7 instant chat with 12,000+ student hackers</p>
+            <a href="https://discord.gg" target="_blank" rel="noreferrer" className="text-sm font-black text-[#1E1B4B] hover:underline font-mono">
               discord.gg/kernel-overriders
             </a>
           </div>
 
-          <div className="glass-card rounded-3xl p-6 border border-white/90 shadow-xl space-y-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center">
-              <MapPin className="w-5 h-5" />
+          <div className="bg-white rounded-3xl p-6 border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#78E29A] text-[#1E1B4B] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
+              <MapPin className="w-6 h-6" />
             </div>
-            <h4 className="text-lg font-extrabold text-slate-900">Headquarters</h4>
-            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+            <h4 className="text-xl font-black text-[#1E1B4B]">Headquarters</h4>
+            <p className="text-xs text-slate-700 font-bold leading-relaxed">
               Kernel Overriders <br />
-              500 Howard Street, Suite 400 <br />
-              San Francisco, CA 94105
+              Student Tech Collective <br />
+              Silicon Valley / Remote Worldwide
             </p>
           </div>
         </div>
 
         {/* Contact Form */}
         <div className="lg:col-span-7">
-          <div className="glass-card rounded-3xl p-8 sm:p-10 border border-white/90 shadow-2xl space-y-6">
+          <div className="bg-white rounded-3xl p-8 sm:p-10 border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6">
             {!submitted ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <h3 className="text-2xl font-extrabold text-slate-900">Send Us a Message</h3>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <h3 className="text-3xl font-black text-[#1E1B4B]">Send Us a Message</h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">Full Name</label>
+                    <label className="text-xs font-black text-[#1E1B4B] block mb-1">Full Name *</label>
                     <input
-                      required
                       type="text"
-                      placeholder="Alex Rivera"
-                      className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                      required
+                      placeholder="Jane Doe"
+                      className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold text-xs focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">Email Address</label>
+                    <label className="text-xs font-black text-[#1E1B4B] block mb-1">Email Address *</label>
                     <input
-                      required
                       type="email"
-                      placeholder="alex@university.edu"
-                      className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                      required
+                      placeholder="jane@university.edu"
+                      className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold text-xs focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Subject</label>
+                  <label className="text-xs font-black text-[#1E1B4B] block mb-1">Subject *</label>
                   <input
-                    required
                     type="text"
-                    placeholder="Sponsorship / University Partnership"
-                    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                    required
+                    placeholder="Event Partnership / University Hackathon Sponsorship"
+                    className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold text-xs focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Message</label>
+                  <label className="text-xs font-black text-[#1E1B4B] block mb-1">Message *</label>
                   <textarea
                     required
                     rows={4}
-                    placeholder="How can we help you?"
-                    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                    placeholder="Tell us about your university community or question..."
+                    className="w-full px-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] font-bold text-xs focus:outline-none"
                   />
                 </div>
 
-                <Button variant="primary" type="submit" size="lg" className="w-full gap-2 py-3.5">
-                  <Send className="w-4 h-4" /> Send Message
+                <Button variant="primary" type="submit" className="w-full py-4 text-xs font-black cursor-pointer">
+                  Send Message
                 </Button>
               </form>
             ) : (
-              <div className="text-center py-8 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+              <div className="py-12 text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-[#78E29A] text-[#1E1B4B] border-2 border-[#1E1B4B] flex items-center justify-center mx-auto shadow-[3px_3px_0px_0px_#1E1B4B]">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-black text-slate-900">Message Received!</h3>
-                <p className="text-xs text-slate-600 font-medium max-w-sm mx-auto">
-                  Thank you for reaching out. Our support team will get back to you within 24 hours.
+                <h3 className="text-2xl font-black text-[#1E1B4B]">Message Delivered!</h3>
+                <p className="text-xs text-slate-700 font-bold max-w-sm mx-auto">
+                  Thank you for reaching out. A Kernel Overriders organizer will get back to you within 24 hours.
                 </p>
-                <Button variant="secondary" onClick={() => setSubmitted(false)}>
+                <Button variant="secondary" onClick={() => setSubmitted(false)} className="text-xs font-black cursor-pointer">
                   Send Another Message
                 </Button>
               </div>

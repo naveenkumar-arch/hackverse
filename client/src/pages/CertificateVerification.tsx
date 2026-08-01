@@ -32,7 +32,7 @@ export const CertificateVerification: React.FC = () => {
         subtitle="Validate digital certificates issued by Kernel Overriders using unique certificate credential IDs."
       />
 
-      <div className="glass-card bg-white rounded-3xl p-6 border border-purple-100 shadow-xl max-w-xl mx-auto space-y-4">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] max-w-xl mx-auto space-y-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -41,16 +41,16 @@ export const CertificateVerification: React.FC = () => {
           className="flex flex-col sm:flex-row gap-3"
         >
           <div className="relative flex-grow">
-            <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Enter Certificate ID (e.g. HV-2026-AI-8921)..."
+              placeholder="Enter Certificate ID (e.g. KO-2026-AI-8921)..."
               value={searchId}
               onChange={(e) => setSearchId(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-mono font-bold uppercase focus:outline-none focus:border-purple-500"
+              className="w-full pl-11 pr-4 py-3 bg-[#FAF7EE] text-[#1E1B4B] rounded-2xl border-2 border-[#1E1B4B] text-xs font-mono font-bold uppercase focus:outline-none"
             />
           </div>
-          <Button variant="primary" type="submit" disabled={loading} className="py-3 text-xs font-black">
+          <Button variant="primary" type="submit" disabled={loading} className="py-3 text-xs font-black cursor-pointer">
             {loading ? 'Verifying...' : 'Verify Credential'}
           </Button>
         </form>
@@ -59,7 +59,7 @@ export const CertificateVerification: React.FC = () => {
       {searched && (
         <div className="max-w-2xl mx-auto">
           {certData ? (
-            <div className="glass-card bg-white rounded-3xl p-8 border border-purple-100 shadow-2xl space-y-6">
+            <div className="bg-white rounded-3xl p-8 border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6">
               <div className="flex justify-between items-center border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-6 h-6 text-emerald-600" />
