@@ -109,11 +109,11 @@ export const StudentManagementTab: React.FC = () => {
   };
 
   return (
-    <div className="glass-card bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-xl space-y-6">
+    <div className="glass-card bg-slate-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-purple-500/20 shadow-2xl space-y-6 text-slate-100">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h3 className="text-xl font-black text-slate-900">Student Registrations & Approval Queue</h3>
-          <p className="text-xs text-slate-500 font-medium">
+          <h3 className="text-xl font-black text-white">Student Registrations & Approval Queue</h3>
+          <p className="text-xs text-slate-400 font-medium">
             Review, verify, and approve participant student accounts submitted via event registration forms.
           </p>
         </div>
@@ -136,16 +136,16 @@ export const StudentManagementTab: React.FC = () => {
             placeholder="Search student by name, email, college, or event..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-11 pr-4 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-2xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-purple-500"
+            className="w-full pl-11 pr-4 py-2.5 bg-slate-950/80 text-white placeholder-slate-400 rounded-2xl border border-slate-700/80 text-xs font-semibold focus:outline-none focus:border-purple-500"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-purple-600" />
+          <Filter className="w-4 h-4 text-cyan-400" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white border border-slate-200 text-xs font-bold text-slate-700 rounded-2xl px-4 py-2.5 focus:outline-none focus:border-purple-500"
+            className="bg-slate-950/80 border border-slate-700/80 text-xs font-bold text-slate-200 rounded-2xl px-4 py-2.5 focus:outline-none focus:border-purple-500"
           >
             <option value="ALL">All Statuses ({students.length})</option>
             <option value="PENDING">Pending Approval</option>
@@ -158,8 +158,8 @@ export const StudentManagementTab: React.FC = () => {
 
       {/* Student List Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs text-slate-700">
-          <thead className="bg-purple-50 text-purple-900 font-black uppercase tracking-wider">
+        <table className="w-full text-left text-xs text-slate-200">
+          <thead className="bg-purple-950/40 text-purple-200 font-black uppercase tracking-wider border-b border-purple-900/30">
             <tr>
               <th className="p-3.5 rounded-l-2xl">Student Info</th>
               <th className="p-3.5">College & Dept</th>
@@ -169,21 +169,21 @@ export const StudentManagementTab: React.FC = () => {
               <th className="p-3.5 rounded-r-2xl">Admin Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 font-semibold">
+          <tbody className="divide-y divide-slate-800 font-semibold">
             {filteredStudents.length > 0 ? (
               filteredStudents.map((st) => (
-                <tr key={st.id} className="hover:bg-purple-50/30 transition-colors">
+                <tr key={st.id} className="hover:bg-purple-950/30 transition-colors">
                   <td className="p-3.5">
-                    <p className="font-extrabold text-slate-900 text-sm">{st.fullName}</p>
+                    <p className="font-extrabold text-white text-sm">{st.fullName}</p>
                     <p className="text-slate-400">{st.email}</p>
                     <p className="text-[10px] text-slate-400">{st.phone}</p>
                   </td>
                   <td className="p-3.5">
-                    <p className="font-bold text-slate-800">{st.college}</p>
-                    <p className="text-[10px] text-slate-500">{st.department} ({st.year})</p>
+                    <p className="font-bold text-slate-200">{st.college}</p>
+                    <p className="text-[10px] text-slate-400">{st.department} ({st.year})</p>
                   </td>
-                  <td className="p-3.5 font-bold text-purple-700">{st.eventName}</td>
-                  <td className="p-3.5 font-bold text-slate-800">{st.teamName || 'Solo'}</td>
+                  <td className="p-3.5 font-bold text-cyan-400">{st.eventName}</td>
+                  <td className="p-3.5 font-bold text-slate-300">{st.teamName || 'Solo'}</td>
                   <td className="p-3.5">{getStatusBadge(st.approvalStatus)}</td>
                   <td className="p-3.5">
                     <div className="flex flex-wrap gap-1.5">
@@ -201,7 +201,7 @@ export const StudentManagementTab: React.FC = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handleUpdateStatus(st.id, 'REJECTED')}
-                            className="text-[10px] py-1 px-2.5 text-rose-600 border-rose-200 hover:bg-rose-50"
+                            className="text-[10px] py-1 px-2.5 text-rose-400 border-rose-500/40 hover:bg-rose-950/30"
                           >
                             <XCircle className="w-3 h-3 mr-1" /> Reject
                           </Button>
@@ -212,7 +212,7 @@ export const StudentManagementTab: React.FC = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => handleUpdateStatus(st.id, 'SUSPENDED')}
-                          className="text-[10px] py-1 px-2.5 text-purple-700 border-purple-200 hover:bg-purple-50"
+                          className="text-[10px] py-1 px-2.5 text-purple-300 border-purple-500/40 hover:bg-purple-950/30"
                         >
                           <ShieldAlert className="w-3 h-3 mr-1" /> Suspend
                         </Button>
@@ -241,7 +241,7 @@ export const StudentManagementTab: React.FC = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => setSelectedStudent(st)}
-                        className="text-[10px] py-1 px-2 text-slate-500"
+                        className="text-[10px] py-1 px-2 text-slate-400 hover:text-white"
                       >
                         <Eye className="w-3.5 h-3.5" />
                       </Button>
@@ -262,13 +262,13 @@ export const StudentManagementTab: React.FC = () => {
 
       {/* Student Details Modal */}
       {selectedStudent && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="glass-card bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-purple-100 shadow-2xl space-y-4">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-              <h3 className="text-xl font-black text-slate-900">{selectedStudent.fullName}</h3>
-              <button onClick={() => setSelectedStudent(null)} className="text-slate-400 hover:text-slate-600 font-black">✕</button>
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4">
+          <div className="glass-card bg-slate-900/90 rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-purple-500/30 shadow-2xl space-y-4 text-slate-100">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <h3 className="text-xl font-black text-white">{selectedStudent.fullName}</h3>
+              <button onClick={() => setSelectedStudent(null)} className="text-slate-400 hover:text-white font-black">✕</button>
             </div>
-            <div className="space-y-2 text-xs font-semibold text-slate-700">
+            <div className="space-y-2 text-xs font-semibold text-slate-300">
               <p><span className="text-slate-400">Email:</span> {selectedStudent.email}</p>
               <p><span className="text-slate-400">Phone:</span> {selectedStudent.phone}</p>
               <p><span className="text-slate-400">College:</span> {selectedStudent.college}</p>

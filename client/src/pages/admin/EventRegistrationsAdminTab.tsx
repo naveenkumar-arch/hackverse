@@ -76,7 +76,7 @@ export const EventRegistrationsAdminTab: React.FC = () => {
   });
 
   return (
-    <div className="glass-card bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-xl space-y-6">
+    <div className="glass-card bg-slate-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-purple-500/20 shadow-2xl space-y-6 text-slate-100">
       {notice && (
         <div className="p-4 rounded-2xl bg-emerald-600 text-white font-extrabold text-xs text-center shadow-lg animate-pulse">
           {notice}
@@ -86,10 +86,10 @@ export const EventRegistrationsAdminTab: React.FC = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-xl font-black text-slate-900">Event Registrations & Team Roster Ledger</h3>
+            <h3 className="text-xl font-black text-white">Event Registrations & Team Roster Ledger</h3>
             <Badge variant="purple">{registrations.length} Total Records</Badge>
           </div>
-          <p className="text-xs text-slate-500 font-medium">
+          <p className="text-xs text-slate-400 font-medium">
             Verify, edit, update, or purge duplicate team registrations submitted through the customer portal.
           </p>
         </div>
@@ -99,92 +99,88 @@ export const EventRegistrationsAdminTab: React.FC = () => {
             variant="outline"
             size="sm"
             onClick={handlePurgeDuplicates}
-            className="gap-1.5 text-xs text-purple-700 border-purple-200 hover:bg-purple-50"
+            className="gap-1.5 text-xs text-amber-300 border-amber-500/40 hover:bg-amber-950/30"
           >
-            <RefreshCw className="w-3.5 h-3.5" /> Purge Duplicate Records
+            <RefreshCw className="w-3.5 h-3.5" /> Purge Duplicates
           </Button>
+
           <Button
             variant="secondary"
             size="sm"
             onClick={() => exportToCsv('event_registrations_ledger', filteredRegistrations)}
             className="gap-2 text-xs"
           >
-            <Download className="w-4 h-4" /> Export CSV Ledger
+            <Download className="w-4 h-4" /> Export CSV
           </Button>
         </div>
       </div>
 
       {/* Search Bar */}
-      <div className="relative">
+      <div className="relative w-full">
         <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
         <input
           type="text"
-          placeholder="Search by Event, Team Name, Team ID (TM-94820), Leader Name, or City/State (e.g. Chennai, Tamil Nadu)..."
+          placeholder="Search by team name, Team ID, leader email, city, state, event..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-11 pr-4 py-3 bg-white text-slate-900 placeholder-slate-400 rounded-2xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-purple-500 shadow-sm"
+          className="w-full pl-11 pr-4 py-2.5 bg-slate-950/80 text-white placeholder-slate-400 rounded-2xl border border-slate-700/80 text-xs font-semibold focus:outline-none focus:border-purple-500"
         />
       </div>
 
-      {/* Registrations List Table */}
+      {/* Registrations Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs text-slate-700">
-          <thead className="bg-purple-50 text-purple-900 font-black uppercase tracking-wider">
+        <table className="w-full text-left text-xs text-slate-200">
+          <thead className="bg-purple-950/40 text-purple-200 font-black uppercase tracking-wider border-b border-purple-900/30">
             <tr>
-              <th className="p-3.5 rounded-l-2xl">Team Name & ID</th>
-              <th className="p-3.5">Event Name</th>
-              <th className="p-3.5">Leader Details</th>
+              <th className="p-3.5 rounded-l-2xl">Team & ID</th>
+              <th className="p-3.5">Leader / Contact</th>
               <th className="p-3.5">College & Location</th>
+              <th className="p-3.5">Registered Event</th>
               <th className="p-3.5">Payment</th>
-              <th className="p-3.5">Status</th>
-              <th className="p-3.5 rounded-r-2xl">Admin Controls</th>
+              <th className="p-3.5 rounded-r-2xl">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 font-semibold">
+          <tbody className="divide-y divide-slate-800 font-semibold">
             {filteredRegistrations.length > 0 ? (
               filteredRegistrations.map((reg) => (
-                <tr key={reg.id} className="hover:bg-purple-50/30 transition-colors">
+                <tr key={reg.id} className="hover:bg-purple-950/30 transition-colors">
                   <td className="p-3.5">
-                    <p className="font-extrabold text-slate-900 text-sm">{reg.teamName}</p>
-                    <p className="font-mono text-[10px] text-purple-600 font-black">ID: {reg.teamIdCode}</p>
-                    {reg.teamPassword && <p className="font-mono text-[9px] text-slate-400">Pass: {reg.teamPassword}</p>}
-                  </td>
-                  <td className="p-3.5 font-bold text-slate-800">{reg.eventName}</td>
-                  <td className="p-3.5">
-                    <p className="font-extrabold text-slate-900">{reg.fullName}</p>
-                    <p className="text-[10px] text-slate-400">{reg.email}</p>
-                    <p className="text-[10px] text-slate-400">{reg.phone}</p>
+                    <p className="font-extrabold text-white text-sm">{reg.teamName}</p>
+                    <p className="font-mono text-[10px] text-cyan-400 font-bold">{reg.teamIdCode}</p>
                   </td>
                   <td className="p-3.5">
-                    <p className="font-bold text-slate-800">{reg.college}</p>
+                    <p className="font-bold text-white">{reg.fullName}</p>
+                    <p className="text-slate-400 text-[10px]">{reg.email}</p>
+                    <p className="text-slate-500 text-[10px]">{reg.phone}</p>
+                  </td>
+                  <td className="p-3.5">
+                    <p className="font-bold text-slate-200">{reg.college}</p>
                     <p className="text-[10px] text-[#FF2E4D] font-bold flex items-center gap-1">
                       <MapPin className="w-3 h-3" /> {reg.city}, {reg.state}
                     </p>
                   </td>
+                  <td className="p-3.5 font-bold text-purple-400">{reg.eventName}</td>
                   <td className="p-3.5">
-                    <Badge variant={reg.paymentStatus === 'PAID' ? 'green' : 'yellow'}>{reg.paymentStatus}</Badge>
+                    <Badge variant="green">{reg.paymentStatus}</Badge>
                   </td>
                   <td className="p-3.5">
-                    <Badge variant={reg.status === 'VERIFIED' ? 'green' : 'pink'}>{reg.status || 'REGISTERED'}</Badge>
-                  </td>
-                  <td className="p-3.5">
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex gap-2">
                       <button
                         onClick={() => {
                           setSelectedRecordToEdit(reg);
                           setIsEditModalOpen(true);
                         }}
-                        className="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-600 transition-colors"
+                        className="p-1.5 rounded-xl bg-purple-900/40 hover:bg-purple-800/60 text-purple-300 border border-purple-500/30"
                         title="Edit Record"
                       >
-                        <Edit className="w-4 h-4" />
+                        <Edit className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteRecord(reg.id, reg.teamName)}
-                        className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors"
+                        className="p-1.5 rounded-xl bg-rose-900/40 hover:bg-rose-800/60 text-rose-300 border border-rose-500/30"
                         title="Delete Record"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </td>
@@ -192,8 +188,8 @@ export const EventRegistrationsAdminTab: React.FC = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={7} className="p-8 text-center text-slate-400 font-bold">
-                  No event registration records found.
+                <td colSpan={6} className="p-8 text-center text-slate-400 font-bold">
+                  No event registrations found.
                 </td>
               </tr>
             )}
@@ -202,12 +198,17 @@ export const EventRegistrationsAdminTab: React.FC = () => {
       </div>
 
       {/* Edit Registration Modal */}
-      <EditRegistrationModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        record={selectedRecordToEdit}
-        onSave={handleSaveEdit}
-      />
+      {selectedRecordToEdit && (
+        <EditRegistrationModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setSelectedRecordToEdit(null);
+          }}
+          record={selectedRecordToEdit}
+          onSave={handleSaveEdit}
+        />
+      )}
     </div>
   );
 };

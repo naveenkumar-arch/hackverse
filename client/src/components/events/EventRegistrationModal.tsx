@@ -98,49 +98,69 @@ export const EventRegistrationModal: React.FC<EventRegistrationModalProps> = ({
         eventName,
         teamName: teamName || 'Kernel Overriders Team',
         teamIdCode: generatedTeamId,
-        teamPassword,
+        teamPassword: teamPassword || 'SEC-8391',
         role: 'LEADER' as const,
-        fullName: leader.fullName,
-        email: leader.email,
-        phone: leader.phone,
-        college,
-        city,
-        state,
-        department: leader.department,
+        fullName: leader.fullName || 'Team Leader',
+        email: leader.email || 'leader@kerneloverriders.com',
+        phone: leader.phone || '+91 98765 43210',
+        college: college || 'Tech Institute',
+        city: city || 'Chennai',
+        state: state || 'Tamil Nadu',
+        department: leader.department || 'Computer Science',
         year: '3rd Year',
-        teamMembers: members,
-        registeredAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        registeredAt: new Date().toISOString(),
         paymentStatus: 'PAID' as const,
-        status: 'VERIFIED' as const,
+        status: 'REGISTERED' as const,
       };
 
       registrationStorage.addRegistration(regRecord);
 
+      // Add other team members to storage if present
+      members.slice(1).forEach((member, idx) => {
+        if (member.fullName) {
+          registrationStorage.addRegistration({
+            id: `reg-${Date.now()}-${idx + 1}`,
+            eventId,
+            eventName,
+            teamName: teamName || 'Kernel Overriders Team',
+            teamIdCode: generatedTeamId,
+            teamPassword: teamPassword || 'SEC-8391',
+            role: 'MEMBER',
+            fullName: member.fullName,
+            email: member.email || `member${idx + 1}@kerneloverriders.com`,
+            phone: member.phone || '+91 98765 00000',
+            college,
+            city,
+            state,
+            department: member.department || 'Engineering',
+            year: '3rd Year',
+            registeredAt: new Date().toISOString(),
+            paymentStatus: 'PAID',
+            status: 'REGISTERED',
+          });
+        }
+      });
+
       setCompletedData(regRecord);
-      onSuccess(regRecord);
       setLoading(false);
-    }, 500);
+      onSuccess(regRecord);
+    }, 600);
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        className="glass-card bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-purple-100 shadow-2xl space-y-6 relative overflow-hidden max-h-[90vh] overflow-y-auto"
+        className="glass-card bg-slate-900/90 rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-purple-500/30 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-slate-100"
       >
-        {/* Header */}
-        <div className="flex justify-between items-start border-b border-slate-100 pb-4">
+        <div className="flex justify-between items-center border-b border-slate-800 pb-4">
           <div>
-            <div className="flex items-center gap-2">
-              <Badge variant="purple">OFFICIAL REGISTRATION</Badge>
-              <Badge variant="pink">{members.length} / 6 TEAM MEMBERS</Badge>
-            </div>
-            <h3 className="text-2xl font-black text-slate-900 mt-1">{eventName}</h3>
-            <p className="text-xs text-slate-500 font-medium">Register team roster supporting up to 6 members.</p>
+            <Badge variant="purple">OFFICIAL EVENT REGISTRATION</Badge>
+            <h3 className="text-2xl font-black text-white mt-1">{eventName}</h3>
+            <p className="text-xs text-slate-400 font-medium">Register team roster supporting up to 6 members.</p>
           </div>
-          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-100 text-slate-400 font-bold">
+          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white font-bold">
             ✕
           </button>
         </div>
@@ -148,27 +168,27 @@ export const EventRegistrationModal: React.FC<EventRegistrationModalProps> = ({
         {/* Completed State Display */}
         {completedData ? (
           <div className="space-y-6 text-center py-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+            <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto shadow-inner">
               <CheckCircle2 className="w-10 h-10" />
             </div>
 
             <div className="space-y-2">
-              <h4 className="text-2xl font-black text-slate-900">Registration Successful!</h4>
-              <p className="text-xs text-slate-500 font-semibold max-w-md mx-auto">
-                Team <span className="font-extrabold text-purple-600">{completedData.teamName}</span> ({members.length} Members) is officially registered for {eventName}.
+              <h4 className="text-2xl font-black text-white">Registration Successful!</h4>
+              <p className="text-xs text-slate-300 font-semibold max-w-md mx-auto">
+                Team <span className="font-extrabold text-cyan-400">{completedData.teamName}</span> ({members.length} Members) is officially registered for {eventName}.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-50 via-pink-50 to-amber-50 border border-purple-200 text-left space-y-3 shadow-inner">
+            <div className="p-5 rounded-2xl bg-slate-950 border border-purple-500/30 text-left space-y-3 shadow-inner">
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-black uppercase tracking-wider text-purple-600">TEAM ID</span>
-                <span className="font-mono font-black text-slate-900 text-sm bg-white px-3 py-1 rounded-xl border border-purple-200 shadow-sm">
+                <span className="text-[10px] font-black uppercase tracking-wider text-purple-400">TEAM ID</span>
+                <span className="font-mono font-black text-cyan-400 text-sm bg-slate-900 px-3 py-1 rounded-xl border border-purple-500/30 shadow-sm">
                   {completedData.teamIdCode}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-black uppercase tracking-wider text-pink-600">TEAM PASSWORD</span>
-                <span className="font-mono font-black text-slate-900 text-sm bg-white px-3 py-1 rounded-xl border border-pink-200 shadow-sm">
+                <span className="text-[10px] font-black uppercase tracking-wider text-pink-400">TEAM PASSWORD</span>
+                <span className="font-mono font-black text-pink-300 text-sm bg-slate-900 px-3 py-1 rounded-xl border border-pink-500/30 shadow-sm">
                   {completedData.teamPassword}
                 </span>
               </div>
@@ -180,80 +200,96 @@ export const EventRegistrationModal: React.FC<EventRegistrationModalProps> = ({
           </div>
         ) : (
           /* Form Content */
-          <form onSubmit={handleSubmit} className="space-y-5 text-xs font-semibold text-slate-700">
+          <form onSubmit={handleSubmit} className="space-y-5 text-xs font-semibold text-slate-300">
             {/* Team Info */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">Team Name *</label>
+                <label className="block mb-1 font-extrabold text-slate-200">Team Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Kernel Overriders Squad"
                   value={teamName}
                   onChange={(e) => setTeamName(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-bold"
+                  className="w-full px-4 py-2.5 bg-slate-950/80 text-white placeholder-slate-500 rounded-2xl border border-slate-700/80 text-xs font-bold focus:outline-none focus:border-purple-500"
                 />
               </div>
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">Team Password *</label>
+                <label className="block mb-1 font-extrabold text-slate-200">Team Password *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. SEC-8391"
                   value={teamPassword}
                   onChange={(e) => setTeamPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-bold"
+                  className="w-full px-4 py-2.5 bg-slate-950/80 text-white placeholder-slate-500 rounded-2xl border border-slate-700/80 text-xs font-mono font-bold focus:outline-none focus:border-purple-500"
                 />
               </div>
             </div>
 
-            {/* Institution Info */}
+            {/* Location & College */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">College Name *</label>
-                <input type="text" required value={college} onChange={(e) => setCollege(e.target.value)} className="w-full px-3 py-2 rounded-xl border border-slate-200" />
+                <label className="block mb-1 font-extrabold text-slate-200">College Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={college}
+                  onChange={(e) => setCollege(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-bold focus:outline-none focus:border-purple-500"
+                />
               </div>
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">City *</label>
-                <input type="text" required value={city} onChange={(e) => setCity(e.target.value)} className="w-full px-3 py-2 rounded-xl border border-slate-200" />
+                <label className="block mb-1 font-extrabold text-slate-200">City *</label>
+                <input
+                  type="text"
+                  required
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-bold focus:outline-none focus:border-purple-500"
+                />
               </div>
               <div>
-                <label className="block mb-1 font-extrabold text-slate-900">State *</label>
-                <input type="text" required value={state} onChange={(e) => setState(e.target.value)} className="w-full px-3 py-2 rounded-xl border border-slate-200" />
+                <label className="block mb-1 font-extrabold text-slate-200">State *</label>
+                <input
+                  type="text"
+                  required
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-bold focus:outline-none focus:border-purple-500"
+                />
               </div>
             </div>
 
-            {/* Dynamic Team Members Section (Up to 6 Members) */}
-            <div className="space-y-4 border-t border-slate-100 pt-4">
+            {/* Team Members List */}
+            <div className="space-y-3 pt-2">
               <div className="flex justify-between items-center">
-                <span className="text-xs font-extrabold uppercase text-purple-600">
-                  Team Members Roster ({members.length} / 6)
+                <span className="font-extrabold text-purple-400 uppercase tracking-wider text-[11px]">
+                  Team Members Roster ({members.length} / 6 Max)
                 </span>
-
                 {members.length < 6 && (
                   <button
                     type="button"
                     onClick={handleAddMemberSlot}
-                    className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-[11px] flex items-center gap-1 border border-purple-200"
+                    className="inline-flex items-center gap-1 text-[11px] font-extrabold text-cyan-400 hover:underline"
                   >
-                    <Plus className="w-3.5 h-3.5" /> Add Member ({members.length + 1})
+                    <Plus className="w-3.5 h-3.5" /> Add Member Slot
                   </button>
                 )}
               </div>
 
-              {members.map((m, idx) => (
-                <div key={idx} className="p-4 rounded-2xl bg-purple-50/50 border border-purple-100 space-y-3">
+              {members.map((member, idx) => (
+                <div key={idx} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="font-extrabold text-slate-900 text-xs">
-                      {idx === 0 ? 'Member 1 (Team Leader) *' : `Member ${idx + 1}`}
+                    <span className="font-bold text-white text-xs">
+                      {idx === 0 ? '👑 Member 1 (Team Leader)' : `Member ${idx + 1}`}
                     </span>
                     {idx > 0 && (
                       <button
                         type="button"
                         onClick={() => handleRemoveMemberSlot(idx)}
-                        className="text-rose-600 hover:text-rose-800 text-[11px] font-bold"
+                        className="text-rose-400 hover:text-rose-300"
                       >
-                        Remove
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     )}
                   </div>
@@ -263,41 +299,48 @@ export const EventRegistrationModal: React.FC<EventRegistrationModalProps> = ({
                       type="text"
                       required
                       placeholder="Full Name *"
-                      value={m.fullName}
+                      value={member.fullName}
                       onChange={(e) => handleMemberChange(idx, 'fullName', e.target.value)}
-                      className="px-3 py-2 bg-white rounded-xl border border-slate-200 text-xs"
+                      className="px-3.5 py-2 bg-slate-900 text-white rounded-xl border border-slate-800 text-xs font-bold"
                     />
                     <input
                       type="email"
                       required
                       placeholder="Email Address *"
-                      value={m.email}
+                      value={member.email}
                       onChange={(e) => handleMemberChange(idx, 'email', e.target.value)}
-                      className="px-3 py-2 bg-white rounded-xl border border-slate-200 text-xs"
+                      className="px-3.5 py-2 bg-slate-900 text-white rounded-xl border border-slate-800 text-xs font-bold"
                     />
-                    <input
-                      type="tel"
-                      required
-                      placeholder="Phone Number *"
-                      value={m.phone}
-                      onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
-                      className="px-3 py-2 bg-white rounded-xl border border-slate-200 text-xs"
-                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
                       required
-                      placeholder="Department (e.g. CS) *"
-                      value={m.department}
+                      placeholder="Phone Number *"
+                      value={member.phone}
+                      onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
+                      className="px-3.5 py-2 bg-slate-900 text-white rounded-xl border border-slate-800 text-xs font-bold"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Department (e.g. CSE)"
+                      value={member.department}
                       onChange={(e) => handleMemberChange(idx, 'department', e.target.value)}
-                      className="px-3 py-2 bg-white rounded-xl border border-slate-200 text-xs"
+                      className="px-3.5 py-2 bg-slate-900 text-white rounded-xl border border-slate-800 text-xs font-bold"
                     />
                   </div>
                 </div>
               ))}
             </div>
 
-            <Button variant="primary" type="submit" size="lg" className="w-full py-3.5 text-xs font-black shadow-xl" disabled={loading}>
-              {loading ? 'Registering Team...' : `Confirm Team Roster (${members.length} Members)`}
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 font-black text-xs mt-4"
+            >
+              {loading ? 'Processing Registration...' : 'Complete Team Registration'}
             </Button>
           </form>
         )}

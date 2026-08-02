@@ -62,49 +62,49 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-card bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-purple-100 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto"
+        className="glass-card bg-slate-900/90 rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-purple-500/30 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-slate-100"
       >
-        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+        <div className="flex justify-between items-center border-b border-slate-800 pb-4">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-xl font-black text-slate-900">
+              <h3 className="text-xl font-black text-white">
                 {initialData ? 'Edit Event Details' : 'Create New Event'}
               </h3>
-              <p className="text-xs text-slate-500 font-medium">Configure event banner, dates, duration, and form link.</p>
+              <p className="text-xs text-slate-400 font-medium">Configure event banner, dates, duration, and form link.</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-100 text-slate-400">
+          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Event Title *</label>
+            <label className="text-xs font-bold text-slate-300 block mb-1">Event Title *</label>
             <input
               type="text"
               required
               placeholder="e.g. Kernel Overriders AI Zenith 2026"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-bold focus:outline-none focus:border-purple-500"
+              className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-bold focus:outline-none focus:border-purple-500"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Category *</label>
+              <label className="text-xs font-bold text-slate-300 block mb-1">Category *</label>
               <select
                 value={formData.eventType}
                 onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
-                className="w-full px-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-bold focus:outline-none focus:border-purple-500"
+                className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-bold focus:outline-none focus:border-purple-500"
               >
                 <option value="HACKATHON">Hackathon</option>
                 <option value="CYBERSECURITY">CTF Cybersecurity</option>
@@ -113,85 +113,58 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Event Duration / Hours *</label>
+              <label className="text-xs font-bold text-slate-300 block mb-1">Event Duration / Hours *</label>
               <input
                 type="text"
                 required
                 placeholder="e.g. 48 Hours"
                 value={formData.durationHours}
                 onChange={(e) => setFormData({ ...formData, durationHours: e.target.value })}
-                className="w-full px-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-bold"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Start Date & Time *</label>
-              <input
-                type="datetime-local"
-                required
-                value={formData.startDate}
-                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                className="w-full px-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-bold"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">End Date & Time *</label>
-              <input
-                type="datetime-local"
-                required
-                value={formData.endDate}
-                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                className="w-full px-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-bold"
+                className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-bold focus:outline-none focus:border-purple-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Event Poster / Banner Image URL *</label>
-            <div className="relative">
-              <ImageIcon className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-              <input
-                type="url"
-                required
-                placeholder="https://images.unsplash.com/..."
-                value={formData.bannerUrl}
-                onChange={(e) => setFormData({ ...formData, bannerUrl: e.target.value })}
-                className="w-full pl-11 pr-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-semibold"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Registration Form Link (Auto-Generated if blank)</label>
-            <div className="relative">
-              <LinkIcon className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-              <input
-                type="url"
-                placeholder="http://localhost:5173/events/kernel-overriders-ai-zenith-2026"
-                value={formData.registrationFormLink}
-                onChange={(e) => setFormData({ ...formData, registrationFormLink: e.target.value })}
-                className="w-full pl-11 pr-4 py-2.5 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-mono"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Short Summary Description *</label>
-            <textarea
+            <label className="text-xs font-bold text-slate-300 block mb-1">Registration Form URL (Google Form) *</label>
+            <input
+              type="url"
               required
-              rows={2}
-              placeholder="Build autonomous LLM agents & generative apps with top mentors."
-              value={formData.shortDescription}
-              onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
-              className="w-full p-3 bg-white text-slate-900 rounded-2xl border border-slate-200 text-xs font-semibold"
+              placeholder="https://forms.google.com/..."
+              value={formData.registrationFormLink}
+              onChange={(e) => setFormData({ ...formData, registrationFormLink: e.target.value })}
+              className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-mono font-semibold focus:outline-none focus:border-purple-500"
             />
           </div>
 
-          <Button variant="primary" type="submit" className="w-full py-3.5 text-xs font-black shadow-xl" disabled={loading}>
-            {loading ? 'Saving Event...' : initialData ? 'Update Event & Form Link' : 'Create Event & Generate Form Link'}
-          </Button>
+          <div>
+            <label className="text-xs font-bold text-slate-300 block mb-1">Banner Image URL</label>
+            <input
+              type="text"
+              value={formData.bannerUrl}
+              onChange={(e) => setFormData({ ...formData, bannerUrl: e.target.value })}
+              className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-semibold focus:outline-none focus:border-purple-500"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-slate-300 block mb-1">Detailed Description</label>
+            <textarea
+              rows={3}
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full px-4 py-2.5 bg-slate-950/80 text-white rounded-2xl border border-slate-700/80 text-xs font-semibold focus:outline-none focus:border-purple-500"
+            />
+          </div>
+
+          <div className="flex gap-2 pt-4 border-t border-slate-800">
+            <Button variant="secondary" type="button" className="flex-1" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" className="flex-1" disabled={loading}>
+              {loading ? 'Saving...' : initialData ? 'Update Event' : 'Create Event'}
+            </Button>
+          </div>
         </form>
       </motion.div>
     </div>

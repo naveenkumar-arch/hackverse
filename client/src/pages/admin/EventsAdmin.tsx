@@ -89,7 +89,7 @@ export const EventsAdmin: React.FC = () => {
       />
 
       {/* Top Action Bar */}
-      <div className="glass-card bg-white rounded-3xl p-6 border border-purple-100 shadow-xl flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="glass-card bg-slate-900/80 backdrop-blur-xl rounded-3xl p-6 border border-purple-500/20 shadow-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="relative w-full sm:w-96">
           <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
@@ -97,7 +97,7 @@ export const EventsAdmin: React.FC = () => {
             placeholder="Search events..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white text-slate-900 placeholder-slate-400 text-xs font-semibold pl-12 pr-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:border-purple-500"
+            className="w-full bg-slate-950/80 text-white placeholder-slate-400 text-xs font-semibold pl-12 pr-4 py-3 rounded-2xl border border-slate-700/80 focus:outline-none focus:border-purple-500"
           />
         </div>
 
@@ -114,10 +114,10 @@ export const EventsAdmin: React.FC = () => {
       </div>
 
       {/* Events Directory */}
-      <div className="glass-card bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-xl space-y-6">
+      <div className="glass-card bg-slate-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-purple-500/20 shadow-2xl space-y-6">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-700">
-            <thead className="bg-purple-50 text-purple-900 font-black uppercase tracking-wider">
+          <table className="w-full text-left text-xs text-slate-200">
+            <thead className="bg-purple-950/40 text-purple-200 font-black uppercase tracking-wider border-b border-purple-900/30">
               <tr>
                 <th className="p-4 rounded-l-2xl">Event & Poster</th>
                 <th className="p-4">Duration</th>
@@ -127,33 +127,33 @@ export const EventsAdmin: React.FC = () => {
                 <th className="p-4 rounded-r-2xl">Admin Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-semibold">
+            <tbody className="divide-y divide-slate-800 font-semibold">
               {filteredEvents.map((evt) => {
                 const eventRegs = registrations.filter((r) => r.eventId === evt.id);
                 return (
-                  <tr key={evt.id} className="hover:bg-purple-50/20 transition-colors">
+                  <tr key={evt.id} className="hover:bg-purple-950/30 transition-colors">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <img
                           src={evt.imageLink}
                           alt={evt.title}
-                          className="w-14 h-10 rounded-xl object-cover border border-purple-200"
+                          className="w-14 h-10 rounded-xl object-cover border border-purple-500/30"
                         />
                         <div>
-                          <p className="font-extrabold text-slate-900 text-sm">{evt.title}</p>
+                          <p className="font-extrabold text-white text-sm">{evt.title}</p>
                           <Badge variant="purple" className="text-[9px] mt-0.5">
                             {evt.status}
                           </Badge>
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 font-black text-slate-800">{evt.durationHours ? `${evt.durationHours} Hours` : '24 Hours'}</td>
+                    <td className="p-4 font-black text-slate-200">{evt.durationHours ? `${evt.durationHours} Hours` : '24 Hours'}</td>
                     <td className="p-4">
                       <a
                         href={evt.registrationLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 font-mono text-[11px] font-bold text-purple-600 hover:underline"
+                        className="inline-flex items-center gap-1 font-mono text-[11px] font-bold text-cyan-400 hover:underline"
                       >
                         <ExternalLink className="w-3.5 h-3.5" /> Form Link
                       </a>
@@ -165,7 +165,7 @@ export const EventsAdmin: React.FC = () => {
                         onClick={() => setSelectedLedgerEvent(evt)}
                         className="gap-1.5 text-[11px] py-1.5"
                       >
-                        <Users className="w-3.5 h-3.5 text-purple-600" /> View Ledger ({eventRegs.length} Teams)
+                        <Users className="w-3.5 h-3.5 text-cyan-400" /> View Ledger ({eventRegs.length} Teams)
                       </Button>
                     </td>
                     <td className="p-4 space-y-1">
@@ -173,7 +173,7 @@ export const EventsAdmin: React.FC = () => {
                         <button
                           onClick={() => handleToggleRegistration(evt.id, evt.isRegistrationEnabled)}
                           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black ${
-                            evt.isRegistrationEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                            evt.isRegistrationEnabled ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
                           }`}
                         >
                           Reg: {evt.isRegistrationEnabled ? 'Open' : 'Closed'}
@@ -181,7 +181,7 @@ export const EventsAdmin: React.FC = () => {
                         <button
                           onClick={() => handleToggleSubmission(evt.id, evt.isSubmissionEnabled)}
                           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black ${
-                            evt.isSubmissionEnabled ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600'
+                            evt.isSubmissionEnabled ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700'
                           }`}
                         >
                           Sub: {evt.isSubmissionEnabled ? 'Open' : 'Closed'}
@@ -195,14 +195,14 @@ export const EventsAdmin: React.FC = () => {
                             setEventToEdit(evt);
                             setIsModalOpen(true);
                           }}
-                          className="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-600"
+                          className="p-2 rounded-xl bg-purple-900/40 hover:bg-purple-800/60 text-purple-300 border border-purple-500/30"
                           title="Edit Event"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteEvent(evt.id)}
-                          className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600"
+                          className="p-2 rounded-xl bg-rose-900/40 hover:bg-rose-800/60 text-rose-300 border border-rose-500/30"
                           title="Delete Event"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -262,15 +262,15 @@ export const EventsAdmin: React.FC = () => {
 
       {/* Isolated Event Registrations Ledger Modal */}
       {selectedLedgerEvent && (
-        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-card bg-white rounded-3xl p-6 sm:p-8 max-w-3xl w-full border border-purple-100 shadow-2xl space-y-6 max-h-[85vh] overflow-y-auto">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4">
+          <div className="glass-card bg-slate-900/90 rounded-3xl p-6 sm:p-8 max-w-3xl w-full border border-purple-500/30 shadow-2xl space-y-6 max-h-[85vh] overflow-y-auto text-slate-100">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-4">
               <div>
                 <Badge variant="purple">ISOLATED EVENT STORAGE</Badge>
-                <h3 className="text-xl font-black text-slate-900 mt-1">{selectedLedgerEvent.title}</h3>
-                <p className="text-xs text-slate-500 font-medium">Dedicated Team Registrations Database Ledger</p>
+                <h3 className="text-xl font-black text-white mt-1">{selectedLedgerEvent.title}</h3>
+                <p className="text-xs text-slate-400 font-medium">Dedicated Team Registrations Database Ledger</p>
               </div>
-              <button onClick={() => setSelectedLedgerEvent(null)} className="p-2 rounded-full hover:bg-slate-100 text-slate-400">
+              <button onClick={() => setSelectedLedgerEvent(null)} className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -293,7 +293,7 @@ export const EventsAdmin: React.FC = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => handleClearEventLedger(selectedLedgerEvent.id)}
-                className="gap-1.5 text-xs text-rose-600 border-rose-200 hover:bg-rose-50"
+                className="gap-1.5 text-xs text-rose-400 border-rose-500/40 hover:bg-rose-950/30"
               >
                 <ShieldAlert className="w-4 h-4" /> Manually Purge Event Ledger
               </Button>
@@ -301,8 +301,8 @@ export const EventsAdmin: React.FC = () => {
 
             {/* Event Ledger Table */}
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-700">
-                <thead className="bg-purple-50 text-purple-900 font-black uppercase">
+              <table className="w-full text-left text-xs text-slate-200">
+                <thead className="bg-purple-950/50 text-purple-200 font-black uppercase border-b border-purple-900/30">
                   <tr>
                     <th className="p-3">Team Name & ID</th>
                     <th className="p-3">Team Password</th>
@@ -311,23 +311,23 @@ export const EventsAdmin: React.FC = () => {
                     <th className="p-3">Payment</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 font-semibold">
+                <tbody className="divide-y divide-slate-800 font-semibold">
                   {registrations.filter((r) => r.eventId === selectedLedgerEvent.id).length > 0 ? (
                     registrations
                       .filter((r) => r.eventId === selectedLedgerEvent.id)
                       .map((reg) => (
-                        <tr key={reg.id}>
+                        <tr key={reg.id} className="hover:bg-purple-950/20">
                           <td className="p-3">
-                            <p className="font-extrabold text-slate-900">{reg.teamName}</p>
-                            <p className="font-mono text-[10px] text-purple-600 font-bold">{reg.teamIdCode}</p>
+                            <p className="font-extrabold text-white">{reg.teamName}</p>
+                            <p className="font-mono text-[10px] text-cyan-400 font-bold">{reg.teamIdCode}</p>
                           </td>
-                          <td className="p-3 font-mono font-bold text-slate-800">{reg.teamPassword || 'SEC-8391'}</td>
+                          <td className="p-3 font-mono font-bold text-slate-300">{reg.teamPassword || 'SEC-8391'}</td>
                           <td className="p-3">
-                            <p className="font-bold text-slate-900">{reg.fullName}</p>
+                            <p className="font-bold text-white">{reg.fullName}</p>
                             <p className="text-[10px] text-slate-400">{reg.email}</p>
                           </td>
                           <td className="p-3">
-                            <p className="font-bold text-slate-800">{reg.college}</p>
+                            <p className="font-bold text-slate-200">{reg.college}</p>
                             <p className="text-[10px] text-[#FF2E4D] font-bold flex items-center gap-1">
                               <MapPin className="w-3 h-3" /> {reg.city}, {reg.state}
                             </p>
