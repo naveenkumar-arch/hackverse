@@ -15,7 +15,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between selection:bg-[#FF2E4D] selection:text-white bg-[#FAF7F2]">
+    <div className="min-h-screen flex flex-col justify-between" style={{ background: '#050714', color: '#E2E8F0', userSelect: 'text' }}>
       <Navbar />
       <main className="flex-grow max-w-[1440px] w-full mx-auto px-3 sm:px-5 lg:px-8 py-4">
         {children}

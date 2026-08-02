@@ -1,3 +1,5 @@
+import { eventService } from '../services/event.service';
+
 export interface ManagedEvent {
   id: string;
   title: string;
@@ -52,18 +54,15 @@ export const eventManagementStorage = {
   getEvents: (): ManagedEvent[] => {
     try {
       const data = localStorage.getItem(STORAGE_KEY);
-      // Only seed the default event on very first visit (key never existed)
       if (data === null) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MANAGED_EVENTS));
         return INITIAL_MANAGED_EVENTS;
       }
       const parsed = JSON.parse(data);
       if (!Array.isArray(parsed)) {
-        // Corrupted data — reset to empty, not default
         localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
         return [];
       }
-      // Intentionally empty (user deleted all events) — respect it
       return parsed;
     } catch {
       return [];
@@ -90,6 +89,12 @@ export const eventManagementStorage = {
 
     const updated = [newEvent, ...events];
     eventManagementStorage.saveEvents(updated);
+
+    // Asynchronously create event in database if server API is available
+    eventService.createEvent(newEvent).catch((err) => {
+      console.warn('Backend DB sync (addEvent) fallback notice:', err?.message || err);
+    });
+
     return newEvent;
   },
 
@@ -97,6 +102,12 @@ export const eventManagementStorage = {
     const events = eventManagementStorage.getEvents();
     const updated = events.map((e) => (e.id === id ? { ...e, ...updates } : e));
     eventManagementStorage.saveEvents(updated);
+
+    // Asynchronously update event in database if server API is available
+    eventService.updateEvent(id, updates).catch((err) => {
+      console.warn('Backend DB sync (updateEvent) fallback notice:', err?.message || err);
+    });
+
     return updated;
   },
 
@@ -112,6 +123,11 @@ export const eventManagementStorage = {
         : e
     );
     eventManagementStorage.saveEvents(updated);
+
+    eventService.updateEvent(id, { status: 'LIVE', liveStartTime: Date.now() } as any).catch((err) => {
+      console.warn('Backend DB sync (startEvent) fallback notice:', err?.message || err);
+    });
+
     return updated;
   },
 
@@ -119,6 +135,11 @@ export const eventManagementStorage = {
     const events = eventManagementStorage.getEvents();
     const updated = events.map((e) => (e.id === id ? { ...e, isRegistrationEnabled: enabled } : e));
     eventManagementStorage.saveEvents(updated);
+
+    eventService.updateEvent(id, { isRegistrationEnabled: enabled } as any).catch((err) => {
+      console.warn('Backend DB sync (toggleRegistration) fallback notice:', err?.message || err);
+    });
+
     return updated;
   },
 
@@ -126,6 +147,11 @@ export const eventManagementStorage = {
     const events = eventManagementStorage.getEvents();
     const updated = events.map((e) => (e.id === id ? { ...e, isSubmissionEnabled: enabled } : e));
     eventManagementStorage.saveEvents(updated);
+
+    eventService.updateEvent(id, { isSubmissionEnabled: enabled } as any).catch((err) => {
+      console.warn('Backend DB sync (toggleSubmission) fallback notice:', err?.message || err);
+    });
+
     return updated;
   },
 
@@ -145,6 +171,11 @@ export const eventManagementStorage = {
         : e
     );
     eventManagementStorage.saveEvents(updated);
+
+    eventService.updateEvent(id, { status: 'COMPLETED', isSubmissionEnabled: false, winners } as any).catch((err) => {
+      console.warn('Backend DB sync (completeEvent) fallback notice:', err?.message || err);
+    });
+
     return updated;
   },
 
@@ -152,6 +183,12 @@ export const eventManagementStorage = {
     const events = eventManagementStorage.getEvents();
     const updated = events.filter((e) => e.id !== id);
     eventManagementStorage.saveEvents(updated);
+
+    // Asynchronously delete event from database if server API is available
+    eventService.deleteEvent(id).catch((err) => {
+      console.warn('Backend DB sync (deleteEvent) fallback notice:', err?.message || err);
+    });
+
     return updated;
   },
 };

@@ -13,4 +13,12 @@ export const eventService = {
     const response = await apiClient.post('/events', payload);
     return response.data;
   },
+  updateEvent: async (id: string, payload: Record<string, any>) => {
+    const response = await apiClient.put(`/events/${id}`, payload);
+    return response.data;
+  },
+  deleteEvent: async (id: string) => {
+    const response = await apiClient.delete(`/events/${id}`);
+    return response.data;
+  },
 };

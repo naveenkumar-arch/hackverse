@@ -15,41 +15,66 @@ export const WinnerCard: React.FC<WinnerCardProps> = ({ winner }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       whileHover={{ y: -6 }}
-      className="glass-card glass-card-hover rounded-3xl p-6 border border-white/80 shadow-xl shadow-purple-500/5 space-y-4"
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        border: '1px solid rgba(255,255,255,0.09)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+      }}
+      className="rounded-3xl p-6 space-y-4"
     >
       <div className="flex justify-between items-start">
         <Badge variant="yellow" className="gap-1.5 font-bold">
-          <Trophy className="w-3.5 h-3.5 text-amber-600" />
+          <Trophy className="w-3.5 h-3.5 text-amber-900" />
           {winner.position}
         </Badge>
-        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+        <span
+          style={{
+            background: 'rgba(16,253,165,0.12)',
+            color: '#34D399',
+            border: '1px solid rgba(16,253,165,0.30)',
+          }}
+          className="text-xs font-semibold px-2.5 py-1 rounded-full"
+        >
           Prize: {winner.prizeAmount}
         </span>
       </div>
 
       <div className="space-y-1">
-        <h3 className="text-xl font-extrabold text-slate-900 leading-snug">
+        <h3 className="text-xl font-black text-white leading-snug" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           {winner.projectTitle}
         </h3>
-        <p className="text-xs font-bold text-purple-600">
+        <p className="text-xs font-semibold text-violet-400">
           By {winner.teamName} &bull; {winner.eventName}
         </p>
       </div>
 
-      <p className="text-xs text-slate-600 font-medium line-clamp-3 leading-relaxed">
+      <p className="text-xs font-medium line-clamp-3 leading-relaxed" style={{ color: 'rgba(148,163,184,0.75)' }}>
         {winner.description}
       </p>
 
       <div className="flex flex-wrap gap-1.5">
         {winner.techStack.map((tech) => (
-          <span key={tech} className="text-[10px] font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">
+          <span
+            key={tech}
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              color: '#C4B5FD',
+              border: '1px solid rgba(255,255,255,0.10)',
+            }}
+            className="text-[10px] font-semibold px-2 py-0.5 rounded-md"
+          >
             {tech}
           </span>
         ))}
       </div>
 
-      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-        <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
+      <div
+        style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
+        className="pt-3 flex items-center justify-between"
+      >
+        <div className="flex items-center gap-1 text-xs font-bold text-amber-400">
           <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
           <span>Score: {winner.score}/100</span>
         </div>
@@ -59,7 +84,8 @@ export const WinnerCard: React.FC<WinnerCardProps> = ({ winner }) => {
             href={winner.repoUrl}
             target="_blank"
             rel="noreferrer"
-            className="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 transition-colors"
+            style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.30)' }}
+            className="p-2 rounded-xl text-violet-300 hover:text-white transition-colors"
           >
             <Github className="w-4 h-4" />
           </a>
@@ -67,7 +93,8 @@ export const WinnerCard: React.FC<WinnerCardProps> = ({ winner }) => {
             href={winner.demoUrl}
             target="_blank"
             rel="noreferrer"
-            className="p-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 transition-colors"
+            style={{ background: 'rgba(244,114,182,0.15)', border: '1px solid rgba(244,114,182,0.30)' }}
+            className="p-2 rounded-xl text-pink-300 hover:text-white transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
           </a>

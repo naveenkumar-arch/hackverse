@@ -2,52 +2,76 @@ import React from 'react';
 import { motion, HTMLMotionProps } from 'framer-motion';
 
 export interface ButtonProps extends HTMLMotionProps<'button'> {
-  variant?: 'primary' | 'secondary' | 'yellow' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'yellow' | 'green' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
 }
+
+const variantStyles: Record<string, React.CSSProperties> = {
+  primary: {
+    background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+    color: '#ffffff',
+    border: '1px solid rgba(139,92,246,0.50)',
+    boxShadow: '0 4px 20px rgba(139,92,246,0.35), inset 0 1px 0 rgba(255,255,255,0.18)',
+  },
+  secondary: {
+    background: 'linear-gradient(135deg, rgba(34,211,238,0.14), rgba(34,211,238,0.07))',
+    color: '#22D3EE',
+    border: '1px solid rgba(34,211,238,0.38)',
+    boxShadow: '0 4px 16px rgba(34,211,238,0.12)',
+    backdropFilter: 'blur(10px)',
+  },
+  yellow: {
+    background: 'linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%)',
+    color: '#0a0a0f',
+    border: '1px solid rgba(251,191,36,0.40)',
+    boxShadow: '0 4px 20px rgba(251,191,36,0.30), inset 0 1px 0 rgba(255,255,255,0.22)',
+  },
+  green: {
+    background: 'linear-gradient(135deg, #10FDA5 0%, #059669 100%)',
+    color: '#0a0a0f',
+    border: '1px solid rgba(16,253,165,0.40)',
+    boxShadow: '0 4px 20px rgba(16,253,165,0.30), inset 0 1px 0 rgba(255,255,255,0.20)',
+  },
+  outline: {
+    background: 'rgba(255,255,255,0.05)',
+    color: '#C4B5FD',
+    border: '1px solid rgba(139,92,246,0.35)',
+    boxShadow: '0 2px 12px rgba(139,92,246,0.10)',
+    backdropFilter: 'blur(10px)',
+  },
+  ghost: {
+    background: 'transparent',
+    color: 'rgba(148,163,184,0.8)',
+    border: '1px solid transparent',
+    boxShadow: 'none',
+  },
+};
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
   children,
   className = '',
+  style,
   ...props
 }) => {
   const baseClasses =
-    'inline-flex items-center justify-center font-black tracking-tight rounded-full transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-2 border-[#1E1B4B] shadow-[5px_5px_0px_0px_#1E1B4B] hover:shadow-[7px_7px_0px_0px_#1E1B4B] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_0px_#1E1B4B] cursor-pointer';
-
-  const variants = {
-    // Coral Red / Pink Primary Button
-    primary:
-      'bg-[#FF334B] text-white hover:bg-[#FF203B] border-2 border-[#1E1B4B]',
-    // Aqua Secondary Button
-    secondary:
-      'bg-[#5CE1E6] text-[#1E1B4B] hover:bg-[#4BD5DA] border-2 border-[#1E1B4B]',
-    // Vibrant Yellow Button
-    yellow:
-      'bg-[#F7D046] text-[#1E1B4B] hover:bg-[#F5C82A] border-2 border-[#1E1B4B]',
-    // White Card Button
-    outline:
-      'bg-white text-[#1E1B4B] hover:bg-slate-50 border-2 border-[#1E1B4B]',
-    // Ghost Button
-    ghost:
-      'bg-transparent text-[#1E1B4B] border-transparent shadow-none hover:shadow-none hover:bg-black/5 hover:translate-x-0 hover:translate-y-0',
-  };
+    'inline-flex items-center justify-center font-semibold tracking-wide rounded-full transition-all duration-200 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer select-none hover:-translate-y-0.5 active:translate-y-px';
 
   const sizes = {
-    sm: 'text-xs px-4 py-2 gap-1.5',
-    md: 'text-sm px-6 py-3 gap-2',
-    lg: 'text-base px-8 py-4 gap-2.5',
+    sm:  'text-xs px-4 py-2 gap-1.5',
+    md:  'text-sm px-6 py-3 gap-2',
+    lg:  'text-base px-8 py-4 gap-2.5',
   };
 
   return (
     <button
-      className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`${baseClasses} ${sizes[size]} ${className}`}
+      style={{ ...variantStyles[variant], ...style }}
       {...props}
     >
       {children}
     </button>
   );
 };
-

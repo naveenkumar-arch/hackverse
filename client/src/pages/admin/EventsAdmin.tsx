@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionHeader } from '../../components/common/SectionHeader';
 import { Badge } from '../../components/common/Badge';
 import { Button } from '../../components/common/Button';
 import { EventFormModal } from '../../components/events/EventFormModal';
-import { MOCK_EVENTS } from '../../data/mockData';
+import { eventManagementStorage, ManagedEvent } from '../../utils/eventManagementStorage';
+import { registrationStorage, TeamRegistrationRecord } from '../../utils/registrationStorage';
 import {
   Calendar,
   Plus,
@@ -19,56 +20,59 @@ import {
   X,
   MapPin,
 } from 'lucide-react';
-import { formatDate } from '../../lib/utils';
 import { exportToCsv } from '../../utils/csvExporter';
 
 export const EventsAdmin: React.FC = () => {
-  const [events, setEvents] = useState<any[]>(
-    MOCK_EVENTS.map((e) => ({
-      ...e,
-      durationHours: '48 Hours',
-      registrationFormLink: `http://localhost:5173/events/${e.slug}`,
-      isRegistrationOpen: true,
-      isSubmissionOpen: true,
-      submissionDeadline: new Date(Date.now() + 86400000 * 2).toISOString(),
-    }))
-  );
-
+  const [events, setEvents] = useState<ManagedEvent[]>([]);
+  const [registrations, setRegistrations] = useState<TeamRegistrationRecord[]>([]);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [eventToEdit, setEventToEdit] = useState<any | null>(null);
+  const [eventToEdit, setEventToEdit] = useState<ManagedEvent | null>(null);
 
   // Event-specific Isolated Ledger Modal State
-  const [selectedLedgerEvent, setSelectedLedgerEvent] = useState<any | null>(null);
+  const [selectedLedgerEvent, setSelectedLedgerEvent] = useState<ManagedEvent | null>(null);
 
-  const [eventLedgers, setEventLedgers] = useState<Record<string, any[]>>({});
-
-  const handleToggleRegistration = (eventId: string) => {
-    setEvents((prev) =>
-      prev.map((e) => (e.id === eventId ? { ...e, isRegistrationOpen: !e.isRegistrationOpen } : e))
-    );
+  const loadData = () => {
+    setEvents(eventManagementStorage.getEvents());
+    setRegistrations(registrationStorage.getRegistrations());
   };
 
-  const handleToggleSubmission = (eventId: string) => {
-    setEvents((prev) =>
-      prev.map((e) => (e.id === eventId ? { ...e, isSubmissionOpen: !e.isSubmissionOpen } : e))
-    );
+  useEffect(() => {
+    loadData();
+
+    const handleEventsUpdate = () => loadData();
+    const handleRegsUpdate = () => loadData();
+
+    window.addEventListener('ko_managed_events_updated', handleEventsUpdate);
+    window.addEventListener('ko_registrations_updated', handleRegsUpdate);
+
+    return () => {
+      window.removeEventListener('ko_managed_events_updated', handleEventsUpdate);
+      window.removeEventListener('ko_registrations_updated', handleRegsUpdate);
+    };
+  }, []);
+
+  const handleToggleRegistration = (eventId: string, currentStatus: boolean) => {
+    eventManagementStorage.toggleRegistrationLink(eventId, !currentStatus);
+  };
+
+  const handleToggleSubmission = (eventId: string, currentStatus: boolean) => {
+    eventManagementStorage.toggleSubmissionLink(eventId, !currentStatus);
   };
 
   const handleDeleteEvent = (eventId: string) => {
-    if (window.confirm('Are you sure you want to delete this event and its isolated registration data?')) {
-      setEvents((prev) => prev.filter((e) => e.id !== eventId));
-      setEventLedgers((prev) => {
-        const next = { ...prev };
-        delete next[eventId];
-        return next;
-      });
+    if (window.confirm('Are you sure you want to delete this event and its persistent data?')) {
+      eventManagementStorage.deleteEvent(eventId);
+      if (selectedLedgerEvent?.id === eventId) {
+        setSelectedLedgerEvent(null);
+      }
     }
   };
 
   const handleClearEventLedger = (eventId: string) => {
     if (window.confirm('Manually clear all registration data for this event? (Data will be permanently removed)')) {
-      setEventLedgers((prev) => ({ ...prev, [eventId]: [] }));
+      const eventRegs = registrations.filter((r) => r.eventId === eventId);
+      eventRegs.forEach((r) => registrationStorage.deleteRegistration(r.id));
     }
   };
 
@@ -125,22 +129,28 @@ export const EventsAdmin: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-slate-100 font-semibold">
               {filteredEvents.map((evt) => {
-                const eventRegs = eventLedgers[evt.id] || [];
+                const eventRegs = registrations.filter((r) => r.eventId === evt.id);
                 return (
                   <tr key={evt.id} className="hover:bg-purple-50/20 transition-colors">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <img src={evt.bannerUrl} alt={evt.title} className="w-14 h-10 rounded-xl object-cover border border-purple-200" />
+                        <img
+                          src={evt.imageLink}
+                          alt={evt.title}
+                          className="w-14 h-10 rounded-xl object-cover border border-purple-200"
+                        />
                         <div>
                           <p className="font-extrabold text-slate-900 text-sm">{evt.title}</p>
-                          <Badge variant="purple" className="text-[9px] mt-0.5">{evt.eventType}</Badge>
+                          <Badge variant="purple" className="text-[9px] mt-0.5">
+                            {evt.status}
+                          </Badge>
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 font-black text-slate-800">{evt.durationHours || '48 Hours'}</td>
+                    <td className="p-4 font-black text-slate-800">{evt.durationHours ? `${evt.durationHours} Hours` : '24 Hours'}</td>
                     <td className="p-4">
                       <a
-                        href={evt.registrationFormLink}
+                        href={evt.registrationLink}
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex items-center gap-1 font-mono text-[11px] font-bold text-purple-600 hover:underline"
@@ -159,14 +169,22 @@ export const EventsAdmin: React.FC = () => {
                       </Button>
                     </td>
                     <td className="p-4 space-y-1">
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-col gap-1">
                         <button
-                          onClick={() => handleToggleRegistration(evt.id)}
+                          onClick={() => handleToggleRegistration(evt.id, evt.isRegistrationEnabled)}
                           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black ${
-                            evt.isRegistrationOpen ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                            evt.isRegistrationEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
                           }`}
                         >
-                          Reg: {evt.isRegistrationOpen ? 'Open' : 'Closed'}
+                          Reg: {evt.isRegistrationEnabled ? 'Open' : 'Closed'}
+                        </button>
+                        <button
+                          onClick={() => handleToggleSubmission(evt.id, evt.isSubmissionEnabled)}
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black ${
+                            evt.isSubmissionEnabled ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600'
+                          }`}
+                        >
+                          Sub: {evt.isSubmissionEnabled ? 'Open' : 'Closed'}
                         </button>
                       </div>
                     </td>
@@ -203,12 +221,41 @@ export const EventsAdmin: React.FC = () => {
       <EventFormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        initialData={eventToEdit}
-        onSuccess={(newEvent) => {
+        initialData={
+          eventToEdit
+            ? {
+                id: eventToEdit.id,
+                title: eventToEdit.title,
+                bannerUrl: eventToEdit.imageLink,
+                description: eventToEdit.description,
+                durationHours: `${eventToEdit.durationHours} Hours`,
+                startDate: `${eventToEdit.eventDate}T${eventToEdit.startTime}`,
+                endDate: `${eventToEdit.eventDate}T${eventToEdit.endTime}`,
+                registrationFormLink: eventToEdit.registrationLink,
+              }
+            : undefined
+        }
+        onSuccess={(eventData) => {
           if (eventToEdit) {
-            setEvents((prev) => prev.map((e) => (e.id === newEvent.id ? newEvent : e)));
+            eventManagementStorage.updateEvent(eventToEdit.id, {
+              title: eventData.title,
+              imageLink: eventData.bannerUrl || eventToEdit.imageLink,
+              description: eventData.description,
+              registrationLink: eventData.registrationFormLink || eventToEdit.registrationLink,
+              submissionLink: eventData.registrationFormLink || eventToEdit.submissionLink,
+            });
           } else {
-            setEvents((prev) => [newEvent, ...prev]);
+            eventManagementStorage.addEvent({
+              title: eventData.title,
+              imageLink: eventData.bannerUrl || 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop',
+              description: eventData.description || 'Global Student Hackathon Competition',
+              eventDate: eventData.startDate ? eventData.startDate.split('T')[0] : '2026-09-15',
+              startTime: eventData.startDate ? eventData.startDate.split('T')[1] || '09:00' : '09:00',
+              endTime: eventData.endDate ? eventData.endDate.split('T')[1] || '18:00' : '18:00',
+              durationHours: parseInt(eventData.durationHours) || 24,
+              registrationLink: eventData.registrationFormLink || 'https://forms.google.com/your-form',
+              submissionLink: eventData.registrationFormLink || 'https://forms.google.com/your-form',
+            });
           }
         }}
       />
@@ -232,7 +279,12 @@ export const EventsAdmin: React.FC = () => {
               <Button
                 variant="secondary"
                 size="sm"
-                onClick={() => exportToCsv(`${selectedLedgerEvent.slug}_registrations`, eventLedgers[selectedLedgerEvent.id] || [])}
+                onClick={() =>
+                  exportToCsv(
+                    `${selectedLedgerEvent.id}_registrations`,
+                    registrations.filter((r) => r.eventId === selectedLedgerEvent.id)
+                  )
+                }
                 className="gap-2 text-xs"
               >
                 <Download className="w-4 h-4" /> Export Event CSV
@@ -260,29 +312,31 @@ export const EventsAdmin: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-semibold">
-                  {(eventLedgers[selectedLedgerEvent.id] || []).length > 0 ? (
-                    (eventLedgers[selectedLedgerEvent.id] || []).map((reg, idx) => (
-                      <tr key={idx}>
-                        <td className="p-3">
-                          <p className="font-extrabold text-slate-900">{reg.teamName}</p>
-                          <p className="font-mono text-[10px] text-purple-600 font-bold">{reg.teamIdCode}</p>
-                        </td>
-                        <td className="p-3 font-mono font-bold text-slate-800">{reg.teamPassword}</td>
-                        <td className="p-3">
-                          <p className="font-bold text-slate-900">{reg.leaderName}</p>
-                          <p className="text-[10px] text-slate-400">{reg.leaderEmail}</p>
-                        </td>
-                        <td className="p-3">
-                          <p className="font-bold text-slate-800">{reg.college}</p>
-                          <p className="text-[10px] text-[#FF2E4D] font-bold flex items-center gap-1">
-                            <MapPin className="w-3 h-3" /> {reg.city}, {reg.state}
-                          </p>
-                        </td>
-                        <td className="p-3">
-                          <Badge variant="green">{reg.paymentStatus}</Badge>
-                        </td>
-                      </tr>
-                    ))
+                  {registrations.filter((r) => r.eventId === selectedLedgerEvent.id).length > 0 ? (
+                    registrations
+                      .filter((r) => r.eventId === selectedLedgerEvent.id)
+                      .map((reg) => (
+                        <tr key={reg.id}>
+                          <td className="p-3">
+                            <p className="font-extrabold text-slate-900">{reg.teamName}</p>
+                            <p className="font-mono text-[10px] text-purple-600 font-bold">{reg.teamIdCode}</p>
+                          </td>
+                          <td className="p-3 font-mono font-bold text-slate-800">{reg.teamPassword || 'SEC-8391'}</td>
+                          <td className="p-3">
+                            <p className="font-bold text-slate-900">{reg.fullName}</p>
+                            <p className="text-[10px] text-slate-400">{reg.email}</p>
+                          </td>
+                          <td className="p-3">
+                            <p className="font-bold text-slate-800">{reg.college}</p>
+                            <p className="text-[10px] text-[#FF2E4D] font-bold flex items-center gap-1">
+                              <MapPin className="w-3 h-3" /> {reg.city}, {reg.state}
+                            </p>
+                          </td>
+                          <td className="p-3">
+                            <Badge variant="green">{reg.paymentStatus}</Badge>
+                          </td>
+                        </tr>
+                      ))
                   ) : (
                     <tr>
                       <td colSpan={5} className="p-6 text-center text-slate-400 font-bold">

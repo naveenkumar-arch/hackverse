@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Badge } from '../../components/common/Badge';
 import { Button } from '../../components/common/Button';
 import { exportToCsv } from '../../utils/csvExporter';
+import { registrationStorage, TeamRegistrationRecord } from '../../utils/registrationStorage';
 import {
   Search,
   Download,
@@ -27,23 +28,59 @@ export interface StudentRegistrationItem {
   linkedinUrl?: string;
   approvalStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED';
   createdAt: string;
-  registeredEventsCount: number;
+  eventName: string;
   teamName?: string;
   paymentStatus: string;
 }
 
-const MOCK_STUDENT_REGISTRATIONS: StudentRegistrationItem[] = [];
-
 export const StudentManagementTab: React.FC = () => {
-  const [students, setStudents] = useState<StudentRegistrationItem[]>(MOCK_STUDENT_REGISTRATIONS);
+  const [students, setStudents] = useState<StudentRegistrationItem[]>([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [selectedStudent, setSelectedStudent] = useState<StudentRegistrationItem | null>(null);
 
+  const loadStudents = () => {
+    const records = registrationStorage.getRegistrations();
+    const items: StudentRegistrationItem[] = records.map((r) => {
+      let approvalStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED' = 'PENDING';
+      if (r.status === 'VERIFIED') approvalStatus = 'APPROVED';
+      else if (r.status === 'REJECTED') approvalStatus = 'REJECTED';
+      else if ((r as any).approvalStatus === 'SUSPENDED') approvalStatus = 'SUSPENDED';
+
+      return {
+        id: r.id,
+        fullName: r.fullName,
+        email: r.email,
+        phone: r.phone,
+        college: r.college,
+        department: r.department,
+        year: r.year,
+        approvalStatus,
+        createdAt: r.registeredAt,
+        eventName: r.eventName,
+        teamName: r.teamName,
+        paymentStatus: r.paymentStatus,
+      };
+    });
+    setStudents(items);
+  };
+
+  useEffect(() => {
+    loadStudents();
+    const handleUpdate = () => loadStudents();
+    window.addEventListener('ko_registrations_updated', handleUpdate);
+    return () => window.removeEventListener('ko_registrations_updated', handleUpdate);
+  }, []);
+
   const handleUpdateStatus = (id: string, newStatus: 'APPROVED' | 'REJECTED' | 'SUSPENDED') => {
-    setStudents((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, approvalStatus: newStatus } : s))
-    );
+    let regStatus: 'REGISTERED' | 'VERIFIED' | 'REJECTED' = 'REGISTERED';
+    if (newStatus === 'APPROVED') regStatus = 'VERIFIED';
+    else if (newStatus === 'REJECTED') regStatus = 'REJECTED';
+
+    registrationStorage.updateRegistration(id, {
+      status: regStatus,
+      ...(newStatus === 'SUSPENDED' ? { approvalStatus: 'SUSPENDED' } : {}),
+    } as any);
   };
 
   const filteredStudents = students.filter((s) => {
@@ -51,7 +88,8 @@ export const StudentManagementTab: React.FC = () => {
     const matchesSearch =
       s.fullName.toLowerCase().includes(search.toLowerCase()) ||
       s.email.toLowerCase().includes(search.toLowerCase()) ||
-      s.college.toLowerCase().includes(search.toLowerCase());
+      s.college.toLowerCase().includes(search.toLowerCase()) ||
+      s.eventName.toLowerCase().includes(search.toLowerCase());
     return matchesStatus && matchesSearch;
   });
 
@@ -76,7 +114,7 @@ export const StudentManagementTab: React.FC = () => {
         <div>
           <h3 className="text-xl font-black text-slate-900">Student Registrations & Approval Queue</h3>
           <p className="text-xs text-slate-500 font-medium">
-            Review and approve student accounts before they can join hackathons or register teams.
+            Review, verify, and approve participant student accounts submitted via event registration forms.
           </p>
         </div>
         <Button
@@ -95,10 +133,10 @@ export const StudentManagementTab: React.FC = () => {
           <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search student by name, email, or college..."
+            placeholder="Search student by name, email, college, or event..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-11 pr-4 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-2xl border border-slate-200 text-xs focus:outline-none focus:border-purple-500"
+            className="w-full pl-11 pr-4 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-2xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-purple-500"
           />
         </div>
 
@@ -109,7 +147,7 @@ export const StudentManagementTab: React.FC = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="bg-white border border-slate-200 text-xs font-bold text-slate-700 rounded-2xl px-4 py-2.5 focus:outline-none focus:border-purple-500"
           >
-            <option value="ALL">All Statuses</option>
+            <option value="ALL">All Statuses ({students.length})</option>
             <option value="PENDING">Pending Approval</option>
             <option value="APPROVED">Approved</option>
             <option value="REJECTED">Rejected</option>
@@ -125,94 +163,99 @@ export const StudentManagementTab: React.FC = () => {
             <tr>
               <th className="p-3.5 rounded-l-2xl">Student Info</th>
               <th className="p-3.5">College & Dept</th>
-              <th className="p-3.5">Year</th>
-              <th className="p-3.5">Profiles</th>
+              <th className="p-3.5">Registered Event</th>
+              <th className="p-3.5">Team</th>
               <th className="p-3.5">Approval Status</th>
               <th className="p-3.5 rounded-r-2xl">Admin Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 font-semibold">
-            {filteredStudents.map((st) => (
-              <tr key={st.id} className="hover:bg-purple-50/30 transition-colors">
-                <td className="p-3.5">
-                  <p className="font-extrabold text-slate-900 text-sm">{st.fullName}</p>
-                  <p className="text-slate-400">{st.email}</p>
-                  <p className="text-[10px] text-slate-400">{st.phone}</p>
-                </td>
-                <td className="p-3.5">
-                  <p className="font-bold text-slate-800">{st.college}</p>
-                  <p className="text-[10px] text-slate-500">{st.department}</p>
-                </td>
-                <td className="p-3.5 font-bold text-slate-700">{st.year}</td>
-                <td className="p-3.5">
-                  <div className="flex gap-2">
-                    {st.githubUrl && (
-                      <a href={st.githubUrl} target="_blank" rel="noreferrer" className="text-slate-600 hover:text-purple-600">
-                        <Github className="w-4 h-4" />
-                      </a>
-                    )}
-                    {st.linkedinUrl && (
-                      <a href={st.linkedinUrl} target="_blank" rel="noreferrer" className="text-cyan-600 hover:text-cyan-800">
-                        <Linkedin className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
-                </td>
-                <td className="p-3.5">{getStatusBadge(st.approvalStatus)}</td>
-                <td className="p-3.5">
-                  <div className="flex flex-wrap gap-1.5">
-                    {st.approvalStatus === 'PENDING' && (
-                      <>
-                        <Button
-                          variant="primary"
-                          size="sm"
-                          onClick={() => handleUpdateStatus(st.id, 'APPROVED')}
-                          className="text-[10px] py-1 px-2.5 bg-emerald-600 hover:bg-emerald-700"
-                        >
-                          <CheckCircle2 className="w-3 h-3 mr-1" /> Approve
-                        </Button>
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((st) => (
+                <tr key={st.id} className="hover:bg-purple-50/30 transition-colors">
+                  <td className="p-3.5">
+                    <p className="font-extrabold text-slate-900 text-sm">{st.fullName}</p>
+                    <p className="text-slate-400">{st.email}</p>
+                    <p className="text-[10px] text-slate-400">{st.phone}</p>
+                  </td>
+                  <td className="p-3.5">
+                    <p className="font-bold text-slate-800">{st.college}</p>
+                    <p className="text-[10px] text-slate-500">{st.department} ({st.year})</p>
+                  </td>
+                  <td className="p-3.5 font-bold text-purple-700">{st.eventName}</td>
+                  <td className="p-3.5 font-bold text-slate-800">{st.teamName || 'Solo'}</td>
+                  <td className="p-3.5">{getStatusBadge(st.approvalStatus)}</td>
+                  <td className="p-3.5">
+                    <div className="flex flex-wrap gap-1.5">
+                      {st.approvalStatus === 'PENDING' && (
+                        <>
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => handleUpdateStatus(st.id, 'APPROVED')}
+                            className="text-[10px] py-1 px-2.5 bg-emerald-600 hover:bg-emerald-700"
+                          >
+                            <CheckCircle2 className="w-3 h-3 mr-1" /> Approve
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleUpdateStatus(st.id, 'REJECTED')}
+                            className="text-[10px] py-1 px-2.5 text-rose-600 border-rose-200 hover:bg-rose-50"
+                          >
+                            <XCircle className="w-3 h-3 mr-1" /> Reject
+                          </Button>
+                        </>
+                      )}
+                      {st.approvalStatus === 'APPROVED' && (
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleUpdateStatus(st.id, 'REJECTED')}
-                          className="text-[10px] py-1 px-2.5 text-rose-600 border-rose-200 hover:bg-rose-50"
+                          onClick={() => handleUpdateStatus(st.id, 'SUSPENDED')}
+                          className="text-[10px] py-1 px-2.5 text-purple-700 border-purple-200 hover:bg-purple-50"
                         >
-                          <XCircle className="w-3 h-3 mr-1" /> Reject
+                          <ShieldAlert className="w-3 h-3 mr-1" /> Suspend
                         </Button>
-                      </>
-                    )}
-                    {st.approvalStatus === 'APPROVED' && (
+                      )}
+                      {st.approvalStatus === 'SUSPENDED' && (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => handleUpdateStatus(st.id, 'APPROVED')}
+                          className="text-[10px] py-1 px-2.5"
+                        >
+                          <RotateCcw className="w-3 h-3 mr-1" /> Reactivate
+                        </Button>
+                      )}
+                      {st.approvalStatus === 'REJECTED' && (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => handleUpdateStatus(st.id, 'APPROVED')}
+                          className="text-[10px] py-1 px-2.5 bg-emerald-600 hover:bg-emerald-700 text-white"
+                        >
+                          <CheckCircle2 className="w-3 h-3 mr-1" /> Approve
+                        </Button>
+                      )}
                       <Button
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
-                        onClick={() => handleUpdateStatus(st.id, 'SUSPENDED')}
-                        className="text-[10px] py-1 px-2.5 text-purple-700 border-purple-200 hover:bg-purple-50"
+                        onClick={() => setSelectedStudent(st)}
+                        className="text-[10px] py-1 px-2 text-slate-500"
                       >
-                        <ShieldAlert className="w-3 h-3 mr-1" /> Suspend
+                        <Eye className="w-3.5 h-3.5" />
                       </Button>
-                    )}
-                    {st.approvalStatus === 'SUSPENDED' && (
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => handleUpdateStatus(st.id, 'APPROVED')}
-                        className="text-[10px] py-1 px-2.5"
-                      >
-                        <RotateCcw className="w-3 h-3 mr-1" /> Reactivate
-                      </Button>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSelectedStudent(st)}
-                      className="text-[10px] py-1 px-2 text-slate-500"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="p-8 text-center text-slate-400 font-bold">
+                  No student registrations found in queue. Register via event registration forms to populating this table.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -231,8 +274,8 @@ export const StudentManagementTab: React.FC = () => {
               <p><span className="text-slate-400">College:</span> {selectedStudent.college}</p>
               <p><span className="text-slate-400">Department:</span> {selectedStudent.department}</p>
               <p><span className="text-slate-400">Year:</span> {selectedStudent.year}</p>
-              <p><span className="text-slate-400">Registered Events:</span> {selectedStudent.registeredEventsCount}</p>
-              <p><span className="text-slate-400">Team Name:</span> {selectedStudent.teamName || 'None'}</p>
+              <p><span className="text-slate-400">Event:</span> {selectedStudent.eventName}</p>
+              <p><span className="text-slate-400">Team Name:</span> {selectedStudent.teamName || 'Solo'}</p>
               <p><span className="text-slate-400">Payment Status:</span> {selectedStudent.paymentStatus}</p>
             </div>
             <Button variant="secondary" className="w-full" onClick={() => setSelectedStudent(null)}>

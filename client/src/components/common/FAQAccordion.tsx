@@ -14,18 +14,27 @@ export const FAQAccordionItem: React.FC<{ item: FAQItem }> = ({ item }) => {
   if (!item) return null;
 
   return (
-    <div className="glass-card bg-white rounded-2xl overflow-hidden border border-purple-100/80 shadow-md transition-all">
+    <div
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255,255,255,0.09)',
+        borderRadius: '1rem',
+      }}
+      className="overflow-hidden transition-all"
+    >
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-5 text-left flex justify-between items-center gap-4 hover:bg-purple-50/50 transition-colors focus:outline-none"
+        className="w-full p-5 text-left flex justify-between items-center gap-4 hover:bg-white/5 transition-colors focus:outline-none cursor-pointer"
       >
-        <span className="text-base sm:text-lg font-black text-slate-900">
+        <span className="text-base sm:text-lg font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           {item.question}
         </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="p-2 rounded-full bg-amber-100 text-amber-800 flex-shrink-0"
+          style={{ background: 'rgba(139,92,246,0.20)', color: '#C4B5FD' }}
+          className="p-2 rounded-full flex-shrink-0"
         >
           <ChevronDown className="w-5 h-5" />
         </motion.div>
@@ -39,7 +48,10 @@ export const FAQAccordionItem: React.FC<{ item: FAQItem }> = ({ item }) => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div className="p-5 pt-0 text-sm text-slate-600 font-medium border-t border-slate-100 leading-relaxed">
+            <div
+              style={{ borderTop: '1px solid rgba(255,255,255,0.08)', color: 'rgba(148,163,184,0.85)' }}
+              className="p-5 pt-4 text-sm font-medium leading-relaxed"
+            >
               {item.answer}
             </div>
           </motion.div>

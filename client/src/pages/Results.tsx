@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { eventManagementStorage, ManagedEvent } from '../utils/eventManagementStorage';
 import { Trophy, Award, Sparkles } from 'lucide-react';
+import { Badge } from '../components/common/Badge';
 
 export const Results: React.FC = () => {
   const [completedEvents, setCompletedEvents] = useState<ManagedEvent[]>([]);
@@ -10,6 +12,14 @@ export const Results: React.FC = () => {
     const events = eventManagementStorage.getEvents();
     setCompletedEvents(events.filter((e) => e.status === 'COMPLETED'));
   }, []);
+
+  const glassCard: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.04)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+    border: '1px solid rgba(255,255,255,0.09)',
+    boxShadow: '0 8px 40px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.07)',
+  };
 
   return (
     <div className="space-y-12 py-8">
@@ -22,47 +32,69 @@ export const Results: React.FC = () => {
       {completedEvents.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {completedEvents.map((evt) => (
-            <div key={evt.id} className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-5">
+            <motion.div
+              key={evt.id}
+              whileHover={{ y: -4 }}
+              style={{ ...glassCard, borderRadius: '1.5rem' }}
+              className="p-6 sm:p-8 space-y-5"
+            >
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-[#F7D046] text-[#1E1B4B] border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] flex items-center justify-center font-bold">
-                  <Trophy className="w-7 h-7 text-[#1E1B4B]" />
+                <div
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(251,191,36,0.20), rgba(251,191,36,0.10))',
+                    border: '1px solid rgba(251,191,36,0.35)',
+                    boxShadow: '0 0 20px rgba(251,191,36,0.15)',
+                  }}
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center font-bold"
+                >
+                  <Trophy className="w-7 h-7 text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-[#1E1B4B]">{evt.title}</h3>
-                  <p className="text-xs text-slate-600 font-bold">Event Date: {evt.eventDate}</p>
+                  <h3 className="text-2xl font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{evt.title}</h3>
+                  <p className="text-xs font-medium" style={{ color: 'rgba(148,163,184,0.65)' }}>Event Date: {evt.eventDate}</p>
                 </div>
               </div>
 
               {evt.winners && (
-                <div className="p-4 rounded-2xl bg-[#FAF7EE] border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] space-y-3 text-xs font-bold text-[#1E1B4B]">
-                  <div className="flex justify-between items-center bg-[#F7D046] p-3 rounded-xl border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B]">
-                    <span className="text-[#1E1B4B] font-black uppercase flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4 text-[#1E1B4B]" /> 🥇 First Place:
+                <div
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: '1rem',
+                  }}
+                  className="p-4 space-y-3 text-xs font-semibold"
+                >
+                  <div className="flex justify-between items-center p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300">
+                    <span className="font-extrabold uppercase flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-amber-400" /> 🥇 First Place:
                     </span>
-                    <span className="font-black text-[#1E1B4B] text-sm">{evt.winners.firstPlace}</span>
+                    <span className="font-black text-white text-sm">{evt.winners.firstPlace}</span>
                   </div>
                   {evt.winners.secondPlace && (
-                    <div className="flex justify-between items-center bg-[#5CE1E6] p-3 rounded-xl border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B]">
-                      <span className="text-[#1E1B4B] font-black uppercase">🥈 Second Place:</span>
-                      <span className="font-black text-[#1E1B4B] text-sm">{evt.winners.secondPlace}</span>
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">
+                      <span className="font-extrabold uppercase">🥈 Second Place:</span>
+                      <span className="font-black text-white text-sm">{evt.winners.secondPlace}</span>
                     </div>
                   )}
                   {evt.winners.thirdPlace && (
-                    <div className="flex justify-between items-center bg-[#78E29A] p-3 rounded-xl border-2 border-[#1E1B4B] shadow-[2px_2px_0px_0px_#1E1B4B]">
-                      <span className="text-[#1E1B4B] font-black uppercase">🥉 Third Place:</span>
-                      <span className="font-black text-[#1E1B4B] text-sm">{evt.winners.thirdPlace}</span>
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">
+                      <span className="font-extrabold uppercase">🥉 Third Place:</span>
+                      <span className="font-black text-white text-sm">{evt.winners.thirdPlace}</span>
                     </div>
                   )}
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-3xl p-12 text-center border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] max-w-md mx-auto space-y-3">
-          <Trophy className="w-12 h-12 text-[#1E1B4B] mx-auto" />
-          <h3 className="text-xl font-black text-[#1E1B4B]">No Results Available</h3>
-          <p className="text-xs text-slate-600 font-bold">
+        <div
+          style={{ ...glassCard, borderRadius: '1.5rem', maxWidth: '28rem', margin: '0 auto' }}
+          className="p-12 text-center space-y-3"
+        >
+          <Trophy className="w-12 h-12 text-amber-400 mx-auto" />
+          <h3 className="text-xl font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>No Results Available</h3>
+          <p className="text-xs font-medium" style={{ color: 'rgba(148,163,184,0.70)' }}>
             Competition leaderboards and winner announcements will appear here once hackathons conclude.
           </p>
         </div>

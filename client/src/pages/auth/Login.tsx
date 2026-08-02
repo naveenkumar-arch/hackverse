@@ -27,47 +27,77 @@ export const Login: React.FC = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center py-12">
-      <div className="glass-card bg-white rounded-3xl p-8 sm:p-12 max-w-md w-full border border-purple-100 shadow-2xl space-y-6">
-        <div className="text-center space-y-2">
-          <img src={logoImg} alt="Kernel Overriders" className="h-16 w-auto object-contain mx-auto" />
-          <h2 className="text-3xl font-black text-slate-900">Welcome Back</h2>
-          <p className="text-xs text-slate-500 font-medium">
+      <div
+        style={{
+          background: 'rgba(255,255,255,0.04)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          border: '1px solid rgba(255,255,255,0.10)',
+          boxShadow: '0 12px 48px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.08)',
+        }}
+        className="rounded-3xl p-8 sm:p-12 max-w-md w-full space-y-6"
+      >
+        <div className="text-center space-y-3">
+          <div
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,242,254,0.92))',
+              boxShadow: '0 0 25px rgba(139,92,246,0.35)',
+              border: '1px solid rgba(255,255,255,0.9)',
+            }}
+            className="px-4 py-2 rounded-2xl inline-flex items-center justify-center mx-auto"
+          >
+            <img src={logoImg} alt="Kernel Overriders" className="h-12 w-auto object-contain brightness-105 contrast-105" />
+          </div>
+          <h2 className="text-3xl font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Welcome Back</h2>
+          <p className="text-xs font-medium" style={{ color: 'rgba(148,163,184,0.75)' }}>
             Sign in to access your hackathons, team status, and dashboard.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Student Email</label>
+            <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>Student Email</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="student@university.edu"
-                className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                style={{
+                  background: 'rgba(255,255,255,0.05)',
+                  color: '#E2E8F0',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  borderRadius: '0.875rem',
+                }}
+                className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <div className="flex justify-between items-center mb-1">
-              <label className="text-xs font-bold text-slate-700">Password</label>
-              <Link to="/forgot-password" className="text-xs font-bold text-purple-600 hover:underline">
+            <div className="flex justify-between items-center mb-1.5">
+              <label className="text-xs font-semibold" style={{ color: 'rgba(226,232,240,0.85)' }}>Password</label>
+              <Link to="/forgot-password" className="text-xs font-semibold text-violet-400 hover:underline">
                 Forgot password?
               </Link>
             </div>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+              <Lock className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                style={{
+                  background: 'rgba(255,255,255,0.05)',
+                  color: '#E2E8F0',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  borderRadius: '0.875rem',
+                }}
+                className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
               />
             </div>
           </div>
@@ -78,9 +108,9 @@ export const Login: React.FC = () => {
               id="remember"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 accent-purple-600 rounded cursor-pointer"
+              className="w-4 h-4 accent-violet-500 rounded cursor-pointer"
             />
-            <label htmlFor="remember" className="text-xs font-bold text-slate-600 cursor-pointer">
+            <label htmlFor="remember" className="text-xs font-medium cursor-pointer" style={{ color: 'rgba(148,163,184,0.8)' }}>
               Remember me on this device
             </label>
           </div>
@@ -91,9 +121,12 @@ export const Login: React.FC = () => {
           </Button>
         </form>
 
-        <div className="text-center text-xs text-slate-500 font-medium pt-4 border-t border-slate-100">
-          Don't have an account?{' '}
-          <Link to="/register" className="font-extrabold text-purple-600 hover:underline">
+        <div
+          style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
+          className="text-center text-xs font-medium pt-4"
+        >
+          <span style={{ color: 'rgba(148,163,184,0.7)' }}>Don't have an account? </span>
+          <Link to="/register" className="font-bold text-violet-400 hover:underline">
             Register as a Student
           </Link>
         </div>

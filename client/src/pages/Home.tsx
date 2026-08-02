@@ -26,12 +26,11 @@ export const Home: React.FC = () => {
 
   const featuredEvent = events.find((e) => e.status === 'LIVE' || e.status === 'UPCOMING') || events[0];
 
-  // Compute real countdown from featuredEvent's date+time
   const computeTimeLeft = (evt: ManagedEvent | undefined) => {
     if (!evt) return { days: 0, hrs: 0, min: 0, sec: 0 };
     const targetDate = evt.status === 'LIVE' && evt.liveStartTime
-      ? new Date(evt.liveStartTime + evt.durationHours * 3600 * 1000) // time until event ends
-      : new Date(`${evt.eventDate}T${evt.startTime || '00:00'}:00`);   // time until event starts
+      ? new Date(evt.liveStartTime + evt.durationHours * 3600 * 1000)
+      : new Date(`${evt.eventDate}T${evt.startTime || '00:00'}:00`);
     const diff = targetDate.getTime() - Date.now();
     if (diff <= 0) return { days: 0, hrs: 0, min: 0, sec: 0 };
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -64,8 +63,23 @@ export const Home: React.FC = () => {
     };
   }, []);
 
+  const glassCard: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.04)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+    border: '1px solid rgba(255,255,255,0.09)',
+    boxShadow: '0 8px 40px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.07)',
+  };
+
+  const statCards = [
+    { label: 'Community members', val: '12k+', gradient: 'linear-gradient(135deg, #8B5CF6, #60A5FA)' },
+    { label: 'Events hosted', val: '48', gradient: 'linear-gradient(135deg, #22D3EE, #34D399)' },
+    { label: 'Projects shipped', val: '310', gradient: 'linear-gradient(135deg, #F472B6, #FB923C)' },
+    { label: 'Prizes awarded', val: '₹9L+', gradient: 'linear-gradient(135deg, #FBBF24, #FDE68A)' },
+  ];
+
   return (
-    <div className="space-y-12 pb-16 relative overflow-hidden text-[#1E1B4B]">
+    <div className="space-y-12 pb-16 relative overflow-hidden">
       {/* Glow blobs */}
       <div className="glow-blob-cream-top" />
       <div className="glow-blob-cyan-right" />
@@ -75,13 +89,19 @@ export const Home: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Text Box */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Top Red Badge */}
+            {/* Top Badge */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FF334B] text-white border-2 border-[#1E1B4B] shadow-[3px_3px_0px_0px_#1E1B4B] text-xs font-black tracking-wider uppercase"
+              style={{
+                background: 'linear-gradient(135deg, rgba(139,92,246,0.25), rgba(96,165,250,0.15))',
+                border: '1px solid rgba(139,92,246,0.45)',
+                boxShadow: '0 4px 20px rgba(139,92,246,0.20)',
+                backdropFilter: 'blur(12px)',
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-violet-300 text-xs font-semibold tracking-widest uppercase"
             >
-              <Sparkles className="w-4 h-4 fill-white" />
+              <Sparkles className="w-4 h-4 text-violet-400" style={{ filter: 'drop-shadow(0 0 6px rgba(139,92,246,0.7))' }} />
               REGISTRATIONS OPEN
             </motion.div>
 
@@ -90,7 +110,8 @@ export const Home: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] text-[#1E1B4B]"
+              className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] text-white"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               <span className="text-gradient-hackverse">Kernel Overriders</span>
               <br />
@@ -104,7 +125,8 @@ export const Home: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="text-base sm:text-lg text-slate-700 font-bold max-w-xl leading-relaxed"
+              className="text-base sm:text-lg max-w-xl leading-relaxed font-medium"
+              style={{ color: 'rgba(148,163,184,0.85)' }}
             >
               A student-run tech community running online hackathons, coding competitions, workshops and cybersecurity events.
             </motion.p>
@@ -117,13 +139,12 @@ export const Home: React.FC = () => {
               className="flex flex-wrap items-center gap-4 pt-2"
             >
               <Link to="/events">
-                <Button variant="primary" size="lg" className="text-sm font-black py-4 px-8">
+                <Button variant="primary" size="lg" className="text-sm font-bold py-4 px-8">
                   Explore events
                 </Button>
               </Link>
-
               <Link to="/about">
-                <Button variant="secondary" size="lg" className="text-sm font-black py-4 px-8">
+                <Button variant="secondary" size="lg" className="text-sm font-bold py-4 px-8">
                   Our story
                 </Button>
               </Link>
@@ -138,18 +159,37 @@ export const Home: React.FC = () => {
             className="lg:col-span-5"
           >
             {featuredEvent ? (
-              <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] space-y-6 relative">
+              <div
+                style={{
+                  ...glassCard,
+                  borderRadius: '1.75rem',
+                  border: '1px solid rgba(139,92,246,0.22)',
+                }}
+                className="p-6 sm:p-8 space-y-6 relative"
+              >
+                {/* Purple glow top-right */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-40px',
+                  right: '-40px',
+                  width: '200px',
+                  height: '200px',
+                  background: 'radial-gradient(circle, rgba(139,92,246,0.20), transparent 70%)',
+                  filter: 'blur(30px)',
+                  pointerEvents: 'none',
+                }} />
+
                 <div className="space-y-1">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-black uppercase tracking-wider text-slate-500">
+                    <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'rgba(148,163,184,0.6)' }}>
                       {featuredEvent.status === 'COMPLETED' ? 'PAST EVENT' : featuredEvent.status === 'LIVE' ? 'LIVE NOW' : 'NEXT UP'}
                     </span>
                     <Badge variant={featuredEvent.status === 'LIVE' ? 'pink' : featuredEvent.status === 'COMPLETED' ? 'green' : 'yellow'}>
                       {featuredEvent.status === 'COMPLETED' ? 'CONCLUDED' : featuredEvent.status === 'LIVE' ? 'LIVE' : 'UPCOMING'}
                     </Badge>
                   </div>
-                  <h3 className="text-3xl font-black text-[#1E1B4B]">{featuredEvent.title}</h3>
-                  <p className="text-sm font-semibold text-slate-600 line-clamp-2">{featuredEvent.description}</p>
+                  <h3 className="text-3xl font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{featuredEvent.title}</h3>
+                  <p className="text-sm font-medium line-clamp-2" style={{ color: 'rgba(148,163,184,0.75)' }}>{featuredEvent.description}</p>
                 </div>
 
                 {/* Countdown Timer Row */}
@@ -160,9 +200,26 @@ export const Home: React.FC = () => {
                     { label: 'MIN', val: timeLeft.min },
                     { label: 'SEC', val: timeLeft.sec },
                   ].map((item, idx) => (
-                    <div key={idx} className="p-2.5 rounded-2xl border-2 border-[#1E1B4B] bg-slate-50 shadow-[2px_2px_0px_0px_#1E1B4B]">
-                      <div className="text-xl sm:text-2xl font-black text-[#1E1B4B]">{item.val}</div>
-                      <div className="text-[10px] font-black text-slate-500">{item.label}</div>
+                    <div
+                      key={idx}
+                      style={{
+                        background: 'rgba(139,92,246,0.10)',
+                        border: '1px solid rgba(139,92,246,0.25)',
+                        borderRadius: '0.875rem',
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
+                      }}
+                      className="p-2.5"
+                    >
+                      <div
+                        className="text-xl sm:text-2xl font-black"
+                        style={{
+                          background: 'linear-gradient(135deg, #A78BFA, #60A5FA)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                        }}
+                      >{item.val}</div>
+                      <div className="text-[10px] font-semibold tracking-widest" style={{ color: 'rgba(148,163,184,0.55)' }}>{item.label}</div>
                     </div>
                   ))}
                 </div>
@@ -171,57 +228,56 @@ export const Home: React.FC = () => {
                 {(featuredEvent.prizePool || featuredEvent.teamSize) && (
                   <div className="flex flex-wrap gap-2 pt-1">
                     {featuredEvent.prizePool && (
-                      <span className="px-3 py-1.5 rounded-full bg-[#F7D046] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
-                        {featuredEvent.prizePool}
-                      </span>
+                      <Badge variant="yellow">{featuredEvent.prizePool}</Badge>
                     )}
                     {featuredEvent.teamSize && (
-                      <span className="px-3 py-1.5 rounded-full bg-[#5CE1E6] border-2 border-[#1E1B4B] text-xs font-black shadow-[2px_2px_0px_0px_#1E1B4B]">
-                        {featuredEvent.teamSize}
-                      </span>
+                      <Badge variant="blue">{featuredEvent.teamSize}</Badge>
                     )}
                   </div>
                 )}
 
-                {/* Spotlight CTA Button based on status */}
+                {/* CTA Button */}
                 {featuredEvent.status === 'COMPLETED' ? (
                   <Link to="/results" className="block w-full">
-                    <Button variant="yellow" className="w-full py-4 text-sm font-black">
+                    <Button variant="yellow" className="w-full py-4 text-sm font-bold">
                       🏆 Event Completed — View Winners & Leaderboard
                     </Button>
                   </Link>
                 ) : featuredEvent.status === 'LIVE' && featuredEvent.isSubmissionEnabled && featuredEvent.submissionLink ? (
                   <a href={featuredEvent.submissionLink} target="_blank" rel="noreferrer" className="block w-full">
-                    <Button variant="green" className="w-full py-4 text-sm font-black animate-pulse">
+                    <Button variant="green" className="w-full py-4 text-sm font-bold animate-pulse">
                       🚀 Submit Project (Google Form)
                     </Button>
                   </a>
                 ) : featuredEvent.isRegistrationEnabled !== false && featuredEvent.registrationLink ? (
                   <a href={featuredEvent.registrationLink} target="_blank" rel="noreferrer" className="block w-full">
-                    <Button variant="primary" className="w-full py-4 text-sm font-black">
+                    <Button variant="primary" className="w-full py-4 text-sm font-bold">
                       Register Now (Google Form)
                     </Button>
                   </a>
                 ) : (
                   <Link to="/events" className="block w-full">
-                    <Button variant="primary" className="w-full py-4 text-sm font-black">
+                    <Button variant="primary" className="w-full py-4 text-sm font-bold">
                       View details
                     </Button>
                   </Link>
                 )}
               </div>
             ) : (
-              /* Empty State Spotlight Card when no events exist */
-              <div className="bg-white p-8 sm:p-10 rounded-3xl border-2 border-[#1E1B4B] shadow-[8px_8px_0px_0px_#1E1B4B] text-center space-y-5">
+              /* Empty State */
+              <div
+                style={{ ...glassCard, borderRadius: '1.75rem', border: '1px solid rgba(139,92,246,0.20)' }}
+                className="p-8 sm:p-10 text-center space-y-5"
+              >
                 <Badge variant="purple">SPOTLIGHT PORTAL</Badge>
                 <div className="space-y-2">
-                  <h3 className="text-2xl sm:text-3xl font-black text-[#1E1B4B]">No Active Events Created Yet</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 font-bold leading-relaxed">
+                  <h3 className="text-2xl sm:text-3xl font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>No Active Events Created Yet</h3>
+                  <p className="text-xs sm:text-sm font-medium leading-relaxed" style={{ color: 'rgba(148,163,184,0.70)' }}>
                     Access the Admin Portal to create, launch, and manage real hackathons with Google Forms registration.
                   </p>
                 </div>
                 <Link to="/admin-portal" className="block w-full">
-                  <Button variant="primary" className="w-full py-4 text-xs font-black cursor-pointer">
+                  <Button variant="primary" className="w-full py-4 text-xs font-bold cursor-pointer">
                     Go to Admin Portal
                   </Button>
                 </Link>
@@ -232,8 +288,26 @@ export const Home: React.FC = () => {
       </section>
 
       {/* MARQUEE TICKER BAR */}
-      <section className="bg-[#F7D046] border-2 border-[#1E1B4B] rounded-2xl py-3.5 shadow-[4px_4px_0px_0px_#1E1B4B] overflow-hidden whitespace-nowrap">
-        <div className="inline-flex gap-8 text-sm font-black uppercase tracking-wider text-[#1E1B4B] animate-marquee">
+      <section
+        style={{
+          background: 'linear-gradient(135deg, rgba(139,92,246,0.15), rgba(34,211,238,0.10))',
+          border: '1px solid rgba(139,92,246,0.25)',
+          borderRadius: '1rem',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.06)',
+          backdropFilter: 'blur(12px)',
+        }}
+        className="py-3.5 overflow-hidden whitespace-nowrap"
+      >
+        <div
+          className="inline-flex gap-8 text-sm font-semibold uppercase tracking-widest animate-marquee"
+          style={{
+            background: 'linear-gradient(90deg, #A78BFA, #60A5FA, #34D399, #22D3EE, #A78BFA)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            backgroundSize: '200%',
+          }}
+        >
           <span>★ Hackathons</span>
           <span>★ CTFs</span>
           <span>★ Workshops</span>
@@ -251,44 +325,98 @@ export const Home: React.FC = () => {
 
       {/* STATS CARDS GRID */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { label: 'Community members', val: '12k+' },
-          { label: 'Events hosted', val: '48' },
-          { label: 'Projects shipped', val: '310' },
-          { label: 'Prizes awarded', val: '₹9L+' },
-        ].map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-3xl border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] text-center space-y-1">
-            <div className="text-3xl sm:text-4xl font-black text-gradient-hackverse">{stat.val}</div>
-            <div className="text-xs font-bold text-slate-600">{stat.label}</div>
-          </div>
+        {statCards.map((stat, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.07 }}
+            style={{
+              ...glassCard,
+              borderRadius: '1.25rem',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+            }}
+            className="p-6 text-center space-y-1 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.45)]"
+          >
+            <div
+              className="text-3xl sm:text-4xl font-black"
+              style={{
+                background: stat.gradient,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                filter: 'drop-shadow(0 0 8px rgba(139,92,246,0.25))',
+              }}
+            >{stat.val}</div>
+            <div className="text-xs font-medium" style={{ color: 'rgba(148,163,184,0.65)' }}>{stat.label}</div>
+          </motion.div>
         ))}
       </section>
 
       {/* MISSION & VISION CARDS GRID */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Mission Card (Yellow) */}
-        <div className="bg-[#F7D046] p-8 rounded-3xl border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-white border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
-            <Code2 className="w-6 h-6 text-[#1E1B4B]" />
+        {/* Mission Card */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+          style={{
+            background: 'linear-gradient(135deg, rgba(251,191,36,0.10), rgba(251,191,36,0.05))',
+            border: '1px solid rgba(251,191,36,0.25)',
+            borderRadius: '1.5rem',
+            boxShadow: '0 8px 40px rgba(0,0,0,0.35), 0 0 30px rgba(251,191,36,0.06)',
+            backdropFilter: 'blur(16px)',
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+          }}
+          className="p-8 space-y-4 hover:-translate-y-1 hover:shadow-[0_16px_50px_rgba(0,0,0,0.45),0_0_40px_rgba(251,191,36,0.10)]"
+        >
+          <div
+            style={{
+              background: 'rgba(251,191,36,0.12)',
+              border: '1px solid rgba(251,191,36,0.30)',
+              boxShadow: '0 0 20px rgba(251,191,36,0.12)',
+            }}
+            className="w-12 h-12 rounded-2xl flex items-center justify-center"
+          >
+            <Code2 className="w-6 h-6 text-amber-400" />
           </div>
-          <h3 className="text-3xl font-black text-[#1E1B4B]">Our mission</h3>
-          <p className="text-sm font-bold text-[#1E1B4B]/90 leading-relaxed">
+          <h3 className="text-3xl font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Our mission</h3>
+          <p className="text-sm font-medium leading-relaxed" style={{ color: 'rgba(148,163,184,0.80)' }}>
             Give every student a place to build in public — free events, honest feedback, and peers who care about craft.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Vision Card (Aqua) */}
-        <div className="bg-[#5CE1E6] p-8 rounded-3xl border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-white border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
-            <Rocket className="w-6 h-6 text-[#1E1B4B]" />
+        {/* Vision Card */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.15 }}
+          style={{
+            background: 'linear-gradient(135deg, rgba(34,211,238,0.10), rgba(34,211,238,0.05))',
+            border: '1px solid rgba(34,211,238,0.22)',
+            borderRadius: '1.5rem',
+            boxShadow: '0 8px 40px rgba(0,0,0,0.35), 0 0 30px rgba(34,211,238,0.06)',
+            backdropFilter: 'blur(16px)',
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+          }}
+          className="p-8 space-y-4 hover:-translate-y-1 hover:shadow-[0_16px_50px_rgba(0,0,0,0.45),0_0_40px_rgba(34,211,238,0.12)]"
+        >
+          <div
+            style={{
+              background: 'rgba(34,211,238,0.12)',
+              border: '1px solid rgba(34,211,238,0.30)',
+              boxShadow: '0 0 20px rgba(34,211,238,0.10)',
+            }}
+            className="w-12 h-12 rounded-2xl flex items-center justify-center"
+          >
+            <Rocket className="w-6 h-6 text-cyan-400" />
           </div>
-          <h3 className="text-3xl font-black text-[#1E1B4B]">Our vision</h3>
-          <p className="text-sm font-bold text-[#1E1B4B]/90 leading-relaxed">
+          <h3 className="text-3xl font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Our vision</h3>
+          <p className="text-sm font-medium leading-relaxed" style={{ color: 'rgba(148,163,184,0.80)' }}>
             The most trusted independent student tech community in the country, running events that campuses copy.
           </p>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
 };
-

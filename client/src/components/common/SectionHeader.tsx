@@ -31,11 +31,19 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           {eyebrow}
         </Badge>
       )}
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight" style={{ color: '#F1F5F9' }}>
         {title.split(' ').map((word, index) => {
           if (index % 3 === 1) {
             return (
-              <span key={index} className="text-gradient-purple-pink">
+              <span
+                key={index}
+                style={{
+                  background: 'linear-gradient(135deg, #A78BFA, #60A5FA)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
                 {word}{' '}
               </span>
             );
@@ -44,7 +52,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         })}
       </h2>
       {subtitle && (
-        <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
+        <p className="text-base sm:text-lg font-medium leading-relaxed" style={{ color: 'rgba(148,163,184,0.80)' }}>
           {subtitle}
         </p>
       )}

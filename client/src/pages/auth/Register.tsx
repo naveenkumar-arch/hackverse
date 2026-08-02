@@ -44,19 +44,44 @@ export const Register: React.FC = () => {
     }
   };
 
+  const inputStyle: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.05)',
+    color: '#E2E8F0',
+    border: '1px solid rgba(255,255,255,0.12)',
+    borderRadius: '0.875rem',
+  };
+
   return (
     <div className="py-12 flex justify-center items-center">
-      <div className="glass-card bg-white rounded-3xl p-8 sm:p-12 max-w-2xl w-full border border-purple-100 shadow-2xl space-y-6">
-        <div className="text-center space-y-2">
-          <img src={logoImg} alt="Kernel Overriders" className="h-16 w-auto object-contain mx-auto" />
-          <h2 className="text-3xl font-black text-slate-900">Student Registration</h2>
-          <p className="text-xs text-slate-500 font-medium">
+      <div
+        style={{
+          background: 'rgba(255,255,255,0.04)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          border: '1px solid rgba(255,255,255,0.10)',
+          boxShadow: '0 12px 48px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.08)',
+        }}
+        className="rounded-3xl p-8 sm:p-12 max-w-2xl w-full space-y-6"
+      >
+        <div className="text-center space-y-3">
+          <div
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,242,254,0.92))',
+              boxShadow: '0 0 25px rgba(139,92,246,0.35)',
+              border: '1px solid rgba(255,255,255,0.9)',
+            }}
+            className="px-4 py-2 rounded-2xl inline-flex items-center justify-center mx-auto"
+          >
+            <img src={logoImg} alt="Kernel Overriders" className="h-12 w-auto object-contain brightness-105 contrast-105" />
+          </div>
+          <h2 className="text-3xl font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Student Registration</h2>
+          <p className="text-xs font-medium" style={{ color: 'rgba(148,163,184,0.75)' }}>
             Join 15,000+ student developers competing in global hackathons & earning certificates.
           </p>
         </div>
 
         {error && (
-          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold text-center">
+          <div className="p-4 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-semibold text-center">
             {error}
           </div>
         )}
@@ -64,31 +89,33 @@ export const Register: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Full Name *</label>
+              <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>Full Name *</label>
               <div className="relative">
-                <User className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <User className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
                 <input
                   type="text"
                   required
                   placeholder="e.g. Alex Rivera"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                  style={inputStyle}
+                  className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Student Email *</label>
+              <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>Student Email *</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
                 <input
                   type="email"
                   required
                   placeholder="alex@stanford.edu"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                  style={inputStyle}
+                  className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
                 />
               </div>
             </div>
@@ -96,30 +123,32 @@ export const Register: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">College / University *</label>
+              <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>College / University *</label>
               <div className="relative">
-                <GraduationCap className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <GraduationCap className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
                 <input
                   type="text"
                   required
                   placeholder="e.g. Stanford University"
                   value={formData.college}
                   onChange={(e) => setFormData({ ...formData, college: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                  style={inputStyle}
+                  className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Phone Number</label>
+              <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>Phone Number</label>
               <div className="relative">
-                <Phone className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <Phone className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
                 <input
                   type="text"
                   placeholder="+1 (555) 234-5678"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                  style={inputStyle}
+                  className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
                 />
               </div>
             </div>
@@ -127,29 +156,31 @@ export const Register: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">GitHub Profile URL</label>
+              <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>GitHub Profile URL</label>
               <div className="relative">
-                <Github className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <Github className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
                 <input
                   type="url"
                   placeholder="https://github.com/username"
                   value={formData.githubUrl}
                   onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                  style={inputStyle}
+                  className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">LinkedIn Profile URL</label>
+              <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>LinkedIn Profile URL</label>
               <div className="relative">
-                <Linkedin className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <Linkedin className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
                 <input
                   type="url"
                   placeholder="https://linkedin.com/in/username"
                   value={formData.linkedinUrl}
                   onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                  style={inputStyle}
+                  className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
                 />
               </div>
             </div>
@@ -157,31 +188,33 @@ export const Register: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Password *</label>
+              <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>Password *</label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
                 <input
                   type="password"
                   required
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                  style={inputStyle}
+                  className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Confirm Password *</label>
+              <label className="text-xs font-semibold block mb-1.5" style={{ color: 'rgba(226,232,240,0.85)' }}>Confirm Password *</label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.6)' }} />
                 <input
                   type="password"
                   required
                   placeholder="••••••••"
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-purple-500"
+                  style={inputStyle}
+                  className="w-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-violet-500 transition-colors"
                 />
               </div>
             </div>
@@ -193,9 +226,12 @@ export const Register: React.FC = () => {
           </Button>
         </form>
 
-        <div className="text-center text-xs text-slate-500 font-medium pt-4 border-t border-slate-100">
-          Already have an account?{' '}
-          <Link to="/login" className="font-extrabold text-purple-600 hover:underline">
+        <div
+          style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
+          className="text-center text-xs font-medium pt-4"
+        >
+          <span style={{ color: 'rgba(148,163,184,0.7)' }}>Already have an account? </span>
+          <Link to="/login" className="font-bold text-violet-400 hover:underline">
             Sign In Here
           </Link>
         </div>
