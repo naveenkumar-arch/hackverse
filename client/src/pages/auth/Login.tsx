@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/common/Button';
-import { Sparkles, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 export const Login: React.FC = () => {
   const { login } = useAuth();
@@ -28,11 +29,7 @@ export const Login: React.FC = () => {
     <div className="min-h-[80vh] flex items-center justify-center py-12">
       <div className="glass-card bg-white rounded-3xl p-8 sm:p-12 max-w-md w-full border border-purple-100 shadow-2xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#FACC15] via-[#FF2E4D] to-[#7C3AED] p-0.5 shadow-lg mx-auto">
-            <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-[#FF2E4D]" />
-            </div>
-          </div>
+          <img src={logoImg} alt="Kernel Overriders" className="h-16 w-auto object-contain mx-auto" />
           <h2 className="text-3xl font-black text-slate-900">Welcome Back</h2>
           <p className="text-xs text-slate-500 font-medium">
             Sign in to access your hackathons, team status, and dashboard.

@@ -2,7 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
-import { X, Download, Printer, ShieldCheck, Sparkles, FileText } from 'lucide-react';
+import { X, Download, Printer, ShieldCheck, FileText } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 interface InvoiceModalProps {
   isOpen: boolean;
@@ -29,10 +30,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ isOpen, onClose, inv
         <div className="flex justify-between items-start border-b border-slate-100 pb-6">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center font-black">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <span className="text-lg font-black text-slate-900">Kernel Overriders</span>
+              <img src={logoImg} alt="Kernel Overriders" className="h-8 w-auto object-contain" />
             </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">OFFICIAL PAYMENT INVOICE</p>
           </div>

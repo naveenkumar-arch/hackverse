@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/common/Button';
-import { Sparkles, Mail, Lock, User, Phone, GraduationCap, Github, Linkedin, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, Phone, GraduationCap, Github, Linkedin, ArrowRight } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 export const Register: React.FC = () => {
   const { register: registerUser } = useAuth();
@@ -47,11 +48,7 @@ export const Register: React.FC = () => {
     <div className="py-12 flex justify-center items-center">
       <div className="glass-card bg-white rounded-3xl p-8 sm:p-12 max-w-2xl w-full border border-purple-100 shadow-2xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#FACC15] via-[#FF2E4D] to-[#7C3AED] p-0.5 shadow-lg mx-auto">
-            <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-[#FF2E4D]" />
-            </div>
-          </div>
+          <img src={logoImg} alt="Kernel Overriders" className="h-16 w-auto object-contain mx-auto" />
           <h2 className="text-3xl font-black text-slate-900">Student Registration</h2>
           <p className="text-xs text-slate-500 font-medium">
             Join 15,000+ student developers competing in global hackathons & earning certificates.

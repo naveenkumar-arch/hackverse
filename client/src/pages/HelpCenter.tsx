@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { FAQAccordion } from '../components/common/FAQAccordion';
 import { FAQItem } from '../types';
-import { Search, HelpCircle, BookOpen, MessageSquare, Shield, FileText } from 'lucide-react';
+import { Search, HelpCircle, BookOpen, MessageSquare, Shield, FileText, Phone, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const REAL_FAQS: FAQItem[] = [
@@ -86,13 +86,55 @@ export const HelpCenter: React.FC = () => {
       </div>
 
       {/* Support Ticket Box */}
-      <div className="glass-card bg-white rounded-3xl p-8 text-center border border-purple-100 shadow-xl max-w-xl mx-auto space-y-3">
+      <div className="glass-card bg-white rounded-3xl p-8 text-center border border-purple-100 shadow-xl max-w-2xl mx-auto space-y-6">
         <MessageSquare className="w-8 h-8 text-purple-600 mx-auto" />
         <h4 className="text-xl font-black text-slate-900">Still Need Help?</h4>
         <p className="text-xs text-slate-600 font-medium">
-          Can't find what you're looking for? Reach out to our 24/7 student support team.
+          Can't find what you're looking for? Reach out directly to our support team.
         </p>
-        <Link to="/contact" className="inline-block pt-2">
+
+        {/* Support Contacts */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+          {/* Contact 1 */}
+          <div className="bg-purple-50 border border-purple-200 rounded-2xl p-4 space-y-2">
+            <p className="text-[10px] font-black text-purple-500 uppercase tracking-widest">Support Contact 1</p>
+            <a
+              href="tel:+919361858183"
+              className="flex items-center gap-2 text-slate-800 hover:text-purple-600 transition-colors"
+            >
+              <Phone className="w-4 h-4 text-purple-500 shrink-0" />
+              <span className="text-sm font-black font-mono">+91 93618 58183</span>
+            </a>
+            <a
+              href="mailto:madhan600700@gmail.com"
+              className="flex items-center gap-2 text-slate-800 hover:text-purple-600 transition-colors"
+            >
+              <Mail className="w-4 h-4 text-purple-500 shrink-0" />
+              <span className="text-xs font-bold font-mono break-all">madhan600700@gmail.com</span>
+            </a>
+          </div>
+
+          {/* Contact 2 */}
+          <div className="bg-pink-50 border border-pink-200 rounded-2xl p-4 space-y-2">
+            <p className="text-[10px] font-black text-pink-500 uppercase tracking-widest">Support Contact 2</p>
+            <a
+              href="tel:+919342443023"
+              className="flex items-center gap-2 text-slate-800 hover:text-pink-600 transition-colors"
+            >
+              <Phone className="w-4 h-4 text-pink-500 shrink-0" />
+              <span className="text-sm font-black font-mono">+91 93424 43023</span>
+            </a>
+            <a
+              href="mailto:amuthasurabi970@gmail.com"
+              className="flex items-center gap-2 text-slate-800 hover:text-pink-600 transition-colors"
+            >
+              <Mail className="w-4 h-4 text-pink-500 shrink-0" />
+              <span className="text-xs font-bold font-mono break-all">amuthasurabi970@gmail.com</span>
+            </a>
+          </div>
+        </div>
+
+        <Link to="/contact" className="inline-block pt-1">
           <span className="text-xs font-black text-purple-600 hover:underline">
             Submit Support Ticket &rarr;
           </span>

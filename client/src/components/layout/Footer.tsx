@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Github, Twitter, Linkedin, Disc as Discord, Heart } from 'lucide-react';
+import { Github, Twitter, Linkedin, Disc as Discord, Heart } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 export const Footer: React.FC = () => {
   return (
@@ -10,11 +11,12 @@ export const Footer: React.FC = () => {
         {/* Links Grid */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 border-b-2 border-[#1E1B4B]/10 pb-16">
           <div className="col-span-2 space-y-4">
-            <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-2xl bg-[#F7D046] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
-                <Sparkles className="w-5 h-5 text-[#1E1B4B]" />
-              </div>
-              <span className="text-2xl sm:text-3xl font-black text-gradient-hackverse">Kernel Overriders</span>
+            <Link to="/" className="flex items-center">
+              <img
+                src={logoImg}
+                alt="Kernel Overriders"
+                className="h-16 w-auto object-contain hover:scale-105 transition-transform duration-200"
+              />
             </Link>
             <p className="text-slate-600 text-xs sm:text-sm max-w-sm leading-relaxed font-bold">
               A student-run tech community running online hackathons, coding competitions, workshops and cybersecurity events.

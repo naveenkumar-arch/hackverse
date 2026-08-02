@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../common/Button';
-import { Sparkles, Menu, X, LogOut, Shield } from 'lucide-react';
+import { Menu, X, LogOut, Shield } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -22,15 +23,12 @@ export const Navbar: React.FC = () => {
     <header className="sticky top-4 z-50 px-3 sm:px-5 max-w-[1440px] mx-auto mb-6">
       <div className="bg-white rounded-full px-6 py-3 border-2 border-[#1E1B4B] shadow-[4px_4px_0px_0px_#1E1B4B] flex items-center justify-between">
         {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-2xl bg-[#F7D046] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B] group-hover:rotate-6 transition-transform">
-            <Sparkles className="w-5 h-5 text-[#1E1B4B] fill-[#1E1B4B]" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xl sm:text-2xl font-black tracking-tight text-gradient-hackverse leading-none">
-              Kernel Overriders
-            </span>
-          </div>
+        <Link to="/" className="flex items-center group">
+          <img
+            src={logoImg}
+            alt="Kernel Overriders"
+            className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-200"
+          />
         </Link>
 
         {/* Center Pill Menu Navigation */}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { Button } from '../components/common/Button';
-import { Mail, MessageSquare, MapPin, Send, CheckCircle2, Disc as Discord } from 'lucide-react';
+import { Mail, MessageSquare, MapPin, Send, CheckCircle2, Disc as Discord, Phone } from 'lucide-react';
 
 export const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -54,6 +54,53 @@ export const Contact: React.FC = () => {
               Student Tech Collective <br />
               Silicon Valley / Remote Worldwide
             </p>
+          </div>
+
+          {/* Direct Support Contacts */}
+          <div className="bg-white rounded-3xl p-6 border-2 border-[#1E1B4B] shadow-[6px_6px_0px_0px_#1E1B4B] space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#E879F9] text-[#1E1B4B] border-2 border-[#1E1B4B] flex items-center justify-center shadow-[2px_2px_0px_0px_#1E1B4B]">
+              <Phone className="w-6 h-6" />
+            </div>
+            <h4 className="text-xl font-black text-[#1E1B4B]">Direct Support</h4>
+            <p className="text-xs text-slate-600 font-bold">Reach out directly to our support team</p>
+
+            {/* Support Contact 1 */}
+            <div className="space-y-1 pt-1">
+              <p className="text-[10px] font-black text-purple-500 uppercase tracking-widest">Contact 1</p>
+              <a
+                href="tel:+919361858183"
+                className="flex items-center gap-2 text-[#1E1B4B] hover:text-purple-600 transition-colors"
+              >
+                <Phone className="w-4 h-4 shrink-0" />
+                <span className="text-sm font-black font-mono">+91 93618 58183</span>
+              </a>
+              <a
+                href="mailto:madhan600700@gmail.com"
+                className="flex items-center gap-2 text-[#1E1B4B] hover:text-purple-600 transition-colors"
+              >
+                <Mail className="w-4 h-4 shrink-0" />
+                <span className="text-xs font-bold font-mono break-all">madhan600700@gmail.com</span>
+              </a>
+            </div>
+
+            {/* Support Contact 2 */}
+            <div className="space-y-1 pt-1 border-t border-slate-100">
+              <p className="text-[10px] font-black text-pink-500 uppercase tracking-widest mt-2">Contact 2</p>
+              <a
+                href="tel:+919342443023"
+                className="flex items-center gap-2 text-[#1E1B4B] hover:text-pink-600 transition-colors"
+              >
+                <Phone className="w-4 h-4 shrink-0" />
+                <span className="text-sm font-black font-mono">+91 93424 43023</span>
+              </a>
+              <a
+                href="mailto:amuthasurabi970@gmail.com"
+                className="flex items-center gap-2 text-[#1E1B4B] hover:text-pink-600 transition-colors"
+              >
+                <Mail className="w-4 h-4 shrink-0" />
+                <span className="text-xs font-bold font-mono break-all">amuthasurabi970@gmail.com</span>
+              </a>
+            </div>
           </div>
         </div>
 
