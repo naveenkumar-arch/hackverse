@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { eventManagementStorage, ManagedEvent } from '../utils/eventManagementStorage';
+import { handleImageError } from '../utils/imageUtils';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
 import { EventRegistrationModal } from '../components/events/EventRegistrationModal';
@@ -41,7 +42,12 @@ export const EventDetails: React.FC = () => {
       {/* Banner & Header */}
       <div className="relative rounded-3xl overflow-hidden glass-card border border-purple-100 shadow-2xl space-y-6">
         <div className="relative h-72 sm:h-96 w-full">
-          <img src={event.imageLink} alt={event.title} className="w-full h-full object-cover" />
+          <img
+            src={event.imageLink}
+            alt={event.title}
+            onError={(e) => handleImageError(e, event.imageLink)}
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
 
           <div className="absolute bottom-8 left-6 right-6 sm:left-10 sm:right-10 text-white space-y-4">

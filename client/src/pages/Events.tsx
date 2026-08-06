@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { Badge } from '../components/common/Badge';
 import { eventManagementStorage, ManagedEvent } from '../utils/eventManagementStorage';
+import { handleImageError } from '../utils/imageUtils';
 import { LiveEventTimer } from '../components/events/LiveEventTimer';
 import { CompletedEventsSection } from '../components/events/CompletedEventsSection';
 import { Search, ExternalLink, Sparkles, Trophy, Calendar, CheckCircle2, Play } from 'lucide-react';
@@ -98,7 +99,12 @@ export const Events: React.FC = () => {
                 <div>
                   {/* Poster image */}
                   <div className="relative h-56 w-full">
-                    <img src={evt.imageLink} alt={evt.title} className="w-full h-full object-cover" />
+                    <img
+                      src={evt.imageLink}
+                      alt={evt.title}
+                      onError={(e) => handleImageError(e, evt.imageLink)}
+                      className="w-full h-full object-cover"
+                    />
                     <div
                       style={{ background: 'linear-gradient(to top, rgba(5,7,20,0.95) 0%, rgba(5,7,20,0.50) 50%, transparent 100%)' }}
                       className="absolute inset-0"

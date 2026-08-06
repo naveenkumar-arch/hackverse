@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ManagedEvent } from '../../utils/eventManagementStorage';
+import { handleImageError } from '../../utils/imageUtils';
 import { Trophy, Award, Calendar, Sparkles } from 'lucide-react';
 import { Badge } from '../common/Badge';
 
@@ -56,7 +57,12 @@ export const CompletedEventsSection: React.FC<CompletedEventsSectionProps> = ({ 
           >
             {/* Banner image */}
             <div className="relative h-48 w-full">
-              <img src={evt.imageLink} alt={evt.title} className="w-full h-full object-cover" />
+              <img
+                src={evt.imageLink}
+                alt={evt.title}
+                onError={(e) => handleImageError(e, evt.imageLink)}
+                className="w-full h-full object-cover"
+              />
               <div
                 style={{ background: 'linear-gradient(to top, rgba(5,7,20,0.95) 0%, rgba(5,7,20,0.40) 50%, transparent 100%)' }}
                 className="absolute inset-0"

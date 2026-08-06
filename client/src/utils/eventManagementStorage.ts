@@ -1,4 +1,5 @@
 import { eventService } from '../services/event.service';
+import { formatImageUrl } from './imageUtils';
 
 export interface ManagedEvent {
   id: string;
@@ -27,24 +28,26 @@ export interface ManagedEvent {
 
 const STORAGE_KEY = 'ko_managed_events';
 
+export const GOOGLE_DRIVE_POSTER_LINK = 'https://drive.google.com/file/d/192gG8N1hrDuVLeR7ZE0HM4aFr1_swayh/view?usp=drive_link';
+
 const INITIAL_MANAGED_EVENTS: ManagedEvent[] = [
   {
-    id: 'evt-codestorm-2026',
-    title: 'CodeStorm 2026',
-    imageLink: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop',
-    description: '48 hours. One idea. Ship something people actually want to use. Compete for ₹1,50,000 prize pool with 2-4 members per team.',
-    eventDate: '2026-09-15',
-    startTime: '09:00',
-    endTime: '18:00',
+    id: 'evt-fullstack-ai-2026',
+    title: 'FULL STACK WEB DEVELOPMENT USING AI',
+    imageLink: formatImageUrl(GOOGLE_DRIVE_POSTER_LINK),
+    description: "Kernel Overriders' Hackathon 2K26 is a 24-hour Full Stack Web Development Hackathon organized by Chennai Community. Participants will work in teams to solve a real-world problem statement by designing and developing a complete web application using modern technologies and AI tools. The hackathon encourages innovation, collaboration, rapid development, and problem-solving. Teams will build functional applications within 24 hours and submit a live deployment along with the source code for evaluation. Whether you are a beginner or an experienced developer, this event provides an excellent opportunity to showcase your technical skills, learn from peers, and compete for exciting prizes.",
+    eventDate: '2026-08-15',
+    startTime: '08:00',
+    endTime: '08:00',
     durationHours: 24,
-    prizePool: '₹1,50,000 pool',
-    teamSize: '2 – 4 members',
+    prizePool: '1000',
+    teamSize: 'solo or 2-4',
     registrationLink: 'https://forms.google.com/your-registration-form',
     submissionLink: 'https://forms.google.com/your-submission-form',
     status: 'UPCOMING',
     liveStartTime: null,
     isRegistrationEnabled: true,
-    isSubmissionEnabled: true,
+    isSubmissionEnabled: false,
     winners: null,
     createdAt: new Date().toISOString(),
   },
@@ -58,19 +61,60 @@ export const eventManagementStorage = {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MANAGED_EVENTS));
         return INITIAL_MANAGED_EVENTS;
       }
-      const parsed = JSON.parse(data);
-      if (!Array.isArray(parsed)) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-        return [];
+      let parsed = JSON.parse(data);
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MANAGED_EVENTS));
+        return INITIAL_MANAGED_EVENTS;
       }
+
+      let updatedTarget = false;
+      parsed = parsed.map((e: ManagedEvent) => {
+        const formattedLink = formatImageUrl(e.imageLink);
+        const isTarget =
+          e.id === 'evt-codestorm-2026' ||
+          e.id === 'evt-fullstack-ai-2026' ||
+          e.title.toLowerCase().includes('full stack') ||
+          e.title.toLowerCase().includes('codestorm');
+
+        if (isTarget) {
+          updatedTarget = true;
+          return {
+            ...e,
+            title: 'FULL STACK WEB DEVELOPMENT USING AI',
+            imageLink: formatImageUrl(GOOGLE_DRIVE_POSTER_LINK),
+            description: e.description || INITIAL_MANAGED_EVENTS[0].description,
+            eventDate: e.eventDate || '2026-08-15',
+            startTime: e.startTime || '08:00',
+            endTime: e.endTime || '08:00',
+            durationHours: e.durationHours || 24,
+            prizePool: e.prizePool || '1000',
+            teamSize: e.teamSize || 'solo or 2-4',
+          };
+        }
+
+        return {
+          ...e,
+          imageLink: formattedLink,
+        };
+      });
+
+      if (!updatedTarget) {
+        parsed.unshift(INITIAL_MANAGED_EVENTS[0]);
+      }
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
       return parsed;
     } catch {
-      return [];
+      return INITIAL_MANAGED_EVENTS;
     }
   },
 
   saveEvents: (events: ManagedEvent[]): void => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+    const formatted = events.map((e) => ({
+      ...e,
+      imageLink: formatImageUrl(e.imageLink),
+    }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(formatted));
     window.dispatchEvent(new Event('ko_managed_events_updated'));
   },
 
@@ -79,6 +123,7 @@ export const eventManagementStorage = {
     const newEvent: ManagedEvent = {
       id: `evt-${Date.now()}`,
       ...eventData,
+      imageLink: formatImageUrl(eventData.imageLink),
       status: 'UPCOMING',
       liveStartTime: null,
       isRegistrationEnabled: true,
@@ -100,7 +145,11 @@ export const eventManagementStorage = {
 
   updateEvent: (id: string, updates: Partial<ManagedEvent>): ManagedEvent[] => {
     const events = eventManagementStorage.getEvents();
-    const updated = events.map((e) => (e.id === id ? { ...e, ...updates } : e));
+    const formattedUpdates = {
+      ...updates,
+      ...(updates.imageLink ? { imageLink: formatImageUrl(updates.imageLink) } : {}),
+    };
+    const updated = events.map((e) => (e.id === id ? { ...e, ...formattedUpdates } : e));
     eventManagementStorage.saveEvents(updated);
 
     // Asynchronously update event in database if server API is available
